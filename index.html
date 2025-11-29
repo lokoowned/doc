@@ -30,6 +30,28 @@
     }
   </style>
 </head>
+
+<script>
+  // Calcula a diferença de anos desde janeiro de 2011 até agora
+  const startYear = 2011;
+  const startMonth = 0; // Janeiro é 0 em JS
+  const startDate = new Date(startYear, startMonth);
+  const currentDate = new Date();
+
+  // Calcula a diferença em anos, considerando o mês
+  let yearsPassed = currentDate.getFullYear() - startDate.getFullYear();
+  if (
+    currentDate.getMonth() < startDate.getMonth() ||
+    (currentDate.getMonth() === startDate.getMonth() && currentDate.getDate() < startDate.getDate())
+  ) {
+    yearsPassed--;
+  }
+
+  // Variável contendo a quantidade de anos completos passados
+  // Exemplo de uso:
+  // document.write(`Já se passaram ${yearsPassed} anos desde janeiro de 2011.`);
+</script>
+
 <body>
   <div id="app"></div>
 
