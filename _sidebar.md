@@ -1,11 +1,4 @@
 - [🏠Início](/)
-  - [🆕Como Entrar na Guilda - Falta as regras](paginas/inicio/como-entrar.md)
-
-  - [👾Jogando Atualmente](paginas/inicio/jogando-atualmente.md)
-    - [Roadmap Início do Game](paginas/inicio/roadmap-inicio-do-game.md)
-
-  - [⁉️Perguntas Frequentes](paginas/inicio/faq.md)
-  - [📅Calendário da Guilda](paginas/inicio/calendario.md)
 
 - <img src="/imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;">Sobre a nossa Organização
   - [História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")

@@ -2,12 +2,9 @@
 
 # 👋 Bem-vindo à †Dark·Legion† Guild.
 
-> *"Fundada em 2011 por [xLokoOwneD](#xlokoowned), seguimos desde então escrevendo nossa história.. De uma presença inquestionável, tornamo-nos relevantes em cenários [brasileiros, filipino e indonesiano](sobrerf/#cenarios). Atualmente, seguimos construindo... de organização, companheirismo, lealdade e determinação. <br> [Saiba mais sobre a história da guilda clicando aqui.](inicio/#historia)*
+> *Fundada em 2011 por [xLokoOwneD](#xlokoowned), já são {{yearsPassed}} anos escrevendo nossa história.. De uma presença inquestionável, tornamo-nos relevantes em cenários [brasileiros, filipino e indonesiano](sobrerf/#cenarios). Atualmente, seguimos construindo... de organização, companheirismo, lealdade e determinação. <br> [Saiba mais sobre a história da guilda clicando aqui.](inicio/#historia)*
 
 :link: **Todos os links da nossa organização:** [linktr.ee/dlguild](https://linktr.ee/dlguild)
-
-
-
 
 <details>
   <summary><strong>🎮 Jogando Atualmente: RF OldTimes - Raça Bellato</strong></summary>
@@ -27,41 +24,135 @@
 </details>
 
 <details>
-  <summary><strong>👥 Como me juntar a esta grande guilda? 😃</strong></summary>
+  <summary><strong>👥 Como me juntar a esta grande família? 😃</strong></summary>
+  <p>
 
-  - 🌐 **Entenda as regras e conduta da guilda para estar apto a jogar conosco:** Somos uma organização que já está há <span id="anos-darklegion"></span> anos em atividade.
+
+
+  - 🌐 **Entenda as regras e conduta da guilda para estar apto a jogar conosco:** Somos uma organização que já está há {{yearsPassed}} anos em atividade. Seguindo desde o ínicio as mesmas regras e condutas.<br>
+  Nada burocrático, nada complicado, cobramos o mínimo para que tenhamos uma organização saudável e organizada e efetiva. 
   
-  <script>
-    // Garante compatibilidade docsify/github: inserir apenas se não interferir no SSR.
-    (function(){
-      // Se já existe, evita sobrescrever
-      if (!window.__darklegion_yearsSet) {
-        window.__darklegion_yearsSet = true;
-        const startYear = 2011;
-        const startMonth = 0; // Janeiro
-        const startDate = new Date(startYear, startMonth);
-        const currentDate = new Date();
-        let yearsPassed = currentDate.getFullYear() - startDate.getFullYear();
-        if (
-          currentDate.getMonth() < startDate.getMonth() ||
-          (currentDate.getMonth() === startDate.getMonth() && currentDate.getDate() < startDate.getDate())
-        ) {
-          yearsPassed--;
-        }
-        function setYears() {
-          var el = document.getElementById('anos-darklegion');
-          if (el) el.textContent = yearsPassed;
-        }
-        // Executa ao carregar e após pequenos atrasos se necessário (docsify patch)
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setYears);
-        } else {
-          setYears();
-        }
-        setTimeout(setYears,500); setTimeout(setYears,1500); // fallback para SPA
-      }
-    })();
-  </script>
+[shadowbox button="📜 Ver Regras da Guilda"]
+
+**📋 Regras & Conduta DarkLegion**
+
+✅ 1. Foco e objetivos: Participe dos objetivos da guilda. Mesmo quando não concordar 100%, confie na experiência do comando e siga as call.
+<br><br>✅ 2. Respeito acima de tudo:Trate todos com respeito. Desentendimento se resolve em privado, de forma madura, sem exposição desnecessária.
+<br><br>✅ 3. PK e tretas in-gameEvite brigar à toa. Não fale em nome da guilda com outras pessoas/raças; qualquer problema (BR ou gringo) reporte ao comando.
+<br><br>✅ 4. Honra da guilda: Não crie personagem em raça oposta no mesmo servidor isso prejudica e gera desunião na guilda. Tudo bem jogar em outras guildas, mas se você preza e valoriza sua guilda principal não permita que outros a difamem. Sempre existem ambientes que podem respeitar nossos princípios.
+<br><br>✅ 5. Votações e apontamentos: Antes de entrar na votação, fale com a Staff, você agora faz parte de um time.As decisões consideram equipamento, atividade e postura — não preferência pessoal ou amizades, todos são iguais perante a visão do líder.
+<br><br>✅ 6. Uso de microfone & Comunicação: Mic limpo. Se tiver barulho, use push-to-talk. Seja direto ao ponto, evite o desespero, evite enrolar de mais para falar algo simples pois a call é compartilhada e todos precisam dialogar.
+<br><br>✅ 7. RMT (venda de itens): Pode fazer RMT, mas tenha gear decente para PVP e participe dos objetivos. Sabemos que as vezes o RMT é a única maneira da pessoa ganhar um dinheiro, entretanto se você não agregar na guilda com um personagem mediano/forte você não merece vender as coisas dentro da mesma.
+<br><br>✅ 8. Reclamações e insatisfação: Pode reclamar, mas não fique repetindo o mesmo assunto e estressando o resto. Qualquer problema sério, fale direto com Líder/Comandos em privado.
+<br><br>✅ 9. Hackers e bugs: Uso de programas que alteram memória do jogo, bugs críticos do servidor, programas Helper, farming BOT's são estritamente proibidos. Coisas simples como autoloot, macro de farming, passar pelo glitch do terreno de ether não são considerados problema.
+<br><br>✅ 10. Converse, não murmure: Se algo te incomoda, chame o líder em sala privada ou DM. Seja sincero, é exatamente isto que esperamos de você. Ficar jogando indireta e murmurando pelos cantos não resolve nada e apenas mostra que você é imaturo e fraco.
+
+---
+
+**Concorda com tudo?** Feche esta janela e clique no botão abaixo para entrar no nosso Discord. 🎮
+[/shadowbox]
+
+<div id="aceite-container" style="margin-bottom:30px;">
+  <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size:1.08rem;">
+    <input type="checkbox" id="concordo-regras" style="width:20px; height:20px;">
+    Eu concordo com as Regras & Conduta da Guilda †Dark·Legion†
+  </label>
+</div>
+
+<div id="shadowbox-concordo" style="display:none;" class="shadowbox-hidden-content">
+
+<center>🎉 Bem-vindo(a) à †Dark·Legion†!
+<p align="center">
+  <img src="/imagens/icones/emblema.png" alt="Emblema DarkLegion" width="120" style="margin-bottom: 12px;">
+</p> </center>
+
+### ✅ Você aceitou nossas regras e conduta!
+
+Agora você está pronto(a) para se juntar à nossa guilda. 
+
+**Próximos passos:**
+
+1. **📱 Entre no nosso Discord** clicando no botão abaixo
+2. **✍️ Peça registro** na sala `#novos-membros`
+3. **⏳ Aguarde aprovação** de um admin
+4. **🎮 Comece a jogar** conosco!
+
+<center>
+<a href="https://discord.com/invite/8xf4z9aEy3" target="_blank" style="display:inline-block;">
+  <img 
+    src="/imagens/inviteds.png" 
+    alt="Entrar no Discord" 
+    width="220"
+    class="discord-img-neon"
+  >
+</a><br>
+
+
+**Com prazer dizemos, estamos ansiosos para tê-lo(a) conosco!** 🛡️⚔️<br>**Assinado  por: DarkLegion Staff & Membros.**</center>
+
+</div>
+
 
 </details>
 
+
+---
+<h4 style="text-align:center;">Mais informações importantes sobre a nossa Organização.</h4>
+
+<div style="text-align: center; margin: 20px 0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;">
+  <button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-calendario')" style="font-size: 1.1em; padding: 8px 16px;">
+    📅 Ver Calendário de Atividades
+  </button>
+  <button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-faq')" style="font-size: 1.1em; padding: 8px 16px;">
+    ⁉️ Perguntas Frequentes
+  </button>
+</div>
+
+<!-- ShadowBox Calendário -->
+<div id="shadowbox-calendario" style="display:none;" class="shadowbox-hidden-content">
+  <center>
+    <h2 style="margin-bottom: 16px;">📅 Calendário de atividade da Guilda e do Líder.</h2>
+    <img src="/imagens/calendario.webp" alt="Banner Calendário de Atividade" style="max-width:640px;width:100%;margin-bottom:18px;border-radius:7px;box-shadow:0 0 14px #09ced899;">
+  </center>
+  <ul style="font-size:1.07em;line-height:1.7;margin: 0 0 0 1.4em;">
+    <li style="text-align:left; list-style:none; margin-bottom:12px;">
+      <b>
+        Nosso líder de 2011 até 2023 focou exclusivamente na guilda, entretanto ele agora tem uma vida um pouco mais corrida, com algumas demandas o que faz necessário que a guilda e o mesmo tenham um calendário de atividade para que tudo funcione perfeitamente.
+      </b>
+    </li>
+    <li><b>Dezembro 2025 até Junho de 2026</b> a guilda estará em atividade, temos como meta jogar o OldTimes em dezembro e ficar nele até o final, em Fevereiro de 26, temos sério interesse em jogar um dos melhores e maiores servidores russos internacionais do mundo RF Default.</li>
+    <li><b>Julho 2026:</b> Esta é a data prevista para o lançamento do servidor do líder (neste momento ele não lidera, e sim administra o próprio servidor chamado <a href="https://www.rfreward.com" target="_blank">RF Reward</a>).</li>
+    <li><b>Julho 2026:</b> mesmo o líder dando a call para a galera jogar onde quiser no seu servidor pois não existe ajuda ou favoritismo, muitos membros ainda se unem para jogar juntos visando que eles tem um laço muito forte entre si, perto da data alguém decide e puxa a liderança de uma bandeira alternativa composta por em sua maioria membros da DarkLegion.</li>
+    <li><b>Outubro 2026:</b> a guilda volta a atividade sob a líderança de Loko.</li>
+  </ul>
+  <div style="margin-top:16px;">
+    <b>✔️ Esta calendário será atualizado conforme forem surgindo novidades e acontecimentos importantes.</b>
+  </div>
+</div>
+
+<!-- ShadowBox FAQ -->
+<div id="shadowbox-faq" style="display:none;" class="shadowbox-hidden-content">
+  <center>
+    <h2 style="margin-bottom: 16px;">⁉️ Perguntas Frequentes</h2>
+    <img src="/imagens/faq.webp" alt="Banner FAQ" style="max-width:640px;width:100%;margin-bottom:18px;border-radius:7px;box-shadow:0 0 14px #09ced899;">
+  </center>
+  
+  <h3>❓ Como entro na guilda?</h3>
+  <p>Leia as regras, marque a checkbox de concordância e siga os passos para entrar no Discord. Um admin irá aprovar seu registro.</p>
+  
+  <h3>❓ Preciso estar sempre online?</h3>
+  <p>Não é obrigatório, mas quanto mais ativo você for, melhor será sua experiência e integração com a guilda.</p>
+  
+  <h3>❓ Posso jogar em outra raça?</h3>
+  <p>Evite criar personagens em raças opostas no mesmo servidor, pois isso prejudica a unidade da guilda.</p>
+  
+  <h3>❓ Como participo dos eventos?</h3>
+  <p>Os eventos são anunciados no Discord com antecedência. Fique atento aos canais de comunicação!</p>
+  
+  <h3>❓ Posso fazer RMT?</h3>
+  <p>Sim, mas mantenha um personagem decente para PVP e participe dos objetivos da guilda.</p>
+  
+  <div style="margin-top:16px;">
+    <b>✔️ Mais dúvidas? Envie pelo <a href="https://forms.gle/A6oHT6cpA1csenhXA" target="_blank">formulário de contato</a>.</b>
+  </div>
+</div>

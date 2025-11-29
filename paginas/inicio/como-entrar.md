@@ -56,46 +56,6 @@ Pode parecer chato, mas é importante para que possamos ter um ambiente saudáve
 2. **CASO CONCORDE - Entre no nosso Discord**  
      Se concordar com as regras, basta acessar o nosso servidor do Discord:
 
-     <style>
-       .discord-img-neon {
-          display:block;
-          margin:20px 0;
-          border-radius:14px;
-          box-shadow: 0 0 10px 0 #0ff3, 0 0 30px 0 #00f2ff44;
-          position:relative;
-          z-index:1;
-          animation: neonWave 2.5s infinite linear;
-          transition: box-shadow 0.25s;
-       }
-
-       @keyframes neonWave {
-         0% {
-           box-shadow: 
-             0 0 12px 2px #00f0ff66, 
-             0 0 22px 1px #0ff5, 
-             0 0 50px 0px #00ffe716;
-         }
-         35% {
-           box-shadow: 
-             0 0 18px 4px #00cfff88, 
-             0 0 25px 6px #00fff944, 
-             0 0 36px 10px #00ffe726;
-         }
-         60% {
-           box-shadow: 
-             0 0 15px 2px #00bceea6, 
-             0 0 30px 4px #00e4ff38, 
-             0 0 38px 14px #00ffe726;
-         }
-         100% {
-           box-shadow: 
-             0 0 12px 2px #00f0ff66, 
-             0 0 22px 1px #0ff5, 
-             0 0 50px 0px #00ffe716;
-         }
-       }
-     </style>
-
      <a href="https://discord.com/invite/8xf4z9aEy3" target="_blank" style="display:inline-block;">
        <img 
          src="/imagens/inviteds.png" 

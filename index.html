@@ -7,6 +7,7 @@
   <meta name="description" content="Documentação oficial da guilda DarkLegion">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
+  <link rel="stylesheet" href="custom.css">
   <style>
     footer#footer-basic {
       margin-top: 48px;
@@ -27,6 +28,238 @@
     footer#footer-basic a:hover {
       opacity: 1;
       text-decoration: underline;
+    }
+
+    /* ShadowBox Styles */
+    .shadowbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      z-index: 9999;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .shadowbox-overlay.active {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .shadowbox-content {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 12px;
+      padding: 32px;
+      max-width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+      animation: slideIn 0.3s ease;
+    }
+
+    .shadowbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #2a2a2a;
+      border: 1px solid #444;
+      color: #fff;
+      font-size: 24px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .shadowbox-close:hover {
+      background: #ff4444;
+      border-color: #ff6666;
+      transform: rotate(90deg);
+    }
+
+    .shadowbox-trigger {
+      display: inline-block;
+      padding: 10px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      margin: 4px;
+      position: relative;
+      overflow: visible;
+      z-index: 1;
+      box-shadow: 
+        0 0 8px rgba(102, 126, 234, 0.3),
+        0 0 15px rgba(102, 126, 234, 0.2);
+      animation: blueGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes blueGlow {
+      0%, 100% {
+        box-shadow: 
+          0 0 8px rgba(102, 126, 234, 0.4),
+          0 0 15px rgba(102, 126, 234, 0.25),
+          0 0 20px rgba(102, 126, 234, 0.15);
+      }
+      50% {
+        box-shadow: 
+          0 0 12px rgba(135, 206, 250, 0.5),
+          0 0 20px rgba(135, 206, 250, 0.3),
+          0 0 28px rgba(135, 206, 250, 0.2);
+      }
+    }
+
+    .shadowbox-trigger:hover {
+      transform: translateY(-2px) scale(1.05);
+      animation: blueGlowIntense 2s ease-in-out infinite;
+    }
+
+    @keyframes blueGlowIntense {
+      0%, 100% {
+        box-shadow: 
+          0 0 15px rgba(102, 126, 234, 0.6),
+          0 0 25px rgba(102, 126, 234, 0.4),
+          0 0 35px rgba(102, 126, 234, 0.25);
+      }
+      50% {
+        box-shadow: 
+          0 0 18px rgba(135, 206, 250, 0.7),
+          0 0 30px rgba(135, 206, 250, 0.5),
+          0 0 42px rgba(135, 206, 250, 0.3);
+      }
+    }
+
+    /* Ícones flutuantes */
+    .shadowbox-icon-particle {
+      position: absolute;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0;
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+      animation: floatUpIcon 2.5s ease-out forwards;
+    }
+
+    @keyframes floatUpIcon {
+      0% {
+        opacity: 0;
+        transform: translateY(0) translateX(0) rotate(0deg) scale(0.3);
+      }
+      15% {
+        opacity: 1;
+        transform: translateY(-20px) translateX(calc(var(--float-x) * 0.2)) rotate(72deg) scale(0.8);
+      }
+      85% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-120px) translateX(var(--float-x)) rotate(360deg) scale(1.5);
+      }
+    }
+
+    /* Adiciona brilho azul sutil ao fundo do botão */
+    .shadowbox-trigger::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, 
+        #4169e1, #667eea, #87ceeb, #5b9bd5, #667eea, #4169e1);
+      background-size: 300% 300%;
+      border-radius: 8px;
+      opacity: 0.3;
+      z-index: -1;
+      animation: blueWave 4s ease-in-out infinite;
+      filter: blur(6px);
+    }
+
+    @keyframes blueWave {
+      0%, 100% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+    }
+
+    .shadowbox-trigger:hover::before {
+      opacity: 0.5;
+      filter: blur(8px);
+      animation: blueWave 2s ease-in-out infinite;
+    }
+
+    /* Efeito de texto brilhante no hover */
+    .shadowbox-trigger {
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+    }
+
+    .shadowbox-trigger:hover {
+      animation: blueGlowIntense 2s ease-in-out infinite, textGlowBlue 2s ease-in-out infinite;
+    }
+
+    @keyframes textGlowBlue {
+      0%, 100% {
+        text-shadow: 
+          0 0 5px rgba(255, 255, 255, 0.6),
+          0 0 10px rgba(102, 126, 234, 0.5),
+          0 0 15px rgba(102, 126, 234, 0.3);
+      }
+      50% {
+        text-shadow: 
+          0 0 5px rgba(255, 255, 255, 0.7),
+          0 0 10px rgba(135, 206, 250, 0.6),
+          0 0 15px rgba(135, 206, 250, 0.4);
+      }
+    }
+
+    /* Previne que o botão seja afetado por z-index de outros elementos */
+    .shadowbox-trigger {
+      isolation: isolate;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Responsivo */
+    @media (max-width: 768px) {
+      .shadowbox-content {
+        max-width: 95%;
+        padding: 24px;
+      }
     }
   </style>
 </head>
@@ -49,8 +282,10 @@
 
   // Variável contendo a quantidade de anos completos passados
   // Exemplo de uso:
-  // document.write(`Já se passaram ${yearsPassed} anos desde janeiro de 2011.`);
+  //document.write(`Já se passaram ${yearsPassed} anos desde janeiro de 2011.`);
+window.yearsPassed = yearsPassed;
 </script>
+
 
 <body>
   <div id="app"></div>
@@ -80,6 +315,175 @@
   </footer>
 
   <script>
+    // ShadowBox Module
+    window.ShadowBox = {
+      icons: [
+        'emblema.png', 'espadas.png', 'coração.png', 'Diamond.png', 'Gold.png',
+        'Platinum.png', 'Bronze.png', 'Masters.png', 'boss.png', 'Espada.png',
+        'pedra.png', 'capacete.png', 'Contra ATK.png', 'Elem.png', 'Farm.png',
+        'Pvp.png', 'Up.png', 'discord.png', 'youtube.png', 'facebook.png',
+        'instagram.png', 'Lider.png', 'comando.png', 'registrado.png',
+        'contribuidor.png', 'BIOHAZARD.png', 'Brasil.png', 'Arconde.png',
+        '+5.png', '+6.png', 'Divine.png', 'Elems.png', 'rose-icon.png'
+      ],
+      
+      init: function() {
+        // Cria o overlay se não existir
+        if (!document.getElementById('shadowbox-overlay')) {
+          const overlay = document.createElement('div');
+          overlay.id = 'shadowbox-overlay';
+          overlay.className = 'shadowbox-overlay';
+          overlay.innerHTML = `
+            <div class="shadowbox-content" id="shadowbox-content">
+              <button class="shadowbox-close" onclick="ShadowBox.close()">&times;</button>
+              <div id="shadowbox-body"></div>
+            </div>
+          `;
+          document.body.appendChild(overlay);
+
+          // Fecha ao clicar fora do conteúdo
+          overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+              ShadowBox.close();
+            }
+          });
+
+          // Fecha com ESC
+          document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+              ShadowBox.close();
+            }
+          });
+        }
+
+        // Adiciona evento de hover aos botões
+        this.initButtonEffects();
+      },
+
+      initButtonEffects: function() {
+        const buttons = document.querySelectorAll('.shadowbox-trigger');
+        buttons.forEach(button => {
+          // Remove listeners anteriores se existirem
+          button.removeEventListener('mouseenter', this.handleMouseEnter);
+          button.removeEventListener('mouseleave', this.handleMouseLeave);
+          
+          // Adiciona novos listeners
+          button.addEventListener('mouseenter', this.handleMouseEnter.bind(this));
+          button.addEventListener('mouseleave', this.handleMouseLeave.bind(this));
+        });
+      },
+
+      initCheckboxTriggers: function() {
+        // Detecta a checkbox de concordância
+        const checkboxConcordo = document.getElementById('concordo-regras');
+        if (checkboxConcordo) {
+          checkboxConcordo.addEventListener('change', function() {
+            if (this.checked) {
+              // Abre o ShadowBox de boas-vindas
+              ShadowBox.openFromElement('shadowbox-concordo');
+            }
+          });
+        }
+      },
+
+      handleMouseEnter: function(e) {
+        const button = e.currentTarget;
+        
+        // Inicia geração contínua de ícones
+        if (button.iconInterval) {
+          clearInterval(button.iconInterval);
+        }
+        
+        // Gera o primeiro conjunto imediatamente
+        this.spawnIcons(button);
+        
+        // Continua gerando enquanto o mouse estiver sobre o botão
+        button.iconInterval = setInterval(() => {
+          this.spawnIcons(button);
+        }, 200);
+      },
+
+      handleMouseLeave: function(e) {
+        const button = e.currentTarget;
+        if (button.iconInterval) {
+          clearInterval(button.iconInterval);
+          button.iconInterval = null;
+        }
+      },
+
+      spawnIcons: function(button) {
+        const rect = button.getBoundingClientRect();
+        const iconsToSpawn = 4 + Math.floor(Math.random() * 4); // 4-7 ícones por vez
+        
+        for (let i = 0; i < iconsToSpawn; i++) {
+          setTimeout(() => {
+            const icon = document.createElement('img');
+            const randomIcon = this.icons[Math.floor(Math.random() * this.icons.length)];
+            icon.src = 'imagens/icones/ani/' + randomIcon;
+            icon.className = 'shadowbox-icon-particle';
+            
+            // Posição inicial aleatória ao redor do botão
+            const offsetX = (Math.random() - 0.5) * rect.width;
+            const offsetY = (Math.random() - 0.5) * rect.height;
+            const startX = rect.left + rect.width / 2 + offsetX + window.scrollX;
+            const startY = rect.top + rect.height / 2 + offsetY + window.scrollY;
+            
+            icon.style.left = startX + 'px';
+            icon.style.top = startY + 'px';
+            
+            // Direção de flutuação aleatória mais ampla
+            const floatX = (Math.random() - 0.5) * 200;
+            icon.style.setProperty('--float-x', floatX + 'px');
+            
+            // Duração aleatória para variação
+            const duration = 2 + Math.random() * 1;
+            icon.style.animationDuration = duration + 's';
+            
+            // Adiciona evento de erro para fallback
+            icon.onerror = function() {
+              if (this.parentNode) {
+                this.parentNode.removeChild(this);
+              }
+            };
+            
+            document.body.appendChild(icon);
+            
+            // Remove o ícone após a animação
+            setTimeout(() => {
+              if (icon.parentNode) {
+                icon.parentNode.removeChild(icon);
+              }
+            }, duration * 1000);
+          }, i * 40); // Pequeno delay entre cada ícone
+        }
+      },
+
+      open: function(content) {
+        this.init();
+        const overlay = document.getElementById('shadowbox-overlay');
+        const body = document.getElementById('shadowbox-body');
+        body.innerHTML = content;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      },
+
+      openFromElement: function(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) {
+          const content = element.innerHTML;
+          this.open(content);
+        } else {
+          console.error('ShadowBox: Elemento não encontrado:', elementId);
+        }
+      },
+
+      close: function() {
+        const overlay = document.getElementById('shadowbox-overlay');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    };
+
     window.$docsify = {
       name: 'DarkLegion',
       repo: '',
@@ -97,7 +501,46 @@
         buttonText: 'Copiar',
         errorText: 'Erro',
         successText: 'Copiado!'
-      }
+      },
+      plugins: [
+        // Plugin para variáveis dinâmicas
+        function(hook, vm) {
+          hook.beforeEach(function(content) {
+            return content.replace(/\{\{yearsPassed\}\}/g, window.yearsPassed);
+          });
+        },
+        
+        // Plugin ShadowBox
+        function(hook, vm) {
+          let shadowboxCounter = 0;
+
+          hook.beforeEach(function(content) {
+            // Processa [shadowbox button="texto"]conteudo[/shadowbox]
+            const regex = /\[shadowbox\s+button="([^"]+)"\]([\s\S]*?)\[\/shadowbox\]/g;
+            
+            return content.replace(regex, function(match, buttonText, boxContent) {
+              const id = 'shadowbox-content-' + (shadowboxCounter++);
+              // Cria um elemento oculto com o conteúdo markdown que será renderizado
+              return `
+<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('${id}')">${buttonText}</button>
+<div id="${id}" style="display:none;" class="shadowbox-hidden-content">
+
+${boxContent.trim()}
+
+</div>`;
+            });
+          });
+
+          hook.doneEach(function() {
+            ShadowBox.init();
+            // Pequeno delay para garantir que os botões foram renderizados
+            setTimeout(function() {
+              ShadowBox.initButtonEffects();
+              ShadowBox.initCheckboxTriggers();
+            }, 100);
+          });
+        }
+      ]
     }
   </script>
   <!-- Docsify v4 -->
