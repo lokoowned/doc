@@ -261,6 +261,55 @@
         padding: 24px;
       }
     }
+
+    /* Fogos de Artifício */
+    .firework {
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+    }
+
+    .firework-particle {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      animation: explode 1.5s ease-out forwards;
+    }
+
+    @keyframes explode {
+      0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(var(--tx), var(--ty)) scale(0);
+      }
+    }
+
+    .firework-trail {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 99999;
+      animation: trail 1s ease-out forwards;
+    }
+
+    @keyframes trail {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(var(--launch-height)) scale(0.5);
+      }
+    }
   </style>
 </head>
 
@@ -379,6 +428,13 @@ window.yearsPassed = yearsPassed;
         if (checkboxConcordo) {
           checkboxConcordo.addEventListener('change', function() {
             if (this.checked) {
+              // Reproduz som de boas-vindas
+              const welcomeSound = new Audio('sounds/welcome.wav');
+              welcomeSound.volume = 0.7;
+              welcomeSound.play().catch(err => {
+                console.log('Não foi possível reproduzir o áudio:', err);
+              });
+              
               // Abre o ShadowBox de boas-vindas
               ShadowBox.openFromElement('shadowbox-concordo');
             }
@@ -472,8 +528,85 @@ window.yearsPassed = yearsPassed;
         if (element) {
           const content = element.innerHTML;
           this.open(content);
+          
+          // Se for o shadowbox de concordância, dispara fogos de artifício
+          if (elementId === 'shadowbox-concordo') {
+            this.launchFireworks();
+          }
         } else {
           console.error('ShadowBox: Elemento não encontrado:', elementId);
+        }
+      },
+
+      launchFireworks: function() {
+        const colors = ['#ff0844', '#ffb700', '#00ff88', '#00cfff', '#b400ff', '#ff006e', '#ffd000'];
+        const fireworksCount = 12;
+        
+        for (let i = 0; i < fireworksCount; i++) {
+          setTimeout(() => {
+            this.createFirework(colors);
+          }, i * 300);
+        }
+      },
+
+      createFirework: function(colors) {
+        const x = Math.random() * window.innerWidth;
+        const launchHeight = -(200 + Math.random() * 300);
+        const startY = window.innerHeight;
+        
+        // Cria a trilha do foguete
+        const trail = document.createElement('div');
+        trail.className = 'firework-trail';
+        trail.style.position = 'fixed';
+        trail.style.zIndex = '99999';
+        trail.style.left = x + 'px';
+        trail.style.top = startY + 'px';
+        trail.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        trail.style.setProperty('--launch-height', launchHeight + 'px');
+        document.body.appendChild(trail);
+
+        // Após a trilha subir, cria a explosão
+        setTimeout(() => {
+          this.createExplosion(x, startY + launchHeight, colors);
+          trail.remove();
+        }, 1000);
+      },
+
+      createExplosion: function(x, y, colors) {
+        const particlesCount = 30 + Math.floor(Math.random() * 20);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        for (let i = 0; i < particlesCount; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'firework-particle';
+          particle.style.position = 'fixed';
+          particle.style.zIndex = '99999';
+          particle.style.pointerEvents = 'none';
+          particle.style.left = x + 'px';
+          particle.style.top = y + 'px';
+          particle.style.backgroundColor = color;
+          
+          const angle = (Math.PI * 2 * i) / particlesCount;
+          const velocity = 50 + Math.random() * 100;
+          const tx = Math.cos(angle) * velocity;
+          const ty = Math.sin(angle) * velocity;
+          
+          particle.style.setProperty('--tx', tx + 'px');
+          particle.style.setProperty('--ty', ty + 'px');
+          
+          // Adiciona variação no tamanho
+          const size = 2 + Math.random() * 4;
+          particle.style.width = size + 'px';
+          particle.style.height = size + 'px';
+          
+          // Adiciona brilho
+          particle.style.boxShadow = `0 0 ${size * 2}px ${color}`;
+          
+          document.body.appendChild(particle);
+          
+          setTimeout(() => {
+            particle.remove();
+          }, 1500);
         }
       },
 
