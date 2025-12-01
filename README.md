@@ -85,7 +85,7 @@ Somos uma organização que já está há {{yearsPassed}} anos em atividade. Seg
 
 <center>🎉 Bem-vindo(a) à †Dark·Legion†!
 <p align="center">
-  <img src="/imagens/icones/emblema.png" alt="Emblema DarkLegion" width="120" style="margin-bottom: 12px;">
+  <img src="imagens/icones/emblema.png" alt="Emblema DarkLegion" width="120" style="margin-bottom: 12px;">
 </p> </center>
 
 ### ✅ Você aceitou nossas regras e conduta!
@@ -102,7 +102,7 @@ Agora você está pronto(a) para se juntar à nossa guilda.
 <center>
 <a href="https://discord.com/invite/8xf4z9aEy3" target="_blank" style="display:inline-block;">
   <img 
-    src="/imagens/inviteds.png" 
+    src="imagens/inviteds.png" 
     alt="Entrar no Discord" 
     width="220"
     class="discord-img-neon"
@@ -133,7 +133,7 @@ Agora você está pronto(a) para se juntar à nossa guilda.
 <div id="shadowbox-calendario" style="display:none;" class="shadowbox-hidden-content">
   <center>
     <h2 style="margin-bottom: 16px;">📅 Calendário de atividade da Guilda e do Líder.</h2>
-    <img src="/imagens/calendario.webp" alt="Banner Calendário de Atividade" style="max-width:640px;width:100%;margin-bottom:18px;border-radius:7px;box-shadow:0 0 14px #09ced899;">
+    <img src="imagens/calendario.webp" alt="Banner Calendário de Atividade" style="max-width:640px;width:100%;margin-bottom:18px;border-radius:7px;box-shadow:0 0 14px #09ced899;">
   </center>
   <ul style="font-size:1.07em;line-height:1.7;margin: 0 0 0 1.4em;">
     <li style="text-align:left; list-style:none; margin-bottom:12px;">
@@ -155,7 +155,7 @@ Agora você está pronto(a) para se juntar à nossa guilda.
 <div id="shadowbox-faq" style="display:none;" class="shadowbox-hidden-content">
   <center>
     <h2 style="margin-bottom: 16px;">⁉️ Perguntas Frequentes</h2>
-    <img src="/imagens/faq.webp" alt="Banner FAQ" style="max-width:640px;width:100%;margin-bottom:18px;border-radius:7px;box-shadow:0 0 14px #09ced899;">
+    <img src="imagens/faq.webp" alt="Banner FAQ" style="max-width:640px;width:100%;margin-bottom:18px;border-radius:7px;box-shadow:0 0 14px #09ced899;">
   </center>
   
   <h3>❓ Como entro na guilda?</h3>

@@ -1,6 +1,6 @@
 - [🏠Início](/)
 
-- <img src="/imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;">Sobre a nossa Organização
+- <img src="imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;">Sobre a nossa Organização
   - [História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")
   - [Lista de Membros](/sobredl/membros.md "Veja a lista de membros da guilda, com informações sobre cada um deles.")
   - [Cenários jogados](/sobredl/cenarios.md "Veja os cenários em que a guilda atua, desde o Brasil até o Mundo.")
@@ -12,7 +12,7 @@
     - [Sorteios de Itens](/sobredl/eventos/sorteios.md "Veja os sorteios de itens da guilda, com informações sobre cada um deles.")
     - [Divisão de moeda do jogo](/sobredl/eventos/divisao-moeda.md "Veja a divisão de moeda do jogo, com informações sobre cada um deles.")
 
-- <img src="/imagens/icones/rf.png" width="18" style="vertical-align: middle; margin-right: 6px;">Conhecimentos Básicos RF Online
+- <img src="imagens/icones/rf.png" width="18" style="vertical-align: middle; margin-right: 6px;">Conhecimentos Básicos RF Online
   - [Instalação & Configuração](/baserf/instalacao.md)
   - [Resolvendo possíveis Erros](/baserf/resolvendo-erros.md)
   - [Conheça os programas utilizados](/baserf/programas-utilizados.md)

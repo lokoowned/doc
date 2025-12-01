@@ -43,7 +43,7 @@
 
      <a href="https://discord.com/invite/8xf4z9aEy3" target="_blank" style="display:inline-block;">
        <img 
-         src="/imagens/inviteds.png" 
+         src="../../imagens/inviteds.png" 
          alt="Entrar no Discord" 
          width="220"
          class="discord-img-neon"
