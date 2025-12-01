@@ -6,6 +6,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Documentação oficial da guilda DarkLegion">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+  
+  <!-- Arquivo de Configuração -->
+  <script src="config.js"></script>
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
   <link rel="stylesheet" href="custom.css">
   <style>
@@ -267,11 +271,18 @@
       font-size: 13px;
       color: #dcddde;
       transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     .discord-widget-compact:hover {
-      background: rgba(88, 101, 242, 0.15);
+      background: rgba(88, 101, 242, 0.2);
       border-left-color: #7289da;
+      transform: translateX(2px);
+      box-shadow: 0 2px 8px rgba(88, 101, 242, 0.3);
+    }
+
+    .discord-widget-compact:active {
+      transform: translateX(1px);
     }
 
     .discord-widget-compact .discord-icon {
@@ -330,6 +341,67 @@
       font-weight: 600;
     }
 
+    /* Widget Servidor Compacto */
+    .server-widget-compact {
+      padding: 8px 16px;
+      margin: 12px 0;
+      background: rgba(76, 175, 80, 0.1);
+      border-left: 3px solid #4caf50;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #dcddde;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .server-widget-compact:hover {
+      background: rgba(76, 175, 80, 0.2);
+      border-left-color: #66bb6a;
+      transform: translateX(2px);
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+    }
+
+    .server-widget-compact:active {
+      transform: translateX(1px);
+    }
+
+    .server-widget-compact .server-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .server-widget-compact .server-line {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+    }
+
+    .server-widget-compact .server-name {
+      font-weight: 600;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .server-widget-compact .server-online {
+      color: #4caf50;
+      font-weight: 600;
+    }
+
+    .server-widget-compact .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4caf50;
+      box-shadow: 0 0 6px #4caf50;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
     /* Responsivo */
     @media (max-width: 768px) {
       .shadowbox-content {
@@ -345,6 +417,11 @@
       .discord-widget-compact .discord-icon {
         width: 20px;
         height: 20px;
+      }
+
+      .server-widget-compact {
+        padding: 6px 12px;
+        font-size: 12px;
       }
     }
 
@@ -394,6 +471,71 @@
       100% {
         opacity: 0;
         transform: translateY(var(--launch-height)) scale(0.5);
+      }
+    }
+
+    /* Vídeo Overlay de Transição */
+    .race-video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 100000;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+    }
+
+    .race-video-overlay video {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      max-width: none;
+      max-height: none;
+    }
+
+    /* Mobile Portrait - Força vídeo horizontal */
+    @media screen and (max-width: 768px) and (orientation: portrait) {
+      .race-video-overlay video {
+        transform: rotate(90deg);
+        width: 100vh;
+        height: 100vw;
+        object-fit: cover;
+      }
+    }
+
+    /* Mobile Landscape - Mantém normal */
+    @media screen and (max-width: 768px) and (orientation: landscape) {
+      .race-video-overlay video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+      }
+    }
+
+    /* Tablet e Desktop - Responsivo */
+    @media screen and (min-width: 769px) {
+      .race-video-overlay video {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+      }
+    }
+
+    .race-video-overlay.fade-out {
+      animation: videoFadeOut 0.5s ease-out forwards;
+    }
+
+    @keyframes videoFadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
       }
     }
   </style>
@@ -489,6 +631,26 @@ window.yearsPassed = yearsPassed;
               ShadowBox.close();
             }
           });
+          
+          // Delegação de eventos para checkbox (funciona com elementos dinâmicos)
+          overlay.addEventListener('change', function(e) {
+            if (e.target && e.target.id === 'concordo-regras' && e.target.checked) {
+              // Reproduz som de boas-vindas
+              const welcomeSound = new Audio('sounds/welcome.wav');
+              welcomeSound.volume = 0.7;
+              welcomeSound.play().catch(err => {
+                console.log('Não foi possível reproduzir o áudio:', err);
+              });
+              
+              // Fecha o shadowbox atual
+              ShadowBox.close();
+              
+              // Aguarda um pequeno delay e abre o ShadowBox de boas-vindas
+              setTimeout(function() {
+                ShadowBox.openFromElement('shadowbox-concordo');
+              }, 300);
+            }
+          });
         }
 
         // Adiciona evento de hover aos botões
@@ -509,31 +671,8 @@ window.yearsPassed = yearsPassed;
       },
 
       initCheckboxTriggers: function() {
-        // Detecta a checkbox de concordância
-        const checkboxConcordo = document.getElementById('concordo-regras');
-        if (checkboxConcordo && !checkboxConcordo.dataset.initialized) {
-          // Marca como inicializado para evitar duplicação
-          checkboxConcordo.dataset.initialized = 'true';
-          
-          checkboxConcordo.addEventListener('change', function() {
-            if (this.checked) {
-              // Reproduz som de boas-vindas
-              const welcomeSound = new Audio('sounds/welcome.wav');
-              welcomeSound.volume = 0.7;
-              welcomeSound.play().catch(err => {
-                console.log('Não foi possível reproduzir o áudio:', err);
-              });
-              
-              // Fecha o shadowbox atual primeiro
-              ShadowBox.close();
-              
-              // Aguarda um pequeno delay e abre o ShadowBox de boas-vindas
-              setTimeout(function() {
-                ShadowBox.openFromElement('shadowbox-concordo');
-              }, 300);
-            }
-          });
-        }
+        // Não é mais necessário - usando delegação de eventos no overlay
+        // Mantido para compatibilidade
       },
 
       handleMouseEnter: function(e) {
@@ -615,11 +754,6 @@ window.yearsPassed = yearsPassed;
         body.innerHTML = content;
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
-        
-        // Inicializa checkbox triggers após o conteúdo ser carregado
-        setTimeout(() => {
-          this.initCheckboxTriggers();
-        }, 100);
       },
 
       openFromElement: function(elementId) {
@@ -631,6 +765,40 @@ window.yearsPassed = yearsPassed;
           // Se for o shadowbox de concordância, dispara fogos de artifício
           if (elementId === 'shadowbox-concordo') {
             this.launchFireworks();
+          }
+          
+          // Se for o shadowbox do servidor, toca o som e vídeo da raça
+          if (elementId === 'shadowbox-servidor-atual') {
+            const config = window.DLConfig || {};
+            const guildRace = config.server_guild_race;
+            let soundFile = null;
+            let videoFile = null;
+            
+            // Define o arquivo de som e vídeo baseado na raça
+            if (guildRace === 'Bellato') {
+              soundFile = 'sounds/bcc.wav';
+              videoFile = 'efeitos_vfx/bell_transition.webm';
+            } else if (guildRace === 'Cora') {
+              soundFile = 'sounds/ccc.wav';
+              videoFile = 'efeitos_vfx/ccc_transition.webm';
+            } else if (guildRace === 'Accretia') {
+              soundFile = 'sounds/acc.wav';
+              videoFile = 'efeitos_vfx/acc_transition.webm';
+            }
+            
+            // Toca o som se definido
+            if (soundFile) {
+              const raceSound = new Audio(soundFile);
+              raceSound.volume = 0.5;
+              raceSound.play().catch(err => {
+                console.log('Não foi possível reproduzir o áudio da raça:', err);
+              });
+            }
+            
+            // Reproduz o vídeo overlay se definido
+            if (videoFile) {
+              this.playRaceVideo(videoFile);
+            }
           }
         } else {
           console.error('ShadowBox: Elemento não encontrado:', elementId);
@@ -713,6 +881,50 @@ window.yearsPassed = yearsPassed;
         const overlay = document.getElementById('shadowbox-overlay');
         overlay.classList.remove('active');
         document.body.style.overflow = '';
+      },
+
+      playRaceVideo: function(videoFile) {
+        // Cria o container do vídeo overlay
+        const videoOverlay = document.createElement('div');
+        videoOverlay.className = 'race-video-overlay';
+        
+        // Cria o elemento de vídeo
+        const video = document.createElement('video');
+        video.src = videoFile;
+        video.autoplay = true;
+        video.muted = false; // Não silencia o vídeo (caso tenha áudio próprio)
+        video.playsInline = true;
+        video.style.pointerEvents = 'none';
+        
+        // Adiciona o vídeo ao overlay
+        videoOverlay.appendChild(video);
+        document.body.appendChild(videoOverlay);
+        
+        // Quando o vídeo terminar, faz fade out e remove
+        video.addEventListener('ended', () => {
+          videoOverlay.classList.add('fade-out');
+          setTimeout(() => {
+            if (videoOverlay.parentNode) {
+              videoOverlay.parentNode.removeChild(videoOverlay);
+            }
+          }, 500); // Tempo do fade out
+        });
+        
+        // Tratamento de erro
+        video.addEventListener('error', (err) => {
+          console.log('Não foi possível reproduzir o vídeo da raça:', err);
+          if (videoOverlay.parentNode) {
+            videoOverlay.parentNode.removeChild(videoOverlay);
+          }
+        });
+        
+        // Inicia reprodução
+        video.play().catch(err => {
+          console.log('Não foi possível iniciar o vídeo da raça:', err);
+          if (videoOverlay.parentNode) {
+            videoOverlay.parentNode.removeChild(videoOverlay);
+          }
+        });
       }
     };
 
@@ -776,10 +988,12 @@ ${boxContent.trim()}
         // Plugin Discord Widget
         function(hook, vm) {
           hook.mounted(function() {
-            // ⚙️ CONFIGURAÇÃO: Atualize este número manualmente com o total de membros do seu servidor
-            const DISCORD_TOTAL_MEMBERS = 1003; // Altere este valor conforme seu servidor cresce
-            const DISCORD_SERVER_ID = '767946841027248129';
-            const DISCORD_INVITE_URL = 'https://discord.gg/8xf4z9aEy3';
+            try {
+              // ⚙️ CONFIGURAÇÃO: Valores carregados de config.js com fallback
+              const config = window.DLConfig || {};
+              const DISCORD_TOTAL_MEMBERS = config.discord_total_members || 1000;
+              const DISCORD_SERVER_ID = config.discord_server_id || '767946841027248129';
+              const DISCORD_INVITE_URL = config.discord_invite_url || 'https://discord.gg/8xf4z9aEy3';
             
             // Cria o widget Discord
             const discordWidget = document.createElement('div');
@@ -807,10 +1021,13 @@ ${boxContent.trim()}
               </div>
             `;
             
-            // Adiciona link ao widget
-            discordWidget.style.cursor = 'pointer';
+            // Adiciona evento de clique para abrir shadowbox
             discordWidget.addEventListener('click', function() {
-              window.open(DISCORD_INVITE_URL, '_blank');
+              if (window.ShadowBox && typeof window.ShadowBox.openFromElement === 'function') {
+                window.ShadowBox.openFromElement('shadowbox-como-juntar');
+              } else {
+                console.warn('⚠️ ShadowBox não disponível');
+              }
             });
             
             // Função para formatar número (1234 -> 1.2K)
@@ -853,6 +1070,119 @@ ${boxContent.trim()}
             }
             
             injectWidget();
+            
+            } catch (error) {
+              console.error('❌ Erro no Discord Widget:', error);
+              console.warn('⚠️ Widget do Discord não pôde ser carregado. Verifique o arquivo config.js');
+            }
+          });
+        },
+        
+        // Plugin Servidor Widget
+        function(hook, vm) {
+          hook.mounted(function() {
+            try {
+              // Carrega configurações
+              const config = window.DLConfig || {};
+              
+              // Verifica se o widget está habilitado
+              if (config.server_widget_enabled === false) {
+                console.log('ℹ️ Server Widget desabilitado em config.js');
+                return;
+              }
+              
+              const SERVER_NAME = config.server_name || 'Servidor';
+              const SERVER_GUILD_RACE = config.server_guild_race || 'N/A';
+              const SPREADSHEET_ID = config.server_spreadsheet_id;
+              const UPDATE_INTERVAL = (config.server_update_interval || 60) * 1000;
+              
+              if (!SPREADSHEET_ID) {
+                console.warn('⚠️ Server Widget: server_spreadsheet_id não configurado em config.js');
+                return;
+              }
+            
+              // Cria o widget do servidor
+              const serverWidget = document.createElement('div');
+              serverWidget.className = 'server-widget-compact';
+              serverWidget.innerHTML = `
+                <div class="server-info">
+                  <div class="server-line">
+                    <span class="status-dot"></span>
+                    <span class="server-name">${SERVER_NAME}</span>
+                    <span class="server-online"><span id="server-online-count">--</span> Online</span>
+                  </div>
+                  <div class="server-line">
+                    <span style="color: #999;">Raça da Guild:</span>
+                    <span style="color: #fff; font-weight: 600;">${SERVER_GUILD_RACE}</span>
+                  </div>
+                </div>
+              `;
+              
+              // Adiciona evento de clique para abrir shadowbox
+              serverWidget.addEventListener('click', function() {
+                if (window.ShadowBox && typeof window.ShadowBox.openFromElement === 'function') {
+                  window.ShadowBox.openFromElement('shadowbox-servidor-atual');
+                } else {
+                  console.warn('⚠️ ShadowBox não disponível');
+                }
+              });
+              
+              // Função para buscar dados da planilha
+              async function updateServerData() {
+                try {
+                  // URL para acessar a planilha como CSV
+                  const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
+                  
+                  console.log('🔄 Atualizando dados do servidor...');
+                  
+                  const response = await fetch(csvUrl);
+                  const csvText = await response.text();
+                  
+                  // Parse CSV simples (primeira linha)
+                  const lines = csvText.split('\n');
+                  if (lines.length > 0) {
+                    const firstLine = lines[0].split(',');
+                    
+                    // Coluna B (índice 1): Total de jogadores online
+                    const onlineCount = firstLine[1] || '0';
+                    
+                    // Atualiza o display
+                    document.getElementById('server-online-count').textContent = onlineCount;
+                    
+                    console.log('✅ Dados do servidor atualizados:', {
+                      online: onlineCount
+                    });
+                  }
+                } catch (error) {
+                  console.error('❌ Erro ao buscar dados do servidor:', error);
+                  document.getElementById('server-online-count').textContent = '--';
+                }
+              }
+              
+              // Injeta o widget na sidebar após o Discord widget
+              function injectServerWidget() {
+                const discordWidget = document.querySelector('.discord-widget-compact');
+                if (discordWidget && !document.querySelector('.server-widget-compact')) {
+                  discordWidget.parentNode.insertBefore(serverWidget, discordWidget.nextSibling);
+                  
+                  // Primeira atualização
+                  updateServerData();
+                  
+                  // Atualiza periodicamente
+                  setInterval(updateServerData, UPDATE_INTERVAL);
+                  
+                  console.log(`✅ Server Widget carregado (atualização a cada ${UPDATE_INTERVAL/1000}s)`);
+                } else {
+                  setTimeout(injectServerWidget, 100);
+                }
+              }
+              
+              injectServerWidget();
+              
+            } catch (error) {
+              console.error('❌ Erro no Server Widget:', error);
+              console.warn('⚠️ Widget do Servidor não pôde ser carregado. Verifique o arquivo config.js');
+            }
           });
         }
       ]

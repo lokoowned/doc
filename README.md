@@ -16,7 +16,9 @@
 
 :link: **Todos os links da nossa organização:** [linktr.ee/dlguild](https://linktr.ee/dlguild)
 
-[shadowbox button="🎮 Jogando Atualmente: RF OldTimes - Raça Bellato"]
+<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">🎮 Jogando Atualmente: RF OldTimes - Raça Bellato</button>
+
+<div id="shadowbox-servidor-atual" style="display:none;" class="shadowbox-hidden-content">
 
 ### 🎮 Servidor Atual: RF OldTimes
 
@@ -32,9 +34,11 @@
 - 🕒 **Horários de atividade:** Temos jogadores jogando em todos os horários do dia, a maior atividade da guilda é no horário noturno onde se concentram os maiores objetivos.<br>
   Eventos especiais são anunciados antecipadamente nas redes sociais da guilda.
 
-[/shadowbox]
+</div>
 
-[shadowbox button="👥 Como me juntar a esta grande família? 😃"]
+<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-como-juntar')">👥 Como me juntar a esta grande família? 😃</button>
+
+<div id="shadowbox-como-juntar" style="display:none;" class="shadowbox-hidden-content">
 
 ### 👥 Junte-se à DarkLegion!
 
@@ -110,7 +114,7 @@ Agora você está pronto(a) para se juntar à nossa guilda.
 
 </div>
 
-[/shadowbox]
+</div>
 
 
 ---
