@@ -2,55 +2,73 @@
 
 # 👋 Bem-vindo à †Dark·Legion† Guild.
 
-> *Fundada em 2011 por [xLokoOwneD](#xlokoowned), já são {{yearsPassed}} anos escrevendo nossa história.. De uma presença inquestionável, tornamo-nos relevantes em cenários [brasileiros, filipino e indonesiano](sobrerf/#cenarios). Atualmente, seguimos construindo... de organização, companheirismo, lealdade e determinação. <br> [Saiba mais sobre a história da guilda clicando aqui.](inicio/#historia)*
+> **Fundada em 2011 por [xLokoOwneD](#xlokoowned)**
+>
+> Juntos, nossa organização está há {{yearsPassed}} anos escrevendo esta história. De uma presença inquestionável, tornamo-nos relevantes nos cenários [brasileiro, filipino e indonesiano](sobrerf/#cenarios).
+>
+> Atualmente, seguimos baseados em quatro pilares:
+> * Organização
+> * Companheirismo
+> * Lealdade
+> * Determinação
+>
+> [📖 Saiba mais sobre nossa história](inicio/#historia)
 
 :link: **Todos os links da nossa organização:** [linktr.ee/dlguild](https://linktr.ee/dlguild)
 
-<details>
-  <summary><strong>🎮 Jogando Atualmente: RF OldTimes - Raça Bellato</strong></summary>
+[shadowbox button="🎮 Jogando Atualmente: RF OldTimes - Raça Bellato"]
 
-  - 🌐 **Servidor ativo:** [RF OldTimes](https://linktr.ee/oldtimes)
-  - 👥 **Players Ativos:** 250+
-  - 👥 **Informações do servidor, todas no gitbook do mesmo:** [GitBook OldTimes](https://rf-old-times.gitbook.io/rfoldtimes/)
-  - ⚔️ **Raça da Guilda:** Bellato
-  - 🏆 **Eventos Ativos:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajudamos novos jogadores a upar e se equipar, raid's, eventos semanais, etc.
-  - 💬 **Comunicação:** Disponibilidade de Discord/WhatsApp para interação dos membros.
-  - 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
-    Recrutamos novos membros regularmente, basta falar com um dos oficiais da guilda.
-  - 🇧🇷 **Atuação:** Majoritariamente Brasil, mas também temos membros internacionais (Filipinas, Indonésia).
-  - 🕒 **Horários de atividade:** Temos jogadores jogando em todos os horários do dia, a maior atividade da guilda é no horário noturno onde se concentram os maiores objetivos.<br>
-    Eventos especiais são anunciados antecipadamente nas redes sociais da guilda.
+### 🎮 Servidor Atual: RF OldTimes
 
-</details>
+- 🌐 **Servidor ativo:** [RF OldTimes](https://linktr.ee/oldtimes)
+- 👥 **Players Ativos:** 250+
+- 👥 **Informações do servidor, todas no gitbook do mesmo:** [GitBook OldTimes](https://rf-old-times.gitbook.io/rfoldtimes/)
+- ⚔️ **Raça da Guilda:** Bellato
+- 🏆 **Eventos Ativos:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajudamos novos jogadores a upar e se equipar, raid's, eventos semanais, etc.
+- 💬 **Comunicação:** Disponibilidade de Discord/WhatsApp para interação dos membros.
+- 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
+  Recrutamos novos membros regularmente, basta falar com um dos oficiais da guilda.
+- 🇧🇷 **Atuação:** Majoritariamente Brasil, mas também temos membros internacionais (Filipinas, Indonésia).
+- 🕒 **Horários de atividade:** Temos jogadores jogando em todos os horários do dia, a maior atividade da guilda é no horário noturno onde se concentram os maiores objetivos.<br>
+  Eventos especiais são anunciados antecipadamente nas redes sociais da guilda.
 
-<details>
-  <summary><strong>👥 Como me juntar a esta grande família? 😃</strong></summary>
-  <p>
+[/shadowbox]
 
+[shadowbox button="👥 Como me juntar a esta grande família? 😃"]
 
+### 👥 Junte-se à DarkLegion!
 
-  - 🌐 **Entenda as regras e conduta da guilda para estar apto a jogar conosco:** Somos uma organização que já está há {{yearsPassed}} anos em atividade. Seguindo desde o ínicio as mesmas regras e condutas.<br>
-  Nada burocrático, nada complicado, cobramos o mínimo para que tenhamos uma organização saudável e organizada e efetiva. 
-  
-[shadowbox button="📜 Ver Regras da Guilda"]
+🌐 **Entenda as regras e conduta da guilda para estar apto a jogar conosco:** 
 
-**📋 Regras & Conduta DarkLegion**
-
-✅ 1. Foco e objetivos: Participe dos objetivos da guilda. Mesmo quando não concordar 100%, confie na experiência do comando e siga as call.
-<br><br>✅ 2. Respeito acima de tudo:Trate todos com respeito. Desentendimento se resolve em privado, de forma madura, sem exposição desnecessária.
-<br><br>✅ 3. PK e tretas in-gameEvite brigar à toa. Não fale em nome da guilda com outras pessoas/raças; qualquer problema (BR ou gringo) reporte ao comando.
-<br><br>✅ 4. Honra da guilda: Não crie personagem em raça oposta no mesmo servidor isso prejudica e gera desunião na guilda. Tudo bem jogar em outras guildas, mas se você preza e valoriza sua guilda principal não permita que outros a difamem. Sempre existem ambientes que podem respeitar nossos princípios.
-<br><br>✅ 5. Votações e apontamentos: Antes de entrar na votação, fale com a Staff, você agora faz parte de um time.As decisões consideram equipamento, atividade e postura — não preferência pessoal ou amizades, todos são iguais perante a visão do líder.
-<br><br>✅ 6. Uso de microfone & Comunicação: Mic limpo. Se tiver barulho, use push-to-talk. Seja direto ao ponto, evite o desespero, evite enrolar de mais para falar algo simples pois a call é compartilhada e todos precisam dialogar.
-<br><br>✅ 7. RMT (venda de itens): Pode fazer RMT, mas tenha gear decente para PVP e participe dos objetivos. Sabemos que as vezes o RMT é a única maneira da pessoa ganhar um dinheiro, entretanto se você não agregar na guilda com um personagem mediano/forte você não merece vender as coisas dentro da mesma.
-<br><br>✅ 8. Reclamações e insatisfação: Pode reclamar, mas não fique repetindo o mesmo assunto e estressando o resto. Qualquer problema sério, fale direto com Líder/Comandos em privado.
-<br><br>✅ 9. Hackers e bugs: Uso de programas que alteram memória do jogo, bugs críticos do servidor, programas Helper, farming BOT's são estritamente proibidos. Coisas simples como autoloot, macro de farming, passar pelo glitch do terreno de ether não são considerados problema.
-<br><br>✅ 10. Converse, não murmure: Se algo te incomoda, chame o líder em sala privada ou DM. Seja sincero, é exatamente isto que esperamos de você. Ficar jogando indireta e murmurando pelos cantos não resolve nada e apenas mostra que você é imaturo e fraco.
+Somos uma organização que já está há {{yearsPassed}} anos em atividade. Seguindo desde o ínicio as mesmas regras e condutas. Nada burocrático, nada complicado, cobramos o mínimo para que tenhamos uma organização saudável, organizada e efetiva. 
 
 ---
 
-**Concorda com tudo?** Feche esta janela e clique no botão abaixo para entrar no nosso Discord. 🎮
-[/shadowbox]
+### 📋 Regras & Conduta DarkLegion
+
+✅ **1. Foco e objetivos:** Participe dos objetivos da guilda. Mesmo quando não concordar 100%, confie na experiência do comando e siga as call.
+
+✅ **2. Respeito acima de tudo:** Trate todos com respeito. Desentendimento se resolve em privado, de forma madura, sem exposição desnecessária.
+
+✅ **3. PK e tretas in-game:** Evite brigar à toa. Não fale em nome da guilda com outras pessoas/raças; qualquer problema (BR ou gringo) reporte ao comando.
+
+✅ **4. Honra da guilda:** Não crie personagem em raça oposta no mesmo servidor isso prejudica e gera desunião na guilda. Tudo bem jogar em outras guildas, mas se você preza e valoriza sua guilda principal não permita que outros a difamem. Sempre existem ambientes que podem respeitar nossos princípios.
+
+✅ **5. Votações e apontamentos:** Antes de entrar na votação, fale com a Staff, você agora faz parte de um time. As decisões consideram equipamento, atividade e postura — não preferência pessoal ou amizades, todos são iguais perante a visão do líder.
+
+✅ **6. Uso de microfone & Comunicação:** Mic limpo. Se tiver barulho, use push-to-talk. Seja direto ao ponto, evite o desespero, evite enrolar de mais para falar algo simples pois a call é compartilhada e todos precisam dialogar.
+
+✅ **7. RMT (venda de itens):** Pode fazer RMT, mas tenha gear decente para PVP e participe dos objetivos. Sabemos que as vezes o RMT é a única maneira da pessoa ganhar um dinheiro, entretanto se você não agregar na guilda com um personagem mediano/forte você não merece vender as coisas dentro da mesma.
+
+✅ **8. Reclamações e insatisfação:** Pode reclamar, mas não fique repetindo o mesmo assunto e estressando o resto. Qualquer problema sério, fale direto com Líder/Comandos em privado.
+
+✅ **9. Hackers e bugs:** Uso de programas que alteram memória do jogo, bugs críticos do servidor, programas Helper, farming BOT's são estritamente proibidos. Coisas simples como autoloot, macro de farming, passar pelo glitch do terreno de ether não são considerados problema.
+
+✅ **10. Converse, não murmure:** Se algo te incomoda, chame o líder em sala privada ou DM. Seja sincero, é exatamente isto que esperamos de você. Ficar jogando indireta e murmurando pelos cantos não resolve nada e apenas mostra que você é imaturo e fraco.
+
+---
+
+### ✅ Confirme sua concordância
 
 <div id="aceite-container" style="margin-bottom:30px;">
   <label style="cursor:pointer; display:flex; align-items:center; gap:8px; font-size:1.08rem;">
@@ -92,8 +110,7 @@ Agora você está pronto(a) para se juntar à nossa guilda.
 
 </div>
 
-
-</details>
+[/shadowbox]
 
 
 ---
