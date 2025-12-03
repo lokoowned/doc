@@ -538,6 +538,354 @@
         opacity: 0;
       }
     }
+
+    /* Widget Contagem Regressiva */
+    .countdown-widget-compact {
+      padding: 8px 16px;
+      margin: 12px 0;
+      background: rgba(255, 193, 7, 0.1);
+      border-left: 3px solid #ffc107;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+      font-size: 13px;
+      color: #dcddde;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .countdown-widget-compact:hover {
+      background: rgba(255, 193, 7, 0.15);
+      border-left-color: #ffca28;
+      transform: translateX(2px);
+      box-shadow: 0 2px 8px rgba(255, 193, 7, 0.2);
+    }
+
+    .countdown-widget-compact:active {
+      transform: translateX(1px);
+    }
+
+    .countdown-widget-compact .countdown-title {
+      font-weight: 600;
+      color: #fff;
+      font-size: 12px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .countdown-widget-compact .countdown-timer {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: #ffc107;
+      font-weight: 600;
+      font-family: 'Consolas', 'Monaco', monospace;
+      width: 100%;
+    }
+
+    .countdown-widget-compact .countdown-icon {
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .countdown-widget-compact .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 32px;
+    }
+
+    .countdown-widget-compact .countdown-value {
+      font-size: 14px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .countdown-widget-compact .countdown-label {
+      font-size: 9px;
+      color: #999;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    .countdown-widget-compact .countdown-separator {
+      color: #666;
+      font-size: 12px;
+    }
+
+    /* Níveis de intensidade baseados na proximidade */
+    .countdown-widget-compact.countdown-glow-1 {
+      box-shadow: 0 0 8px rgba(255, 193, 7, 0.3);
+    }
+
+    .countdown-widget-compact.countdown-glow-2 {
+      box-shadow: 0 0 12px rgba(255, 193, 7, 0.4);
+      animation: countdownPulse2 2s ease-in-out infinite;
+    }
+
+    .countdown-widget-compact.countdown-glow-3 {
+      box-shadow: 0 0 18px rgba(255, 193, 7, 0.5);
+      animation: countdownPulse3 1.5s ease-in-out infinite;
+    }
+
+    .countdown-widget-compact.countdown-glow-4 {
+      box-shadow: 0 0 25px rgba(255, 160, 0, 0.6);
+      animation: countdownPulse4 1s ease-in-out infinite;
+      border-left-color: #ff9800;
+    }
+
+    .countdown-widget-compact.countdown-glow-5 {
+      box-shadow: 0 0 30px rgba(255, 87, 34, 0.7);
+      animation: countdownPulse5 0.8s ease-in-out infinite;
+      border-left-color: #ff5722;
+      background: rgba(255, 87, 34, 0.15);
+    }
+
+    /* FOGO - menos de 1 hora */
+    .countdown-widget-compact.countdown-fire {
+      background: linear-gradient(135deg, rgba(255, 87, 34, 0.2) 0%, rgba(255, 193, 7, 0.2) 50%, rgba(255, 87, 34, 0.2) 100%);
+      border-left-color: #ff3d00;
+      animation: fireGlow 0.5s ease-in-out infinite alternate, firePulse 0.3s ease-in-out infinite;
+      position: relative;
+      overflow: visible;
+    }
+
+    .countdown-widget-compact.countdown-fire::before {
+      content: '🔥';
+      position: absolute;
+      left: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      animation: fireFlicker 0.2s ease-in-out infinite alternate;
+    }
+
+    .countdown-widget-compact.countdown-fire::after {
+      content: '🔥';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      animation: fireFlicker 0.3s ease-in-out infinite alternate-reverse;
+    }
+
+    .countdown-widget-compact.countdown-fire .countdown-title,
+    .countdown-widget-compact.countdown-fire .countdown-value {
+      animation: textFireGlow 0.4s ease-in-out infinite alternate;
+    }
+
+    @keyframes countdownPulse2 {
+      0%, 100% { box-shadow: 0 0 12px rgba(255, 193, 7, 0.4); }
+      50% { box-shadow: 0 0 18px rgba(255, 193, 7, 0.5); }
+    }
+
+    @keyframes countdownPulse3 {
+      0%, 100% { box-shadow: 0 0 18px rgba(255, 193, 7, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(255, 193, 7, 0.6); }
+    }
+
+    @keyframes countdownPulse4 {
+      0%, 100% { box-shadow: 0 0 25px rgba(255, 160, 0, 0.6); }
+      50% { box-shadow: 0 0 35px rgba(255, 160, 0, 0.7); }
+    }
+
+    @keyframes countdownPulse5 {
+      0%, 100% { box-shadow: 0 0 30px rgba(255, 87, 34, 0.7); }
+      50% { box-shadow: 0 0 40px rgba(255, 87, 34, 0.8); }
+    }
+
+    @keyframes fireGlow {
+      0% {
+        box-shadow: 
+          0 0 20px rgba(255, 87, 34, 0.8),
+          0 0 40px rgba(255, 152, 0, 0.6),
+          0 0 60px rgba(255, 193, 7, 0.4);
+      }
+      100% {
+        box-shadow: 
+          0 0 30px rgba(255, 61, 0, 0.9),
+          0 0 50px rgba(255, 87, 34, 0.7),
+          0 0 70px rgba(255, 152, 0, 0.5);
+      }
+    }
+
+    @keyframes firePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    @keyframes fireFlicker {
+      0% { opacity: 0.7; transform: translateY(-50%) scale(0.9); }
+      100% { opacity: 1; transform: translateY(-50%) scale(1.1); }
+    }
+
+    @keyframes textFireGlow {
+      0% { 
+        text-shadow: 0 0 5px rgba(255, 87, 34, 0.5);
+        color: #fff;
+      }
+      100% { 
+        text-shadow: 0 0 10px rgba(255, 152, 0, 0.8), 0 0 20px rgba(255, 87, 34, 0.5);
+        color: #ffeb3b;
+      }
+    }
+
+    /* Estado: Objetivo em Andamento */
+    .countdown-widget-compact.countdown-active {
+      background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(0, 200, 83, 0.1) 100%);
+      border-left-color: #4caf50;
+      animation: activeGlow 2s ease-in-out infinite;
+    }
+
+    .countdown-widget-compact.countdown-active .countdown-timer {
+      display: none;
+    }
+
+    .countdown-widget-compact .countdown-active-text {
+      display: none;
+      color: #4caf50;
+      font-weight: 600;
+      font-size: 12px;
+      animation: activePulse 1.5s ease-in-out infinite;
+    }
+
+    .countdown-widget-compact.countdown-active .countdown-active-text {
+      display: block;
+    }
+
+    .countdown-widget-compact .countdown-participants {
+      display: none;
+      color: #7289da;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .countdown-widget-compact .countdown-participants .participant-count {
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .countdown-widget-compact .countdown-participants .voice-icon {
+      margin-right: 4px;
+    }
+
+    .countdown-widget-compact.countdown-active .countdown-participants {
+      display: block;
+      animation: activePulse 2s ease-in-out infinite;
+    }
+
+    .countdown-widget-compact .countdown-progress-container {
+      display: none;
+      width: 100%;
+      margin-top: 4px;
+    }
+
+    .countdown-widget-compact.countdown-active .countdown-progress-container {
+      display: block;
+    }
+
+    .countdown-progress-bar {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .countdown-progress-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, 
+        #4caf50 0%, 
+        #00e676 25%, 
+        #69f0ae 50%, 
+        #00e676 75%, 
+        #4caf50 100%);
+      background-size: 200% 100%;
+      animation: progressShine 2s linear infinite;
+      transition: width 0.5s ease;
+      position: relative;
+      box-shadow: 
+        0 0 10px rgba(76, 175, 80, 0.5),
+        0 0 20px rgba(0, 230, 118, 0.3);
+    }
+
+    .countdown-progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        transparent 100%
+      );
+      animation: progressGlare 1.5s ease-in-out infinite;
+    }
+
+    .countdown-progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 10px;
+      color: #999;
+    }
+
+    .countdown-progress-percent {
+      color: #4caf50;
+      font-weight: 700;
+      font-size: 11px;
+      font-family: 'Consolas', 'Monaco', monospace;
+    }
+
+    @keyframes activeGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+      }
+      50% {
+        box-shadow: 0 0 25px rgba(0, 230, 118, 0.5);
+      }
+    }
+
+    @keyframes activePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes progressShine {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    @keyframes progressGlare {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    @media (max-width: 768px) {
+      .countdown-widget-compact {
+        padding: 6px 12px;
+        font-size: 12px;
+      }
+
+      .countdown-widget-compact .countdown-value {
+        font-size: 12px;
+      }
+
+      .countdown-widget-compact .countdown-unit {
+        min-width: 28px;
+      }
+    }
   </style>
 </head>
 
@@ -1182,6 +1530,299 @@ ${boxContent.trim()}
             } catch (error) {
               console.error('❌ Erro no Server Widget:', error);
               console.warn('⚠️ Widget do Servidor não pôde ser carregado. Verifique o arquivo config.js');
+            }
+          });
+        },
+        
+        // Plugin Countdown Widget
+        function(hook, vm) {
+          hook.mounted(function() {
+            try {
+              const config = window.DLConfig || {};
+              
+              // Verifica se o widget está habilitado
+              if (config.timer_objective !== true) {
+                console.log('ℹ️ Countdown Widget desabilitado em config.js');
+                return;
+              }
+              
+              const DATE_OBJECTIVE = config.date_objective;
+              const TIME_OBJECTIVE = config.time_objective || '00:00';
+              const TEXT_OBJECTIVE = config.text_objective || 'Objetivo';
+              
+              if (!DATE_OBJECTIVE) {
+                console.warn('⚠️ Countdown Widget: date_objective não configurado em config.js');
+                return;
+              }
+              
+              // Cria o widget
+              const countdownWidget = document.createElement('div');
+              countdownWidget.className = 'countdown-widget-compact';
+              countdownWidget.innerHTML = `
+                <span class="countdown-title">${TEXT_OBJECTIVE}</span>
+                <div class="countdown-timer" id="countdown-timer">
+                  <span class="countdown-icon">⏱️</span>
+                  <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-days">--</span>
+                    <span class="countdown-label">dias</span>
+                  </div>
+                  <span class="countdown-separator">:</span>
+                  <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-hours">--</span>
+                    <span class="countdown-label">hrs</span>
+                  </div>
+                  <span class="countdown-separator">:</span>
+                  <div class="countdown-unit">
+                    <span class="countdown-value" id="countdown-minutes">--</span>
+                    <span class="countdown-label">min</span>
+                  </div>
+                </div>
+                <div class="countdown-active-text">🚀 Objetivo em andamento...</div>
+                <div class="countdown-participants"><span class="voice-icon">🎙️</span><span class="participant-count" id="countdown-voice-count">0</span> membros participando</div>
+                <div class="countdown-progress-container">
+                  <div class="countdown-progress-bar">
+                    <div class="countdown-progress-fill" id="countdown-progress-fill" style="width: 0%"></div>
+                  </div>
+                  <div class="countdown-progress-info">
+                    <span>Progresso</span>
+                    <span class="countdown-progress-percent" id="countdown-progress-percent">0%</span>
+                  </div>
+                </div>
+              `;
+              
+              // Adiciona evento de clique para abrir shadowbox
+              countdownWidget.addEventListener('click', function() {
+                if (window.ShadowBox && typeof window.ShadowBox.openFromElement === 'function') {
+                  window.ShadowBox.openFromElement('shadowbox-contagem');
+                }
+              });
+              
+              // Função para calcular a data alvo (horário de Brasília)
+              function getTargetDate() {
+                const [year, month, day] = DATE_OBJECTIVE.split('/').map(Number);
+                const [hours, minutes] = TIME_OBJECTIVE.split(':').map(Number);
+                
+                // Cria a data alvo em UTC-3 (Brasília)
+                // Brasília = UTC-3, então adicionamos 3 horas para converter para UTC
+                const targetDate = new Date(Date.UTC(year, month - 1, day, hours + 3, minutes, 0));
+                
+                return targetDate;
+              }
+              
+              // Variável para controlar os intervalos
+              let countdownInterval = null;
+              let voiceInterval = null;
+              
+              // Função para buscar membros em canais de voz do Discord
+              async function updateVoiceCount() {
+                try {
+                  const DISCORD_SERVER_ID = config.discord_server_id || '767946841027248129';
+                  const response = await fetch('https://discord.com/api/guilds/' + DISCORD_SERVER_ID + '/widget.json');
+                  const data = await response.json();
+                  
+                  // Conta APENAS membros em canais de voz (têm channel_id definido)
+                  let voiceCount = 0;
+                  if (data.members && Array.isArray(data.members)) {
+                    voiceCount = data.members.filter(member => member.channel_id).length;
+                  }
+                  
+                  const voiceEl = document.getElementById('countdown-voice-count');
+                  if (voiceEl) voiceEl.textContent = voiceCount;
+                  
+                } catch (error) {
+                  console.log('Não foi possível buscar membros em voz');
+                }
+              }
+              
+              // Inicia atualização de voz a cada 30s
+              function startVoiceUpdates() {
+                if (!voiceInterval) {
+                  updateVoiceCount(); // Primeira atualização imediata
+                  voiceInterval = setInterval(updateVoiceCount, 30000);
+                }
+              }
+              
+              // Para atualização de voz
+              function stopVoiceUpdates() {
+                if (voiceInterval) {
+                  clearInterval(voiceInterval);
+                  voiceInterval = null;
+                }
+              }
+              
+              // Função para atualizar o countdown
+              // Duração do objetivo em andamento (1 hora em ms)
+              const ACTIVE_DURATION = 60 * 60 * 1000;
+              
+              function updateCountdown() {
+                const targetDate = getTargetDate();
+                const now = new Date();
+                const diff = targetDate - now;
+                
+                if (diff <= 0) {
+                  // Objetivo iniciou - verifica se ainda está em andamento
+                  const elapsedSinceStart = Math.abs(diff);
+                  
+                  if (elapsedSinceStart < ACTIVE_DURATION) {
+                    // Objetivo em andamento - mostra barra de progresso
+                    countdownWidget.classList.remove('countdown-glow-1', 'countdown-glow-2', 'countdown-glow-3', 'countdown-glow-4', 'countdown-glow-5', 'countdown-fire');
+                    countdownWidget.classList.add('countdown-active');
+                    
+                    // Calcula progresso (0% a 100%)
+                    const progress = Math.min((elapsedSinceStart / ACTIVE_DURATION) * 100, 100);
+                    
+                    const progressFill = document.getElementById('countdown-progress-fill');
+                    const progressPercent = document.getElementById('countdown-progress-percent');
+                    
+                    if (progressFill) progressFill.style.width = progress.toFixed(1) + '%';
+                    if (progressPercent) progressPercent.textContent = Math.floor(progress) + '%';
+                    
+                    // Inicia atualização de membros em voz (a cada 30s)
+                    startVoiceUpdates();
+                    
+                    return;
+                  } else {
+                    // Objetivo concluído - esconde o widget e para atualizações
+                    stopVoiceUpdates();
+                    countdownWidget.style.display = 'none';
+                    if (countdownInterval) {
+                      clearInterval(countdownInterval);
+                      countdownInterval = null;
+                    }
+                    console.log('⏱️ Objetivo concluído - widget desabilitado');
+                    return;
+                  }
+                }
+                
+                // Remove classe de ativo se estiver contando
+                countdownWidget.classList.remove('countdown-active');
+                stopVoiceUpdates();
+                
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+                
+                // Remove todas as classes de efeito
+                countdownWidget.classList.remove('countdown-glow-1', 'countdown-glow-2', 'countdown-glow-3', 'countdown-glow-4', 'countdown-glow-5', 'countdown-fire');
+                
+                // Aplica efeitos baseados na proximidade
+                const totalHours = days * 24 + hours;
+                
+                if (totalHours < 1) {
+                  // Menos de 1 hora - FOGO! 🔥
+                  countdownWidget.classList.add('countdown-fire');
+                } else if (totalHours < 6) {
+                  // Menos de 6 horas
+                  countdownWidget.classList.add('countdown-glow-5');
+                } else if (totalHours < 24) {
+                  // Menos de 1 dia
+                  countdownWidget.classList.add('countdown-glow-4');
+                } else if (days < 3) {
+                  // Menos de 3 dias
+                  countdownWidget.classList.add('countdown-glow-3');
+                } else if (days < 7) {
+                  // Menos de 1 semana
+                  countdownWidget.classList.add('countdown-glow-2');
+                } else if (days < 14) {
+                  // Menos de 2 semanas
+                  countdownWidget.classList.add('countdown-glow-1');
+                }
+              }
+              
+              // Carrega o conteúdo do shadowbox do arquivo contagem.md
+              async function loadContagemContent() {
+                try {
+                  const response = await fetch('contagem.md');
+                  const markdown = await response.text();
+                  
+                  // Extrai o style
+                  const styleMatch = markdown.match(/<style>([\s\S]*?)<\/style>/);
+                  if (styleMatch) {
+                    const styleEl = document.createElement('style');
+                    styleEl.textContent = styleMatch[1];
+                    document.head.appendChild(styleEl);
+                  }
+                  
+                  // Extrai o conteúdo do div shadowbox-contagem (captura tudo até o último </div> antes do </div> final)
+                  const divStart = markdown.indexOf('<div id="shadowbox-contagem"');
+                  if (divStart !== -1) {
+                    // Encontra o fechamento correto contando divs
+                    let depth = 0;
+                    let i = divStart;
+                    let endPos = -1;
+                    
+                    while (i < markdown.length) {
+                      if (markdown.substring(i, i + 4) === '<div') {
+                        depth++;
+                      } else if (markdown.substring(i, i + 6) === '</div>') {
+                        depth--;
+                        if (depth === 0) {
+                          endPos = i + 6;
+                          break;
+                        }
+                      }
+                      i++;
+                    }
+                    
+                    if (endPos !== -1) {
+                      const divContent = markdown.substring(divStart, endPos);
+                      const tempDiv = document.createElement('div');
+                      tempDiv.innerHTML = divContent;
+                      document.body.appendChild(tempDiv);
+                      
+                      // Extrai e executa o script
+                      const scriptMatch = markdown.match(/<script>([\s\S]*?)<\/script>/);
+                      if (scriptMatch) {
+                        const scriptEl = document.createElement('script');
+                        scriptEl.textContent = scriptMatch[1];
+                        document.body.appendChild(scriptEl);
+                      }
+                      
+                      console.log('✅ Conteúdo contagem.md carregado');
+                    }
+                  }
+                } catch (error) {
+                  console.warn('⚠️ Não foi possível carregar contagem.md:', error);
+                }
+              }
+              
+              // Injeta o widget na sidebar após o Server Widget
+              function injectCountdownWidget() {
+                const serverWidget = document.querySelector('.server-widget-compact');
+                const discordWidget = document.querySelector('.discord-widget-compact');
+                
+                // Insere após server widget, ou após discord widget se server não existir
+                const targetWidget = serverWidget || discordWidget;
+                
+                if (targetWidget && !document.querySelector('.countdown-widget-compact')) {
+                  targetWidget.parentNode.insertBefore(countdownWidget, targetWidget.nextSibling);
+                  
+                  // Primeira atualização
+                  updateCountdown();
+                  
+                  // Atualiza a cada minuto (se não expirou)
+                  if (countdownWidget.style.display !== 'none') {
+                    countdownInterval = setInterval(updateCountdown, 60000);
+                  }
+                  
+                  // Carrega o conteúdo do shadowbox
+                  loadContagemContent();
+                  
+                  console.log('✅ Countdown Widget carregado');
+                } else if (!targetWidget) {
+                  setTimeout(injectCountdownWidget, 100);
+                }
+              }
+              
+              // Aguarda um pouco para garantir que os outros widgets foram carregados
+              setTimeout(injectCountdownWidget, 500);
+              
+            } catch (error) {
+              console.error('❌ Erro no Countdown Widget:', error);
             }
           });
         }

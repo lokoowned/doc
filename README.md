@@ -22,17 +22,17 @@
 
 ### 🎮 Servidor Atual: RF OldTimes
 
-- 🌐 **Servidor ativo:** [RF OldTimes](https://linktr.ee/oldtimes)
-- 👥 **Players Ativos:** 250+
-- 👥 **Informações do servidor, todas no gitbook do mesmo:** [GitBook OldTimes](https://rf-old-times.gitbook.io/rfoldtimes/)
-- ⚔️ **Raça da Guilda:** Bellato
-- 🏆 **Eventos Ativos:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajudamos novos jogadores a upar e se equipar, raid's, eventos semanais, etc.
-- 💬 **Comunicação:** Disponibilidade de Discord/WhatsApp para interação dos membros.
-- 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
-  Recrutamos novos membros regularmente, basta falar com um dos oficiais da guilda.
-- 🇧🇷 **Atuação:** Majoritariamente Brasil, mas também temos membros internacionais (Filipinas, Indonésia).
-- 🕒 **Horários de atividade:** Temos jogadores jogando em todos os horários do dia, a maior atividade da guilda é no horário noturno onde se concentram os maiores objetivos.<br>
-  Eventos especiais são anunciados antecipadamente nas redes sociais da guilda.
+  - 🌐 **Servidor ativo:** [RF OldTimes](https://linktr.ee/oldtimes)
+  - 👥 **Players Ativos:** 250+
+  - 👥 **Informações do servidor, todas no gitbook do mesmo:** [GitBook OldTimes](https://rf-old-times.gitbook.io/rfoldtimes/)
+  - ⚔️ **Raça da Guilda:** Bellato
+  - 🏆 **Eventos Ativos:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajudamos novos jogadores a upar e se equipar, raid's, eventos semanais, etc.
+  - 💬 **Comunicação:** Disponibilidade de Discord/WhatsApp para interação dos membros.
+  - 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
+    Recrutamos novos membros regularmente, basta falar com um dos oficiais da guilda.
+  - 🇧🇷 **Atuação:** Majoritariamente Brasil, mas também temos membros internacionais (Filipinas, Indonésia).
+  - 🕒 **Horários de atividade:** Temos jogadores jogando em todos os horários do dia, a maior atividade da guilda é no horário noturno onde se concentram os maiores objetivos.<br>
+    Eventos especiais são anunciados antecipadamente nas redes sociais da guilda.
 
 </div>
 
@@ -45,7 +45,7 @@
 🌐 **Entenda as regras e conduta da guilda para estar apto a jogar conosco:** 
 
 Somos uma organização que já está há {{yearsPassed}} anos em atividade. Seguindo desde o ínicio as mesmas regras e condutas. Nada burocrático, nada complicado, cobramos o mínimo para que tenhamos uma organização saudável, organizada e efetiva. 
-
+  
 ---
 
 ### 📋 Regras & Conduta DarkLegion

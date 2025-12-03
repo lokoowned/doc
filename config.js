@@ -31,5 +31,21 @@ window.DLConfig = {
   server_spreadsheet_id: '1Ec36uex38hYjnU17lU95APtorOQKmEID7U3DIy376kU',
   
   // Intervalo de atualização em segundos (padrão: 60 segundos)
-  server_update_interval: 60
+  server_update_interval: 60,
+  
+  // ==================== CONTAGEM REGRESSIVA ====================
+  // Ativa/desativa o widget de contagem regressiva (true = mostrar, false = ocultar)
+  timer_objective: true,
+  
+  // Data do objetivo (formato: ano/mês/dia) - Ex: '2025/12/25' para 25 de dezembro de 2025
+  date_objective: '2025/12/03',
+  
+  // Horário do objetivo (formato: HH:MM, horário de Brasília)
+  time_objective: '19:00',
+  
+  // Texto descritivo do objetivo
+  text_objective: 'Reunião do comando'
 };
+
+// script pwa > site em app
+// send notification by pwa
