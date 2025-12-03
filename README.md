@@ -1,6 +1,6 @@
 ![DarkLegion Banner](imagens/b3.png)
 
-# 👋 Bem-vindo à †Dark·Legion† Guild.
+# 👋 Bem-vindo à †Dark·Legion† Guild!.
 
 > **Fundada em 2011 por [xLokoOwneD](#xlokoowned)**
 >
