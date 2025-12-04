@@ -1,5 +1,5 @@
 - [🏠Início](/)
-
+- [📝Tópicos da reunião 04/12 - 20h](/reuniao.md "Veja os tópicos que serão discutidos na reunião marcada para 04/12 às 20h.")
 - <img src="imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;">Sobre a nossa Organização
   - [História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")
   - [Lista de Membros](/sobredl/membros.md "Veja a lista de membros da guilda, com informações sobre cada um deles.")

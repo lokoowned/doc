@@ -38,13 +38,13 @@ window.DLConfig = {
   timer_objective: true,
   
   // Data do objetivo (formato: ano/mês/dia) - Ex: '2025/12/25' para 25 de dezembro de 2025
-  date_objective: '2025/12/03',
+  date_objective: '2025/12/04',
   
   // Horário do objetivo (formato: HH:MM, horário de Brasília)
-  time_objective: '19:00',
+  time_objective: '20:10',
   
   // Texto descritivo do objetivo
-  text_objective: 'Reunião do comando'
+  text_objective: 'Reunião 1 - OldTimes'
 };
 
 // script pwa > site em app
