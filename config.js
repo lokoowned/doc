@@ -31,13 +31,6 @@ window.DLConfig = {
 
   // Configuração de expiração para páginas do sidebar (formato: YYYY-MM-DD)
   // Exemplo: { path: '/reunioes/05-12-2025-pre-abertura-old-times.md', expires_at: '2025-12-05', note: 'Resumo da reunião pré-abertura' }
-  page_expirations: [
-    {
-      path: '/reunioes/05-12-2025-pre-abertura-old-times.md',
-      expires_at: '2025-12-05',
-      note: 'Tópicos debatidos na reunião pré-abertura'
-    }
-  ],
 
   // ==================== CONTAGEM REGRESSIVA ====================
   // Ativa/desativa o widget de contagem regressiva (true = mostrar, false = ocultar)

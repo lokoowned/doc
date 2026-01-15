@@ -1,5 +1,5 @@
 - [🏠Início](/)
-- [📝Tópicos da reunião 05/12 - 19h, pré abertura!](/reunioes/05-12-2025-pre-abertura-old-times.md "Veja os tópicos que serão discutidos na reunião marcada para 05/12 às 19h.")
+- [📝Organização pré abertura do servidor RF Default!](/reunioes/05-12-2025-pre-abertura-old-times.md "Veja os tópicos que serão discutidos na reunião marcada para 05/12 às 19h.")
 - <img src="imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;">Sobre a nossa Organização
   - [História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")
   - [Lista de Membros](/sobredl/membros.md "Veja a lista de membros da guilda, com informações sobre cada um deles.")
@@ -11,6 +11,10 @@
     - [Leilão de Itens](/sobredl/eventos/leilao.md "Veja o leilão de itens da guilda, com informações sobre cada um deles.")
     - [Sorteios de Itens](/sobredl/eventos/sorteios.md "Veja os sorteios de itens da guilda, com informações sobre cada um deles.")
     - [Divisão de moeda do jogo](/sobredl/eventos/divisao-moeda.md "Veja a divisão de moeda do jogo, com informações sobre cada um deles.")
+
+- <img src="imagens/icones/default.png" width="18" style="vertical-align: middle; margin-right: 6px;">Default - Conhecimentos
+  - [Informações Gerais](/default/infos.md "Informações gerais sobre o servidor RF Default.")
+
 
 - <img src="imagens/icones/rf.png" width="18" style="vertical-align: middle; margin-right: 6px;">Conhecimentos Básicos RF Online
   - [Instalação & Configuração](/baserf/instalacao.md)

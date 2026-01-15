@@ -420,6 +420,18 @@
       text-transform: none;
     }
 
+    /* Sidebar - Exibir títulos completos com quebra de linha */
+    .sidebar-nav li a {
+      white-space: normal !important;
+      overflow: visible !important;
+      text-overflow: clip !important;
+      word-wrap: break-word;
+      word-break: break-word;
+      line-height: 1.4;
+      padding: 6px 0;
+      display: block;
+    }
+
     /* Responsivo */
     @media (max-width: 768px) {
       .shadowbox-content {
