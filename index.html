@@ -1550,38 +1550,60 @@ ${boxContent.trim()}
           const processSidebar = (expirations) => {
             const sidebar = document.querySelector('.sidebar');
             if (!sidebar) {
+              console.log('🔍 [Expiração] Sidebar ainda não encontrado, tentando novamente...');
               return false;
             }
 
             const now = new Date();
+            console.log('📅 [Expiração] Data atual:', now.toISOString());
+            console.log('📋 [Expiração] Total de expirações configuradas:', expirations.length);
 
             expirations.forEach(entry => {
+              console.log('🔎 [Expiração] Processando entrada:', entry);
+              
               const targetCanonical = canonicalPath(entry.path);
+              console.log('🔗 [Expiração] Caminho canonical do target:', targetCanonical);
+              
               if (!targetCanonical) {
+                console.warn('⚠️ [Expiração] Caminho canonical vazio, pulando');
                 return;
               }
 
-              const anchor = Array.from(sidebar.querySelectorAll('a')).find(link => {
+              const allLinks = Array.from(sidebar.querySelectorAll('a'));
+              console.log('🔗 [Expiração] Total de links no sidebar:', allLinks.length);
+              
+              const anchor = allLinks.find(link => {
                 const href = link.getAttribute('href') || link.pathname || '';
-                return canonicalPath(href) === targetCanonical;
+                const linkCanonical = canonicalPath(href);
+                console.log(`  - Comparando: "${linkCanonical}" === "${targetCanonical}"`, linkCanonical === targetCanonical);
+                return linkCanonical === targetCanonical;
               });
+              
               if (!anchor) {
+                console.warn('⚠️ [Expiração] Link não encontrado para:', targetCanonical);
                 return;
               }
+              console.log('✅ [Expiração] Link encontrado:', anchor.textContent.trim());
 
               const container = anchor.closest('li') || anchor.parentElement;
               if (!container) {
+                console.warn('⚠️ [Expiração] Container não encontrado');
                 return;
               }
 
               const expiresAt = parseExpiration(entry.expires_at);
+              console.log('📅 [Expiração] Data de expiração:', expiresAt ? expiresAt.toISOString() : 'inválida');
+              console.log('⏰ [Expiração] Expirou?', now > expiresAt, '(now > expiresAt)');
+              
               if (expiresAt && now > expiresAt) {
+                console.log('🗑️ [Expiração] REMOVENDO página expirada:', entry.path);
                 container.remove();
                 return;
               }
 
               const noteText = entry.note || entry.text || '';
               if (noteText) {
+                console.log('📝 [Expiração] Adicionando nota:', noteText);
                 let noteElement = container.querySelector(`.sidebar-page-note[data-page="${targetCanonical}"]`);
                 if (!noteElement) {
                   noteElement = document.createElement('span');
