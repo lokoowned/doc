@@ -382,10 +382,18 @@
       font-size: 12px;
     }
 
+    .server-widget-compact .server-line.server-name-line {
+      justify-content: center;
+    }
+
     .server-widget-compact .server-name {
-      font-weight: 600;
-      color: #fff;
-      font-size: 13px;
+      display: block;
+      text-align: center;
+      font-weight: 700;
+      color: #2bfffc;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-shadow: 0 0 6px rgba(43, 255, 252, 0.9), 0 0 14px rgba(15, 255, 255, 0.4);
     }
 
     .server-widget-compact .server-online {
@@ -400,6 +408,16 @@
       background: #4caf50;
       box-shadow: 0 0 6px #4caf50;
       animation: pulse 2s ease-in-out infinite;
+    }
+
+    .sidebar-page-note {
+      display: block;
+      font-size: 11px;
+      color: #9ec2ff;
+      margin-left: 22px;
+      line-height: 1.3;
+      font-style: italic;
+      text-transform: none;
     }
 
     /* Responsivo */
@@ -1441,23 +1459,19 @@ ${boxContent.trim()}
               
               const SERVER_NAME = config.server_name || 'Servidor';
               const SERVER_GUILD_RACE = config.server_guild_race || 'N/A';
-              const SPREADSHEET_ID = config.server_spreadsheet_id;
-              const UPDATE_INTERVAL = (config.server_update_interval || 60) * 1000;
-              
-              if (!SPREADSHEET_ID) {
-                console.warn('⚠️ Server Widget: server_spreadsheet_id não configurado em config.js');
-                return;
-              }
+              const SERVER_ONLINE_SUMMARY = config.server_online_summary || '';
             
               // Cria o widget do servidor
               const serverWidget = document.createElement('div');
               serverWidget.className = 'server-widget-compact';
               serverWidget.innerHTML = `
                 <div class="server-info">
-                  <div class="server-line">
+                  <div class="server-line server-name-line">
                     <span class="status-dot"></span>
                     <span class="server-name">${SERVER_NAME}</span>
-                    <span class="server-online"><span id="server-online-count">--</span> Online</span>
+                  </div>
+                  <div class="server-line">
+                    <span class="server-online">${SERVER_ONLINE_SUMMARY}</span>
                   </div>
                   <div class="server-line">
                     <span style="color: #999;">Raça da Guild:</span>
@@ -1475,51 +1489,12 @@ ${boxContent.trim()}
                 }
               });
               
-              // Função para buscar dados da planilha
-              async function updateServerData() {
-                try {
-                  // URL para acessar a planilha como CSV
-                  const csvUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv`;
-                  
-                  console.log('🔄 Atualizando dados do servidor...');
-                  
-                  const response = await fetch(csvUrl);
-                  const csvText = await response.text();
-                  
-                  // Parse CSV simples (primeira linha)
-                  const lines = csvText.split('\n');
-                  if (lines.length > 0) {
-                    const firstLine = lines[0].split(',');
-                    
-                    // Coluna B (índice 1): Total de jogadores online
-                    const onlineCount = firstLine[1] || '0';
-                    
-                    // Atualiza o display
-                    document.getElementById('server-online-count').textContent = onlineCount;
-                    
-                    console.log('✅ Dados do servidor atualizados:', {
-                      online: onlineCount
-                    });
-                  }
-                } catch (error) {
-                  console.error('❌ Erro ao buscar dados do servidor:', error);
-                  document.getElementById('server-online-count').textContent = '--';
-                }
-              }
-              
               // Injeta o widget na sidebar após o Discord widget
               function injectServerWidget() {
                 const discordWidget = document.querySelector('.discord-widget-compact');
                 if (discordWidget && !document.querySelector('.server-widget-compact')) {
                   discordWidget.parentNode.insertBefore(serverWidget, discordWidget.nextSibling);
-                  
-                  // Primeira atualização
-                  updateServerData();
-                  
-                  // Atualiza periodicamente
-                  setInterval(updateServerData, UPDATE_INTERVAL);
-                  
-                  console.log(`✅ Server Widget carregado (atualização a cada ${UPDATE_INTERVAL/1000}s)`);
+                  console.log('✅ Server Widget carregado');
                 } else {
                   setTimeout(injectServerWidget, 100);
                 }
@@ -1531,6 +1506,111 @@ ${boxContent.trim()}
               console.error('❌ Erro no Server Widget:', error);
               console.warn('⚠️ Widget do Servidor não pôde ser carregado. Verifique o arquivo config.js');
             }
+          });
+        },
+        
+        // Plugin Expiração de páginas no sidebar
+        function(hook, vm) {
+          const normalizePath = (value) => {
+            if (!value) {
+              return '';
+            }
+            try {
+              const url = new URL(value, window.location.origin);
+              return url.pathname;
+            } catch {
+              let path = String(value).trim();
+              if (path.startsWith('#')) {
+                path = path.slice(1);
+              }
+              if (!path.startsWith('/')) {
+                path = '/' + path.replace(/^\/+/, '');
+              }
+              return path.split('?')[0].split('#')[0];
+            }
+          };
+
+          const canonicalPath = (value) => {
+            const path = normalizePath(value);
+            if (!path) {
+              return '';
+            }
+            return path.replace(/\.md$/i, '').replace(/\/+$/, '');
+          };
+
+          const parseExpiration = (value) => {
+            if (!value) {
+              return null;
+            }
+            const isoValue = value.includes('T') ? value : `${value}T23:59:59`;
+            const date = new Date(isoValue);
+            return Number.isFinite(date.getTime()) ? date : null;
+          };
+
+          const processSidebar = (expirations) => {
+            const sidebar = document.querySelector('.sidebar');
+            if (!sidebar) {
+              return false;
+            }
+
+            const now = new Date();
+
+            expirations.forEach(entry => {
+              const targetCanonical = canonicalPath(entry.path);
+              if (!targetCanonical) {
+                return;
+              }
+
+              const anchor = Array.from(sidebar.querySelectorAll('a')).find(link => {
+                const href = link.getAttribute('href') || link.pathname || '';
+                return canonicalPath(href) === targetCanonical;
+              });
+              if (!anchor) {
+                return;
+              }
+
+              const container = anchor.closest('li') || anchor.parentElement;
+              if (!container) {
+                return;
+              }
+
+              const expiresAt = parseExpiration(entry.expires_at);
+              if (expiresAt && now > expiresAt) {
+                container.remove();
+                return;
+              }
+
+              const noteText = entry.note || entry.text || '';
+              if (noteText) {
+                let noteElement = container.querySelector(`.sidebar-page-note[data-page="${targetCanonical}"]`);
+                if (!noteElement) {
+                  noteElement = document.createElement('span');
+                  noteElement.className = 'sidebar-page-note';
+                  noteElement.dataset.page = targetCanonical;
+                  container.appendChild(noteElement);
+                }
+                noteElement.textContent = noteText;
+              }
+            });
+
+            return true;
+          };
+
+          hook.doneEach(function() {
+            const config = window.DLConfig || {};
+            const expirations = Array.isArray(config.page_expirations) ? config.page_expirations : [];
+            if (!expirations.length) {
+              return;
+            }
+
+            const tryProcess = () => {
+              const executed = processSidebar(expirations);
+              if (!executed) {
+                setTimeout(tryProcess, 80);
+              }
+            };
+
+            setTimeout(tryProcess, 0);
           });
         },
         
