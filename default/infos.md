@@ -1,5 +1,6 @@
 # ⚔️ Triad of War – New Season Launch
-# 📅 Data de Abertura: 14 de Fevereiro
+# 📅 Data de Abertura Beta: 1 de Fevereiro
+# 📅 Data de Abertura Oficial: 14 de Fevereiro
 
 ---
 

@@ -215,7 +215,7 @@
   
   <div class="mission-info">
     <strong>📍 Horário de Brasília (UTC-3)</strong><br>
-    Acompanhe nosso Discord para mais informações.
+    <span id="mission-info-text">Acompanhe nosso Discord para mais informações.</span>
   </div>
 </div>
 
@@ -230,6 +230,12 @@
     // Atualiza o título
     const titleEl = document.getElementById('mission-title-text');
     if (titleEl) titleEl.textContent = TEXT_OBJECTIVE.toUpperCase();
+
+    const customText = config.countdown_custom_text;
+    const infoTextEl = document.getElementById('mission-info-text');
+    if (infoTextEl && customText) {
+      infoTextEl.textContent = customText;
+    }
     
     if (!DATE_OBJECTIVE) return;
     

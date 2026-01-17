@@ -1,7 +1,8 @@
 - [🏠Início](/)
-- [📝Organização pré abertura do servidor RF Default!](/reunioes/05-12-2025-pre-abertura-old-times.md "Veja os tópicos que serão discutidos na reunião marcada para 05/12 às 19h.")
-- <img src="imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;">Sobre a nossa Organização
-  - [História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")
+- [📝Organização pré abertura do servidor RF Default!](/reunioes/default-organiza.md.md "Veja os tópicos que serão discutidos na reunião marcada para 05/12 às 19h.")
+
+- <img src="imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;"> Sobre a nossa Organização
+  - [🛡️ História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")
   - [Lista de Membros](/sobredl/membros.md "Veja a lista de membros da guilda, com informações sobre cada um deles.")
   - [Cenários jogados](/sobredl/cenarios.md "Veja os cenários em que a guilda atua, desde o Brasil até o Mundo.")
   - [Hierarquia de Membros & Comando](/sobredl/hierarquia.md "Veja a hierarquia e o comando da guilda, com informações sobre cada um deles.")
@@ -12,7 +13,7 @@
     - [Sorteios de Itens](/sobredl/eventos/sorteios.md "Veja os sorteios de itens da guilda, com informações sobre cada um deles.")
     - [Divisão de moeda do jogo](/sobredl/eventos/divisao-moeda.md "Veja a divisão de moeda do jogo, com informações sobre cada um deles.")
 
-- <img src="imagens/icones/default.png" width="18" style="vertical-align: middle; margin-right: 6px;">Default - Conhecimentos
+- <img src="imagens/icones/default.png" width="18" style="vertical-align: middle; margin-right: 6px;">RF Default - Conhecimentos
   - [Informações Gerais](/default/infos.md "Informações gerais sobre o servidor RF Default.")
 
 

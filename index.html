@@ -420,6 +420,32 @@
       text-transform: none;
     }
 
+    .historia-shadowbox-banner {
+      background: linear-gradient(135deg, #1e1b4b, #0f9d58);
+      color: #fff;
+      padding: 16px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      box-shadow: 0 0 16px rgba(15, 157, 88, 0.6);
+      margin-bottom: 16px;
+    }
+
+    .app-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .app-name img {
+      height: 32px;
+      width: 32px;
+      object-fit: contain;
+      border-radius: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+    }
+
     /* Sidebar - Exibir títulos completos com quebra de linha */
     .sidebar-nav li a {
       white-space: normal !important;
@@ -1328,7 +1354,460 @@ window.yearsPassed = yearsPassed;
         // Plugin para variáveis dinâmicas
         function(hook, vm) {
           hook.beforeEach(function(content) {
-            return content.replace(/\{\{yearsPassed\}\}/g, window.yearsPassed);
+            const config = window.DLConfig || {};
+            const replacements = {
+              yearsPassed: window.yearsPassed,
+              comandos: config.comandos,
+              comandos_info: config.comandos_info
+            };
+
+            let updated = content;
+            Object.entries(replacements).forEach(([key, value]) => {
+              if (value === undefined || value === null) return;
+              let normalized = value;
+              if (key === 'comandos_info') {
+                normalized = String(value).replace(/\n/g, '<br>');
+              }
+              const regex = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+              updated = updated.replace(regex, normalized);
+            });
+
+            return updated;
+          });
+        },
+
+        // Plugin para inserir logo ao lado do título
+        function(hook, vm) {
+          hook.doneEach(function() {
+            const title = document.querySelector('.app-name');
+            if (!title || title.dataset.logoInjected) return;
+            const logo = document.createElement('img');
+            logo.src = 'imagens/icones/logo.png';
+            logo.alt = 'DarkLegion Logo';
+            title.insertBefore(logo, title.firstChild);
+            title.dataset.logoInjected = 'true';
+          });
+        },
+        
+        // Plugin Lista de Membros Dinâmica
+        function(hook, vm) {
+          hook.doneEach(async function() {
+            const panel = document.querySelector('.members-panel');
+            if (!panel || panel.dataset.membersInit) return;
+            
+            const config = window.DLConfig || {};
+            const honorMedals = Array.isArray(config.honor_medals) ? config.honor_medals : [];
+
+            try {
+              // Carrega o CSV
+              const response = await fetch('membros.csv');
+              const csvText = await response.text();
+              
+              // Parseia o CSV (todas as linhas são válidas)
+              const lines = csvText.split('\n').filter(line => line.trim());
+              const members = lines.map(line => {
+                // Parse usando ponto e vírgula (;) como delimitador para compatibilidade com Excel BR
+                // Remove aspas duplas que o Excel pode adicionar
+                const parts = line.split(';').map(p => p.trim().replace(/^"(.*)"$/, '$1'));
+                
+                // Extrai os campos (Nickname, Data, Status, Servidor, Medalhas, Inativo)
+                // Coluna A: Nickname
+                // Coluna B: Data de entrada
+                // Coluna C: Status
+                // Coluna D: Servidor
+                // Coluna E: Medalhas (pode ter múltiplas separadas por vírgula)
+                // Coluna F: Inativo (True/False)
+                const nickname = parts[0] ? parts[0].trim() : '';
+                const entrada = parts[1] ? parts[1].trim() : '';
+                const status = parts[2] ? parts[2].trim() : '';
+                const servidor = parts[3] ? parts[3].trim() : '';
+                
+                // As medalhas podem estar na coluna E e além
+                // Precisamos identificar onde está "True" ou "False" para saber onde param as medalhas
+                let inativoIndex = -1;
+                for (let i = 4; i < parts.length; i++) {
+                  const part = parts[i].trim();
+                  if (part === 'True' || part === 'False') {
+                    inativoIndex = i;
+                    break;
+                  }
+                }
+                
+                let medals = [];
+                let inativo = false;
+                
+                if (inativoIndex !== -1) {
+                  // Encontrou a coluna Inativo
+                  // A coluna E pode conter múltiplas medalhas separadas por vírgula
+                  const medalsColumn = parts[4] || '';
+                  medals = medalsColumn.split(',').map(m => m.trim()).filter(Boolean);
+                  inativo = parts[inativoIndex].trim() === 'True';
+                } else {
+                  // Não encontrou, assume que parts[4] contém as medalhas
+                  const medalsColumn = parts[4] || '';
+                  medals = medalsColumn.split(',').map(m => m.trim()).filter(Boolean);
+                  inativo = false;
+                }
+                
+                return {
+                  nickname,
+                  entrada,
+                  status,
+                  servidor: servidor || '',
+                  medals,
+                  inativo
+                };
+              });
+              const listEl = panel.querySelector('.members-panel__list');
+              const medalsLegendEl = panel.querySelector('#membersMedals .members-panel__medals-icons');
+              const totalEl = panel.querySelector('#membersTotalCount');
+              const visibleEl = panel.querySelector('#membersVisibleCount');
+              const input = panel.querySelector('#searchMember');
+              if (!listEl || !visibleEl || !totalEl) return;
+              const tooltipId = 'medalTooltip';
+              let tooltipEl = document.getElementById(tooltipId);
+              if (!tooltipEl) {
+                tooltipEl = document.createElement('div');
+                tooltipEl.id = tooltipId;
+                tooltipEl.className = 'medal-tooltip';
+                document.body.appendChild(tooltipEl);
+              }
+
+              const updateTooltipPosition = (event) => {
+                tooltipEl.style.left = `${event.pageX + 12}px`;
+                tooltipEl.style.top = `${event.pageY + 12}px`;
+              };
+
+              const tooltipCreated = (medal) => medal && medal.created ? `<div class="medal-tooltip-date">Criada em ${medal.created}</div>` : '';
+
+              const showTooltip = (medal, event) => {
+                tooltipEl.innerHTML = `
+                  ${medal.image ? `<img src="${medal.image}" alt="${medal.name}">` : ''}
+                  <strong>${medal.name}</strong>
+                  <p>${medal.description}</p>
+                  ${tooltipCreated(medal)}
+                `;
+                tooltipEl.style.display = 'block';
+                updateTooltipPosition(event);
+              };
+
+              const hideTooltip = () => {
+                tooltipEl.style.display = 'none';
+              };
+
+              const extrasMedal = {
+                code: 'extras',
+                name: 'Extras',
+                icon: 'imagens/medalhas/extras.png',
+                image: 'imagens/medalhas/extras.png',
+                description: 'O jogador ultrapassou o limite de 5 medalhas; clique no nickname para ver as demais.'
+              };
+
+              const createMedalIcon = (medal) => {
+                if (!medal || !medal.icon) return null;
+                const img = document.createElement('img');
+                img.src = medal.icon;
+                img.alt = medal.name;
+                img.title = medal.name;
+                img.dataset.medal = medal.code;
+                img.addEventListener('mouseenter', (event) => showTooltip(medal, event));
+                img.addEventListener('mousemove', updateTooltipPosition);
+                img.addEventListener('mouseleave', hideTooltip);
+                img.addEventListener('click', () => showMedalDetails(medal));
+                return img;
+              };
+              const medalShadowboxId = 'medal-detail-box';
+              const ensureMedalShadowbox = () => {
+                let box = document.getElementById(medalShadowboxId);
+                if (!box) {
+                  box = document.createElement('div');
+                  box.id = medalShadowboxId;
+                  box.className = 'shadowbox-hidden-content';
+                  box.style.display = 'none';
+                  document.body.appendChild(box);
+                }
+                return box;
+              };
+              const showMedalDetails = (medal) => {
+                if (!medal) return;
+                const box = ensureMedalShadowbox();
+                
+                let medalMembers = [];
+                if (medal.code === 'extras') {
+                  medalMembers = [];
+                } else if (medal.code.startsWith('activity-')) {
+                  // Para medalhas de atividade, calcula dinamicamente quais membros a possuem
+                  if (medal.code === 'activity-novato') {
+                    // Caso especial para novatos (menos de 1 ano)
+                    medalMembers = members.filter(member => {
+                      const activityMedal = getActivityMedal(member.entrada);
+                      return activityMedal && activityMedal.code === 'activity-novato';
+                    });
+                  } else {
+                    const targetYears = parseInt(medal.code.replace('activity-', ''), 10);
+                    medalMembers = members.filter(member => {
+                      const activityMedal = getActivityMedal(member.entrada);
+                      if (!activityMedal) return false;
+                      const memberYears = parseInt(activityMedal.code.replace('activity-', ''), 10);
+                      return memberYears === targetYears;
+                    });
+                  }
+                } else {
+                  // Para medalhas normais, busca no array de medals do membro
+                  medalMembers = members.filter(member => 
+                    Array.isArray(member.medals) && member.medals.includes(medal.code)
+                  );
+                }
+                
+                const membersHtml = medalMembers.length
+                  ? medalMembers.map(m => {
+                      const year = m.entrada ? m.entrada.split('/').pop() : '';
+                      return `<li>${m.nickname} · Entrada ${year}</li>`;
+                    }).join('')
+                  : `<li>Nenhum membro registrado para esta medalha.</li>`;
+                box.innerHTML = `
+                  <div class="medal-shadowbox-banner">${medal.name}</div>
+                  ${medal.image ? `<img src="${medal.image}" alt="${medal.name}" class="medal-shadowbox-image">` : ''}
+                  <p>${medal.description}</p>
+                  ${medal.created ? `<p class="medal-shadowbox-date"><strong>Data de criação:</strong> ${medal.created}</p>` : ''}
+                  <div class="medal-shadowbox-members">
+                    <strong>Portadores</strong>
+                    <ul>${membersHtml}</ul>
+                  </div>
+                `;
+                if (window.ShadowBox && typeof window.ShadowBox.openFromElement === 'function') {
+                  window.ShadowBox.openFromElement(medalShadowboxId);
+                } else {
+                  console.warn('⚠️ ShadowBox não disponível para medalha');
+                }
+              };
+
+            const sortedMedals = [...honorMedals].sort((a, b) => (b.weight || 0) - (a.weight || 0));
+
+            // Função para calcular anos de atividade e criar medalha automaticamente
+            const getActivityMedal = (entradaDate) => {
+              if (!entradaDate) return null;
+              
+              try {
+                // Parse da data no formato dd/mm/yyyy
+                const parts = entradaDate.split('/');
+                if (parts.length !== 3) return null;
+                
+                const entryDate = new Date(parts[2], parts[1] - 1, parts[0]);
+                const today = new Date();
+                
+                // Calcula diferença em anos completos
+                let years = today.getFullYear() - entryDate.getFullYear();
+                const monthDiff = today.getMonth() - entryDate.getMonth();
+                const dayDiff = today.getDate() - entryDate.getDate();
+                
+                // Ajusta se ainda não completou aniversário neste ano
+                if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+                  years--;
+                }
+                
+                // Retorna medalha "novato" para jogadores com menos de 1 ano
+                if (years < 1) {
+                  return {
+                    code: 'activity-novato',
+                    name: 'Novato',
+                    icon: 'imagens/medalhas/atividades/novato.png',
+                    image: 'imagens/medalhas/atividades/novato.png',
+                    description: 'Medalha concedida a novos membros que ainda não completaram 1 ano de guilda.',
+                    weight: 1,
+                    created: entradaDate,
+                    neonColor: 'rgba(100, 200, 255, 0.45)'
+                  };
+                }
+                
+                // Só retorna medalha de atividade se tiver entre 1 e 20 anos
+                if (years > 20) return null;
+                
+                const iconPath = `imagens/medalhas/atividades/${years}.png`;
+                const yearLabel = years === 1 ? 'ano' : 'anos';
+                
+                return {
+                  code: `activity-${years}`,
+                  name: `${years} ${yearLabel} de atividade`,
+                  icon: iconPath,
+                  image: iconPath,
+                  description: `Medalha de honra concedida por ${years} ${yearLabel} de atividade na guilda.`,
+                  weight: years, // Peso = número de anos
+                  created: entradaDate
+                };
+              } catch (error) {
+                console.error('Erro ao calcular medalha de atividade:', error);
+                return null;
+              }
+            };
+
+            // Função para calcular peso total das medalhas de um membro
+            const getTotalWeight = (member) => {
+              const medals = Array.isArray(member.medals) ? member.medals : [];
+              let totalWeight = 0;
+              
+              // Soma o peso das medalhas manuais
+              medals.forEach(code => {
+                const medal = sortedMedals.find(m => m.code === code);
+                if (medal && medal.weight) {
+                  totalWeight += medal.weight;
+                }
+              });
+              
+              // Adiciona o peso da medalha de atividade
+              const activityMedal = getActivityMedal(member.entrada);
+              if (activityMedal && activityMedal.weight) {
+                totalWeight += activityMedal.weight;
+              }
+              
+              // Adiciona +200 pontos para Officers e Fundador
+              if (member.status === 'Officer' || member.status === 'Fundador') {
+                totalWeight += 200;
+              }
+              
+              return totalWeight;
+            };
+
+            const renderLegend = () => {
+                if (!medalsLegendEl || !honorMedals.length) return;
+                medalsLegendEl.innerHTML = '';
+              sortedMedals.forEach(medal => {
+                  const wrapper = document.createElement('div');
+                  wrapper.className = 'medal-legend-item';
+                  const icon = createMedalIcon(medal);
+                  const label = document.createElement('small');
+                  label.textContent = medal.name;
+                  if (icon) {
+                    wrapper.appendChild(icon);
+                  }
+                  wrapper.appendChild(label);
+                  medalsLegendEl.appendChild(wrapper);
+                });
+              };
+
+              const renderHeader = () => {
+                if (!listEl) return;
+                let header = listEl.querySelector('.members-list-header');
+                if (header) {
+                  return;
+                }
+                header = document.createElement('div');
+                header.className = 'members-list-header';
+                header.innerHTML = `<span>Nickname</span><span>Medalhas de honra</span>`;
+                listEl.appendChild(header);
+              };
+
+                const renderMembers = (list) => {
+                listEl.innerHTML = '';
+                renderHeader();
+                
+                // Ordena membros por peso total (decrescente)
+                const sortedList = [...list].sort((a, b) => getTotalWeight(b) - getTotalWeight(a));
+                
+                sortedList.forEach((member, index) => {
+                  const card = document.createElement('div');
+                  card.className = 'member-card';
+                  
+                  // Adiciona indicador de rank
+                  const rankDiv = document.createElement('div');
+                  rankDiv.className = 'member-rank';
+                  rankDiv.textContent = `#${index + 1}`;
+                  card.appendChild(rankDiv);
+                  
+                  const main = document.createElement('div');
+                  main.className = 'member-card__main';
+                  const badge = document.createElement('div');
+                  badge.className = 'member-badge';
+                  badge.textContent = member.status === 'Fundador' ? '👑' : '⭐';
+                  const info = document.createElement('div');
+                  info.className = 'member-card__info';
+                  
+                  // Aplica efeito neon e label baseado no status
+                  const isOfficer = member.status === 'Officer';
+                  const isFundador = member.status === 'Fundador';
+                  
+                  let nameClass = 'member-card__name';
+                  let roleLabel = '';
+                  
+                  if (isFundador) {
+                    nameClass += ' member-card__name--fundador';
+                    roleLabel = '<span class="fundador-label">Guild Leader</span> ';
+                  } else if (isOfficer) {
+                    nameClass += ' member-card__name--officer';
+                    roleLabel = '<span class="staff-label">Staff</span> ';
+                  }
+                  
+                  // Extrai apenas o ano da data de entrada (formato dd/mm/yyyy)
+                  const entryYear = member.entrada ? member.entrada.split('/').pop() : '';
+                  
+                  // Adiciona servidor se estiver preenchido
+                  const servidorInfo = member.servidor && member.servidor.trim() 
+                    ? ` · Servidor: ${member.servidor}` 
+                    : '';
+                  
+                  info.innerHTML = `<div class="${nameClass}">${roleLabel}${member.nickname}</div><div class="member-card__meta">Entrou em ${entryYear}${servidorInfo}</div>`;
+                  
+                  main.appendChild(badge);
+                  main.appendChild(info);
+                  const medalContainer = document.createElement('div');
+                  medalContainer.className = 'member-card__medals';
+                  
+                  // Obtém medalhas do perfil e adiciona medalha de atividade automaticamente
+                  const medals = Array.isArray(member.medals) ? member.medals : [];
+                  let allMedalObjects = [...new Set(medals)]
+                    .map(code => sortedMedals.find(m => m.code === code))
+                    .filter(Boolean);
+                  
+                  // Adiciona medalha de atividade baseada na data de entrada
+                  const activityMedal = getActivityMedal(member.entrada);
+                  if (activityMedal) {
+                    allMedalObjects.push(activityMedal);
+                  }
+                  
+                  // Reordena todas as medalhas por weight
+                  const uniqueSorted = allMedalObjects.sort((a, b) => (b.weight || 0) - (a.weight || 0));
+                  
+                  const medalsToShow = uniqueSorted.length > 5 ? uniqueSorted.slice(0, 4) : uniqueSorted.slice(0, 5);
+                  medalsToShow.forEach(medal => {
+                    const icon = createMedalIcon(medal);
+                    if (icon) {
+                      medalContainer.appendChild(icon);
+                    }
+                  });
+                  if (uniqueSorted.length > 5) {
+                    const extrasIcon = createMedalIcon(extrasMedal);
+                    if (extrasIcon) {
+                      medalContainer.appendChild(extrasIcon);
+                    }
+                  }
+                  card.appendChild(main);
+                  card.appendChild(medalContainer);
+                  listEl.appendChild(card);
+                });
+                visibleEl.textContent = sortedList.length;
+              };
+
+              const filterMembers = () => {
+                const term = input ? input.value.trim().toLowerCase() : '';
+                const filtered = members.filter(member => 
+                  !member.inativo && member.nickname.toLowerCase().includes(term)
+                );
+                renderMembers(filtered);
+              };
+
+              if (input) {
+                input.addEventListener('input', filterMembers);
+              }
+              
+              // Conta apenas membros ativos para o total
+              const activeMembers = members.filter(m => !m.inativo);
+              totalEl.textContent = activeMembers.length;
+              renderLegend();
+              renderMembers(activeMembers);
+              panel.dataset.membersInit = 'true';
+            } catch (error) {
+              console.error('Erro ao carregar lista de membros:', error);
+            }
           });
         },
         
