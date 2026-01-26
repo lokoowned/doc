@@ -1811,6 +1811,186 @@ window.yearsPassed = yearsPassed;
           });
         },
         
+        // Plugin Catálogo de Itens
+        function(hook, vm) {
+          hook.doneEach(async function() {
+            const panel = document.querySelector('.items-panel');
+            if (!panel || panel.dataset.itemsInit) return;
+            
+            try {
+              // Carrega o CSV
+              const response = await fetch('itens.csv');
+              const csvText = await response.text();
+              
+              // Parseia o CSV (todas as linhas são válidas)
+              const lines = csvText.split('\n').filter(line => line.trim());
+              const items = lines.map(line => {
+                // Parse usando ponto e vírgula (;) como delimitador
+                const parts = line.split(';').map(p => p.trim().replace(/^"(.*)"$/, '$1'));
+                
+                // Extrai os campos (Nome, Tipo, Level, Descrição, Local de Farm, Raridade, Imagem)
+                return {
+                  nome: parts[0] || '',
+                  tipo: parts[1] || '',
+                  level: parts[2] || '',
+                  descricao: parts[3] || '',
+                  localFarm: parts[4] || '',
+                  raridade: parts[5] || 'Comum',
+                  imagem: parts[6] || ''
+                };
+              });
+              
+              const listEl = panel.querySelector('.items-panel__list');
+              const totalEl = panel.querySelector('#itemsTotalCount');
+              const visibleEl = panel.querySelector('#itemsVisibleCount');
+              const searchInput = panel.querySelector('#searchItem');
+              
+              if (!listEl || !totalEl || !visibleEl) return;
+              
+              // Mantém o cabeçalho sempre visível
+              const header = listEl.querySelector('.items-list-header');
+              
+              // Cria modal para detalhes do item
+              let modal = document.querySelector('.item-detail-modal');
+              let overlay = document.querySelector('.modal-overlay');
+              
+              if (!modal) {
+                modal = document.createElement('div');
+                modal.className = 'item-detail-modal';
+                document.body.appendChild(modal);
+                
+                overlay = document.createElement('div');
+                overlay.className = 'modal-overlay';
+                document.body.appendChild(overlay);
+                
+                overlay.addEventListener('click', () => {
+                  modal.style.display = 'none';
+                  overlay.style.display = 'none';
+                });
+              }
+              
+              const showItemDetails = (item) => {
+                modal.innerHTML = `
+                  <div class="item-detail-modal__header">${item.nome}</div>
+                  ${item.imagem ? `
+                    <div class="item-detail-modal__image-container">
+                      <img src="${item.imagem}" alt="${item.nome}" class="item-detail-modal__image" onerror="this.style.display='none'">
+                    </div>
+                  ` : ''}
+                  <div class="item-detail-modal__content">
+                    <div class="item-detail-modal__row">
+                      <span class="item-detail-modal__label">Tipo:</span>
+                      <span class="item-detail-modal__value">${item.tipo}</span>
+                    </div>
+                    <div class="item-detail-modal__row">
+                      <span class="item-detail-modal__label">Level:</span>
+                      <span class="item-detail-modal__value">${item.level}</span>
+                    </div>
+                    <div class="item-detail-modal__row">
+                      <span class="item-detail-modal__label">Raridade:</span>
+                      <span class="item-detail-modal__value">${item.raridade}</span>
+                    </div>
+                    <div class="item-detail-modal__row">
+                      <span class="item-detail-modal__label">Descrição:</span>
+                      <span class="item-detail-modal__value">${item.descricao}</span>
+                    </div>
+                    ${item.localFarm ? `
+                      <div class="item-detail-modal__row">
+                        <span class="item-detail-modal__label">Local de Farm ou Droop:</span>
+                        <span class="item-detail-modal__value">${item.localFarm}</span>
+                      </div>
+                    ` : ''}
+                  </div>
+                  <button class="item-detail-modal__close">Fechar</button>
+                `;
+                
+                modal.style.display = 'block';
+                overlay.style.display = 'block';
+                
+                modal.querySelector('.item-detail-modal__close').addEventListener('click', () => {
+                  modal.style.display = 'none';
+                  overlay.style.display = 'none';
+                });
+              };
+              
+              const getRaridadeClass = (raridade) => {
+                const normalized = raridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return `item-card__rarity--${normalized}`;
+              };
+              
+              const renderItems = (itemsToRender) => {
+                // Remove todos os cards de itens, mantendo o cabeçalho
+                const cards = listEl.querySelectorAll('.item-card');
+                cards.forEach(card => card.remove());
+                
+                itemsToRender.forEach(item => {
+                  const card = document.createElement('div');
+                  card.className = 'item-card';
+                  card.innerHTML = `
+                    ${item.imagem ? `
+                      <div class="item-card__image">
+                        <img src="${item.imagem}" alt="${item.nome}" onerror="this.style.display='none'">
+                      </div>
+                    ` : '<div class="item-card__image item-card__image--placeholder"></div>'}
+                    <div class="item-card__name">${item.nome}</div>
+                    <div class="item-card__type">${item.tipo}</div>
+                    <div class="item-card__level">${item.level}</div>
+                    <div class="item-card__rarity ${getRaridadeClass(item.raridade)}">${item.raridade}</div>
+                  `;
+                  
+                  card.addEventListener('click', () => showItemDetails(item));
+                  listEl.appendChild(card);
+                });
+                
+                visibleEl.textContent = itemsToRender.length;
+              };
+              
+              // Filtros de tipo
+              const typeFilters = {
+                'Arma': panel.querySelector('#filterArma'),
+                'Armadura': panel.querySelector('#filterArmadura'),
+                'Item Especial': panel.querySelector('#filterItemEspecial'),
+                'Acessório': panel.querySelector('#filterAcessorio')
+              };
+              
+              const applyFilters = () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeTypes = Object.keys(typeFilters).filter(type => 
+                  typeFilters[type] && typeFilters[type].checked
+                );
+                
+                const filtered = items.filter(item => {
+                  const matchesSearch = !searchTerm || 
+                    item.nome.toLowerCase().includes(searchTerm) ||
+                    item.tipo.toLowerCase().includes(searchTerm) ||
+                    item.descricao.toLowerCase().includes(searchTerm);
+                  
+                  const matchesType = activeTypes.length === 0 || activeTypes.includes(item.tipo);
+                  
+                  return matchesSearch && matchesType;
+                });
+                
+                renderItems(filtered);
+              };
+              
+              // Event listeners
+              searchInput.addEventListener('input', applyFilters);
+              Object.values(typeFilters).forEach(checkbox => {
+                if (checkbox) {
+                  checkbox.addEventListener('change', applyFilters);
+                }
+              });
+              
+              totalEl.textContent = items.length;
+              renderItems(items);
+              panel.dataset.itemsInit = 'true';
+              
+            } catch (error) {
+              console.error('Erro ao carregar catálogo de itens:', error);
+            }
+          });
+        },
+        
         // Plugin ShadowBox
         function(hook, vm) {
           let shadowboxCounter = 0;

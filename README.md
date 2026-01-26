@@ -68,7 +68,7 @@ Somos uma organização que já está há {{yearsPassed}} anos em atividade. Seg
 
 ✅ **9. Hackers e bugs:** Uso de programas que alteram memória do jogo, bugs críticos do servidor, programas Helper, farming BOT's são estritamente proibidos. Coisas simples como autoloot, macro de farming, passar pelo glitch do terreno de ether não são considerados problema.
 
-✅ **10. Converse, não murmure:** Se algo te incomoda, chame o líder em sala privada ou DM. Seja sincero, é exatamente isto que esperamos de você. Ficar jogando indireta e murmurando pelos cantos não resolve nada e apenas mostra que você é imaturo e fraco.
+✅ **10. Converse, não murmure:** Se algo te incomoda, abra um ticket no discord. Seja sincero, é exatamente isto que esperamos de você. Ficar jogando indireta e murmurando pelos cantos não resolve nada e apenas mostra que você é imaturo e fraco.
 
 ---
 
