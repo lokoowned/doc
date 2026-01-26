@@ -1,4 +1,3 @@
-Aqui está a versão atualizada e detalhada do seu Markdown, incorporando as informações específicas que você passou sobre a **Cash Shop** e a mecânica de quests.
 
 ---
 
@@ -14,12 +13,12 @@ Explore as diferentes economias do nosso servidor. Cada loja possui uma moeda ú
  Glory point 
 - Novos comerciantes e monstros foram adicionados em áreas como Deserto Sette, Vulcano e Elan.
 
-Como conseguir Glori points :
+Como conseguir Glory points :
 - Destruir monstros especiais (ex: Shelkocrab, Magmobron, Guardiões de Xadrez)
 - Completar missões
 - Trocar recursos exclusivos de comerciantes
-- Use Glori point para comprar equipamentos exclusivos de comerciantes.
-- *Atenção* :Glori point e recursos podem ser perdidos ao morrer (use Talismã da Glória para proteger)talismã pode ser adquirido no nps de troca ou por cash shop 
+- Use Glory point para comprar equipamentos exclusivos de comerciantes.
+- *Atenção*: Glory point e recursos podem ser perdidos ao morrer (use Talismã da Glória para proteger)talismã pode ser adquirido no nps de troca ou por cash shop 
 - *SETE DESERT*
 •⁠  ⁠Deste comerciante, você pode trocar 33 Cabeças de Shelkocrab por 200 Pontos de Glória.
 •⁠  ⁠Você pode comprar equipamentos de nível 35-42 para Pontos de Glória deste comerciante.⁠
