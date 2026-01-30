@@ -10,6 +10,9 @@
   <!-- Arquivo de Configuração -->
   <script src="config.js"></script>
   
+  <!-- Arquivo de Configuração de Listas Google Sheets -->
+  <script src="configlists.js"></script>
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
   <link rel="stylesheet" href="custom.css">
   <style>
@@ -1811,184 +1814,1581 @@ window.yearsPassed = yearsPassed;
           });
         },
         
-        // Plugin Catálogo de Itens
+        
+        // Plugin Google Sheets Dynamic Lists
         function(hook, vm) {
-          hook.doneEach(async function() {
-            const panel = document.querySelector('.items-panel');
-            if (!panel || panel.dataset.itemsInit) return;
+          // Função global para extrair URL real de imagens do prnt.sc
+          window.DLExtractPrntscImage = async function(url) {
+            if (!url || !url.trim().startsWith('https://prnt.sc/')) {
+              return url; // Retorna o URL original se não for prnt.sc
+            }
             
             try {
-              // Carrega o CSV
-              const response = await fetch('itens.csv');
-              const csvText = await response.text();
+              console.log(`🔍 Tentando extrair imagem de: ${url}`);
               
-              // Parseia o CSV (todas as linhas são válidas)
-              const lines = csvText.split('\n').filter(line => line.trim());
-              const items = lines.map(line => {
-                // Parse usando ponto e vírgula (;) como delimitador
-                const parts = line.split(';').map(p => p.trim().replace(/^"(.*)"$/, '$1'));
+              // Faz fetch da página HTML do prnt.sc
+              const response = await fetch(url, { mode: 'cors' });
+              const html = await response.text();
+              
+              console.log(`📄 HTML recebido (${html.length} caracteres)`);
+              
+              // MÉTODO 1: Regex para encontrar URLs de img.lightshot.app
+              const lightshotRegex = /https:\/\/img\.lightshot\.app\/[A-Za-z0-9_-]+\.(png|jpg|jpeg|gif)/g;
+              const lightshotMatch = html.match(lightshotRegex);
+              
+              if (lightshotMatch && lightshotMatch[0]) {
+                console.log(`✅ prnt.sc extraído (regex lightshot): ${url} → ${lightshotMatch[0]}`);
+                return lightshotMatch[0];
+              }
+              
+              // MÉTODO 2: Regex para encontrar qualquer URL de imagem no src
+              const imgSrcRegex = /src=["'](https?:\/\/[^"']+\.(png|jpg|jpeg|gif|webp))["']/gi;
+              const imgMatches = html.match(imgSrcRegex);
+              
+              if (imgMatches && imgMatches.length > 0) {
+                // Extrai a URL limpa do primeiro match
+                const cleanUrl = imgMatches[0].match(/src=["']([^"']+)["']/i)[1];
+                if (cleanUrl && (cleanUrl.includes('lightshot.app') || cleanUrl.includes('prnt.sc'))) {
+                  console.log(`✅ prnt.sc extraído (regex src): ${url} → ${cleanUrl}`);
+                  return cleanUrl;
+                }
+              }
+              
+              // MÉTODO 3: DOM Parser
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              
+              // Procura pela imagem com classe "no-click screenshot-image"
+              const imgElement = doc.querySelector('.no-click.screenshot-image');
+              
+              if (imgElement && imgElement.src) {
+                console.log(`✅ prnt.sc extraído (DOM .no-click.screenshot-image): ${url} → ${imgElement.src}`);
+                return imgElement.src;
+              }
+              
+              // Fallback 1: tenta apenas .screenshot-image
+              const screenshotImg = doc.querySelector('.screenshot-image');
+              if (screenshotImg && screenshotImg.src) {
+                console.log(`✅ prnt.sc extraído (DOM .screenshot-image): ${url} → ${screenshotImg.src}`);
+                return screenshotImg.src;
+              }
+              
+              // Fallback 2: tenta img com atributo data-src
+              const imgDataSrc = doc.querySelector('img[data-src]');
+              if (imgDataSrc && imgDataSrc.dataset.src) {
+                console.log(`✅ prnt.sc extraído (DOM data-src): ${url} → ${imgDataSrc.dataset.src}`);
+                return imgDataSrc.dataset.src;
+              }
+              
+              // Fallback 3: tenta qualquer img com lightshot
+              const lightshotImg = doc.querySelector('img[src*="lightshot"]');
+              if (lightshotImg && lightshotImg.src) {
+                console.log(`✅ prnt.sc extraído (DOM lightshot): ${url} → ${lightshotImg.src}`);
+                return lightshotImg.src;
+              }
+              
+              // Fallback 4: primeira imagem com src válida
+              const allImgs = doc.querySelectorAll('img[src]');
+              for (const img of allImgs) {
+                if (img.src && (img.src.includes('lightshot') || img.src.includes('.png') || img.src.includes('.jpg'))) {
+                  console.log(`✅ prnt.sc extraído (DOM primeira img): ${url} → ${img.src}`);
+                  return img.src;
+                }
+              }
+              
+              console.warn(`⚠️ Não foi possível extrair imagem de: ${url}`);
+              console.log(`📋 Primeiros 500 caracteres do HTML:`, html.substring(0, 500));
+              return url; // Retorna o URL original se falhar
+            } catch (error) {
+              console.error(`❌ Erro ao extrair imagem do prnt.sc (${url}):`, error);
+              console.error(`Tipo de erro:`, error.name, error.message);
+              return url; // Retorna o URL original em caso de erro
+            }
+          };
+          
+          // Função global para processar múltiplas URLs (incluindo prnt.sc)
+          window.DLProcessImageUrls = async function(urlString) {
+            if (!urlString) return [];
+            
+            const urls = urlString.split(',').map(url => url.trim()).filter(url => url);
+            const processedUrls = [];
+            
+            for (const url of urls) {
+              const processedUrl = await window.DLExtractPrntscImage(url);
+              processedUrls.push(processedUrl);
+            }
+            
+            return processedUrls;
+          };
+          
+          // Função global para navegação de imagens no modal
+          window.DLModalImageNav = function(direction, group) {
+            const groupSelector = group ? `[data-image-group="${group}"]` : '.item-detail-modal__image-container';
+            const dataSelector = group ? `[data-image-urls="${group}"]` : '.image-urls-data';
+            const container = document.querySelector(groupSelector);
+            if (!container) return;
+            
+            const img = container.querySelector('.item-detail-modal__image');
+            const counter = container.querySelector('.current-image-index');
+            const urlsData = document.querySelector(dataSelector);
+            
+            if (!img || !urlsData) return;
+            
+            const urls = urlsData.textContent.split('|||');
+            let currentIndex = parseInt(container.dataset.currentImage) || 0;
+            
+            if (direction === 'next') {
+              currentIndex = (currentIndex + 1) % urls.length;
+            } else if (direction === 'prev') {
+              currentIndex = (currentIndex - 1 + urls.length) % urls.length;
+            }
+            
+            container.dataset.currentImage = currentIndex;
+            img.src = urls[currentIndex];
+            if (counter) counter.textContent = currentIndex + 1;
+          };
+          
+          hook.doneEach(async function() {
+            // Verifica se há configurações de listas
+            const listsConfig = window.DLLists || {};
+            if (!Object.keys(listsConfig).length) {
+              console.log('ℹ️ Nenhuma lista configurada em configlists.js');
+              return;
+            }
+            
+            // Bancos de dados globais para referência
+            window.DLItemDatabase = null;
+            window.DLMobTypeMap = null;
+            
+            // Processa cada lista configurada
+            for (const [listId, config] of Object.entries(listsConfig)) {
+              // Se é lista de referência (itemlist), carrega mas não renderiza
+              if (config.displayType === 'reference') {
+                console.log(`📚 Carregando banco de dados: ${listId}`);
+                try {
+                  const apiUrl = `https://docs.google.com/spreadsheets/d/${config.spreadsheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(config.sheetName)}`;
+                  const response = await fetch(apiUrl);
+                  const text = await response.text();
+                  const jsonData = JSON.parse(text.substring(47, text.length - 2));
+                  
+                  // Processa os dados
+                  const items = [];
+                  for (let i = 0; i < jsonData.table.rows.length; i++) {
+                    const row = jsonData.table.rows[i];
+                    const item = {};
+                    Object.entries(config.columns).forEach(([key, col]) => {
+                      const cell = row.c[col.index];
+                      item[key] = cell ? (cell.v || '') : '';
+                    });
+                    if (item[Object.keys(config.columns)[0]]) {
+                      items.push(item);
+                    }
+                  }
+                  
+                  // Armazena no banco de dados global
+                  if (listId === 'itemlist') {
+                    window.DLItemDatabase = items;
+                    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                    console.log('✅ BANCO DE DADOS DE ITENS CARREGADO');
+                    console.log(`📊 Total: ${items.length} itens`);
+                    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                    console.log('📋 TODOS OS ITENS DISPONÍVEIS:');
+                    items.forEach((item, idx) => {
+                      console.log(`   ${idx + 1}. "${item.name}" (Tipo: ${item.type || 'N/A'})`);
+                    });
+                    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                    
+                    // Função de debug global
+                    window.DLDebugFindItem = function(searchName) {
+                      console.log(`\n🔍 DEBUG: Buscando "${searchName}"`);
+                      const normalized = searchName.toLowerCase().trim();
+                      const found = window.DLItemDatabase.find(i => 
+                        i.name && i.name.toLowerCase().trim() === normalized
+                      );
+                      
+                      if (found) {
+                        console.log('✅ ENCONTRADO:', found);
+                      } else {
+                        console.log('❌ NÃO ENCONTRADO');
+                        console.log('💡 Nomes similares:');
+                        window.DLItemDatabase.forEach(i => {
+                          if (i.name && i.name.toLowerCase().includes(normalized)) {
+                            console.log(`   - "${i.name}"`);
+                          }
+                        });
+                      }
+                      return found;
+                    };
+                    
+                    console.log('💡 Para testar, use: DLDebugFindItem("Nome do Item")');
+                    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+                  }
+                  
+                  if (listId === 'mobtype') {
+                    window.DLMobTypeMap = {};
+                    items.forEach(item => {
+                      const rawCode = item.code || '';
+                      const normalizedCode = normalizeCode(rawCode);
+                      if (!normalizedCode) return;
+                      window.DLMobTypeMap[normalizedCode] = {
+                        description: item.description || '',
+                        imageurl: item.imageurl || ''
+                      };
+                    });
+                    console.log(`✅ MobType carregado: ${items.length} registros`);
+                    refreshMobTypeIcons();
+                  }
+                } catch (error) {
+                  console.error(`❌ Erro ao carregar banco de dados ${listId}:`, error);
+                }
+                continue; // Não renderiza, apenas carrega
+              }
+              
+              // Busca o painel na página usando data-list-id
+              const panel = document.querySelector(`[data-list-id="${listId}"]`);
+              if (!panel || panel.dataset.sheetsInit === 'true') continue;
+              
+              console.log(`📊 Iniciando carregamento da lista: ${listId}`);
+              
+              try {
+                // Monta a URL da API do Google Sheets
+                const apiUrl = `https://docs.google.com/spreadsheets/d/${config.spreadsheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(config.sheetName)}`;
                 
-                // Extrai os campos (Nome, Tipo, Level, Descrição, Local de Farm, Raridade, Imagem)
-                return {
-                  nome: parts[0] || '',
-                  tipo: parts[1] || '',
-                  level: parts[2] || '',
-                  descricao: parts[3] || '',
-                  localFarm: parts[4] || '',
-                  raridade: parts[5] || 'Comum',
-                  imagem: parts[6] || ''
-                };
+                // Verifica cache se habilitado
+                let data = null;
+                const cacheKey = `dllist_cache_${listId}`;
+                const cacheTimeKey = `dllist_cache_${listId}_time`;
+                
+                if (config.cache?.enabled) {
+                  const cachedData = localStorage.getItem(cacheKey);
+                  const cachedTime = localStorage.getItem(cacheTimeKey);
+                  
+                  if (cachedData && cachedTime) {
+                    const age = Date.now() - parseInt(cachedTime, 10);
+                    if (age < config.cache.duration) {
+                      console.log(`✅ Usando cache para ${listId} (idade: ${Math.round(age/1000)}s)`);
+                      data = JSON.parse(cachedData);
+                    }
+                  }
+                }
+                
+                // Se não tem cache válido, busca da API
+                if (!data) {
+                  console.log(`🌐 Buscando dados da API para ${listId}...`);
+                  const response = await fetch(apiUrl);
+                  const text = await response.text();
+                  
+                  // Parse do formato específico do Google Sheets
+                  // A resposta vem como: google.visualization.Query.setResponse({...})
+                  const jsonMatch = text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\);?$/);
+                  if (!jsonMatch) {
+                    throw new Error('Formato de resposta inválido da API Google Sheets');
+                  }
+                  
+                  const jsonData = JSON.parse(jsonMatch[1]);
+                  
+                  if (jsonData.status !== 'ok') {
+                    throw new Error(`API retornou status: ${jsonData.status}`);
+                  }
+                  
+                  // Extrai e mapeia os dados
+                  const rows = jsonData.table.rows || [];
+                  data = rows.map(row => {
+                    const item = {};
+                    for (const [key, colConfig] of Object.entries(config.columns)) {
+                      const cell = row.c[colConfig.index];
+                      item[key] = cell && cell.v != null ? String(cell.v) : '';
+                    }
+                    
+                    // Aplica transformação se definida
+                    return config.transform ? config.transform(item) : item;
+                  }).filter(item => {
+                    // Filtra linhas vazias (primeira linha pode ser cabeçalho)
+                    const firstCol = Object.keys(config.columns)[0];
+                    return item[firstCol] && item[firstCol].trim() !== '';
+                  });
+                  
+                  // Salva no cache se habilitado
+                  if (config.cache?.enabled) {
+                    localStorage.setItem(cacheKey, JSON.stringify(data));
+                    localStorage.setItem(cacheTimeKey, String(Date.now()));
+                    console.log(`💾 Cache salvo para ${listId}`);
+                  }
+                }
+                
+                console.log(`✅ ${data.length} itens carregados para ${listId}`);
+                
+                if (listId === 'items') {
+                  window.DLItemsList = data;
+                  console.log('📦 DLItemsList carregada:', data.length, 'itens');
+                }
+                
+                // Verifica se há coluna itemlist e se o banco de dados foi carregado
+                if (config.columns.itemlist && !window.DLItemDatabase) {
+                  console.warn(`⚠️ ATENÇÃO: Lista ${listId} tem coluna itemlist mas o banco de dados ainda não foi carregado!`);
+                  console.warn('💡 Esperando 1 segundo para garantir que ItemList seja carregado primeiro...');
+                  await new Promise(resolve => setTimeout(resolve, 1000));
+                  
+                  if (!window.DLItemDatabase) {
+                    console.error('❌ Banco de dados ItemList NÃO foi carregado após espera. Tooltips de drop não funcionarão!');
+                  } else {
+                    console.log('✅ Banco de dados ItemList agora está disponível!');
+                  }
+                }
+                
+                // Renderiza baseado no displayType
+                if (config.displayType === 'cards') {
+                  renderCardsDisplay(panel, data, config, listId);
+                } else if (config.displayType === 'table') {
+                  renderTableDisplay(panel, data, config, listId);
+                } else if (config.displayType === 'list') {
+                  renderListDisplay(panel, data, config, listId);
+                }
+                
+                panel.dataset.sheetsInit = 'true';
+                
+              } catch (error) {
+                console.error(`❌ Erro ao carregar lista ${listId}:`, error);
+                
+                // Tenta usar cache antigo se disponível
+                const cacheKey = `dllist_cache_${listId}`;
+                const cachedData = localStorage.getItem(cacheKey);
+                if (cachedData) {
+                  console.log(`⚠️ Usando cache antigo para ${listId}`);
+                  const data = JSON.parse(cachedData);
+                  if (config.displayType === 'cards') {
+                    renderCardsDisplay(panel, data, config, listId);
+                  } else if (config.displayType === 'table') {
+                    renderTableDisplay(panel, data, config, listId);
+                  }
+                  panel.dataset.sheetsInit = 'true';
+                } else {
+                  // Exibe mensagem de erro
+                  const errorText = config.ui?.errorText || 'Erro ao carregar dados';
+                  panel.innerHTML = `<div style="padding: 20px; text-align: center; color: #ff6b6b;">${errorText}</div>`;
+                }
+              }
+            }
+            
+            // Processa colunas com itemlist após renderização
+            setTimeout(() => {
+              processItemListColumns();
+            }, 500); // Aguarda 500ms para garantir que as tabelas foram renderizadas
+          });
+          
+          // Função global para processar colunas com itemlist
+          window.processItemListColumns = function() {
+            if (!window.DLItemDatabase || window.DLItemDatabase.length === 0) {
+              console.log('⚠️ Banco de dados de itens não carregado ainda');
+              return;
+            }
+            
+            console.log('🔍 Procurando colunas com itemlist...');
+            
+            // Procura por todas as células <td> que contenham texto com vírgulas (possíveis listas de itens)
+            // e que estejam em colunas com cabeçalho contendo "itemlist" ou "item list"
+            const tables = document.querySelectorAll('table');
+            
+            tables.forEach(table => {
+              const thead = table.querySelector('thead');
+              if (!thead) return;
+              
+              // Encontra índices das colunas que são "itemlist"
+              const headers = thead.querySelectorAll('th');
+              const itemlistColumnIndexes = [];
+              
+              headers.forEach((th, index) => {
+                const headerText = th.textContent.toLowerCase().trim();
+                if (headerText.includes('itemlist') || headerText.includes('item list') || th.dataset.type === 'itemlist') {
+                  itemlistColumnIndexes.push(index);
+                  console.log(`✅ Coluna itemlist encontrada no índice ${index}: "${th.textContent}"`);
+                }
               });
               
-              const listEl = panel.querySelector('.items-panel__list');
-              const totalEl = panel.querySelector('#itemsTotalCount');
-              const visibleEl = panel.querySelector('#itemsVisibleCount');
-              const searchInput = panel.querySelector('#searchItem');
+              if (itemlistColumnIndexes.length === 0) return;
               
-              if (!listEl || !totalEl || !visibleEl) return;
+              // Processa as linhas
+              const tbody = table.querySelector('tbody');
+              if (!tbody) return;
               
-              // Mantém o cabeçalho sempre visível
-              const header = listEl.querySelector('.items-list-header');
-              
-              // Cria modal para detalhes do item
-              let modal = document.querySelector('.item-detail-modal');
-              let overlay = document.querySelector('.modal-overlay');
-              
-              if (!modal) {
-                modal = document.createElement('div');
-                modal.className = 'item-detail-modal';
-                document.body.appendChild(modal);
+              const rows = tbody.querySelectorAll('tr:not(.group-header)');
+              rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
                 
-                overlay = document.createElement('div');
-                overlay.className = 'modal-overlay';
-                document.body.appendChild(overlay);
+                itemlistColumnIndexes.forEach(colIndex => {
+                  const cell = cells[colIndex];
+                  if (!cell || !cell.textContent.trim()) return;
+                  
+                  // Separa os itens por vírgula
+                  const itemNames = cell.textContent.split(',').map(name => name.trim()).filter(name => name);
+                  
+                  if (itemNames.length === 0) return;
+                  
+                  // Cria elementos clicáveis para cada item
+                  const itemElements = itemNames.map(itemName => {
+                    const span = document.createElement('span');
+                    span.className = 'item-list-tag';
+                    span.textContent = itemName;
+                    span.dataset.itemName = itemName;
+                    
+                    // Adiciona evento de hover
+                    span.addEventListener('mouseenter', showItemTooltip);
+                    span.addEventListener('mouseleave', hideItemTooltip);
+                    span.addEventListener('mousemove', moveItemTooltip);
+                    
+                    return span;
+                  });
+                  
+                  // Substitui o conteúdo da célula
+                  cell.innerHTML = '';
+                  itemElements.forEach((el, idx) => {
+                    cell.appendChild(el);
+                    if (idx < itemElements.length - 1) {
+                      cell.appendChild(document.createTextNode(', '));
+                    }
+                  });
+                });
+              });
+            });
+          };
+          
+          // Cria o tooltip uma vez
+          let itemTooltip = null;
+          
+          function createItemTooltip() {
+            if (itemTooltip) return itemTooltip;
+            
+            itemTooltip = document.createElement('div');
+            itemTooltip.className = 'item-tooltip';
+            itemTooltip.style.cssText = `
+              position: fixed;
+              background: linear-gradient(135deg, #1e1e2e, #2a2a3e);
+              border: 2px solid #667eea;
+              border-radius: 8px;
+              padding: 12px;
+              max-width: 300px;
+              z-index: 10001;
+              display: none;
+              box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+              pointer-events: none;
+            `;
+            document.body.appendChild(itemTooltip);
+            return itemTooltip;
+          }
+          
+          function showItemTooltip(event) {
+            const tooltip = createItemTooltip();
+            const itemName = event.target.dataset.itemName;
+            
+            // Busca o item no banco de dados
+            const item = window.DLItemDatabase.find(i => 
+              i.name && i.name.toLowerCase().trim() === itemName.toLowerCase().trim()
+            );
+            
+            if (!item) {
+              tooltip.innerHTML = `
+                <div style="color: #ff6b6b; font-weight: 600;">Item não encontrado</div>
+                <div style="color: #aaa; font-size: 0.85rem; margin-top: 4px;">${itemName}</div>
+              `;
+            } else {
+              // Processa a URL do ícone (prnt.sc se necessário)
+              const iconUrl = item.icon || '';
+              
+              tooltip.innerHTML = `
+                <div style="display: flex; gap: 10px; align-items: start;">
+                  ${iconUrl ? `
+                    <div style="flex-shrink: 0;">
+                      <img src="${iconUrl}" alt="${item.name}" style="width: 48px; height: 48px; object-fit: contain; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2);" onerror="this.style.display='none'">
+                    </div>
+                  ` : ''}
+                  <div style="flex: 1;">
+                    <div style="color: #e0e0ff; font-weight: 700; font-size: 1rem; margin-bottom: 4px;">${item.name}</div>
+                    ${item.type ? `<div style="color: #8fa2ff; font-size: 0.85rem; margin-bottom: 6px;">${item.type}</div>` : ''}
+                    ${item.description ? `<div style="color: #d0d0e8; font-size: 0.875rem; line-height: 1.4;">${item.description}</div>` : ''}
+                  </div>
+                </div>
+              `;
+              
+              // Se o ícone for prnt.sc, extrai a imagem real
+              if (iconUrl && iconUrl.startsWith('https://prnt.sc/')) {
+                window.DLExtractPrntscImage(iconUrl).then(realUrl => {
+                  const img = tooltip.querySelector('img');
+                  if (img && realUrl !== iconUrl) {
+                    img.src = realUrl;
+                  }
+                });
+              }
+            }
+            
+            tooltip.style.display = 'block';
+            moveItemTooltip(event);
+          }
+          
+          function hideItemTooltip() {
+            if (itemTooltip) {
+              itemTooltip.style.display = 'none';
+            }
+          }
+          
+          function moveItemTooltip(event) {
+            if (!itemTooltip || itemTooltip.style.display === 'none') return;
+            
+            const x = event.clientX;
+            const y = event.clientY;
+            const offset = 15;
+            
+            // Ajusta posição para não sair da tela
+            const tooltipRect = itemTooltip.getBoundingClientRect();
+            let left = x + offset;
+            let top = y + offset;
+            
+            if (left + tooltipRect.width > window.innerWidth) {
+              left = x - tooltipRect.width - offset;
+            }
+            
+            if (top + tooltipRect.height > window.innerHeight) {
+              top = y - tooltipRect.height - offset;
+            }
+            
+            itemTooltip.style.left = left + 'px';
+            itemTooltip.style.top = top + 'px';
+          }
+          
+          
+          // Normaliza códigos (remove {}, trim e lowercase)
+          function normalizeCode(text) {
+            return (text || '')
+              .replace(/[{}]/g, '')
+              .trim()
+              .toLowerCase();
+          }
+          
+          // Extrai códigos no formato {CODE}
+          function extractCodesFromText(text) {
+            if (!text) return [];
+            const matches = text.match(/\{([^}]+)\}/g);
+            if (!matches) return [];
+            return matches
+              .map(m => m.replace(/[{}]/g, '').trim())
+              .filter(Boolean);
+          }
+          
+          // Função para renderizar seção de drops no modal
+          async function renderDropSection(itemlistString, currentItemName) {
+            console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+            console.log('🎯 RENDERIZANDO SEÇÃO DE DROPS NO MODAL');
+            
+            if (!itemlistString) {
+              console.warn('⚠️ Sem itemlist string fornecida');
+              return '';
+            }
+            
+            if (!window.DLItemDatabase) {
+              console.error('❌ ERRO CRÍTICO: Banco de dados ItemList não carregado!');
+              console.log('🔴 Isso significa que a aba ItemList não foi carregada corretamente');
+              return '<div style="color: #ff6b6b; padding: 10px; border: 1px solid #ff6b6b; border-radius: 4px; margin-top: 10px;">❌ Banco de dados de itens não carregado. Verifique o console (F12).</div>';
+            }
+            
+            console.log('📋 ItemList string:', itemlistString);
+            console.log('📚 Banco de dados:', window.DLItemDatabase.length, 'itens');
+            console.log('🔬 Estrutura do banco (primeiro item):', window.DLItemDatabase[0]);
+            console.log('🔑 Chaves disponíveis:', Object.keys(window.DLItemDatabase[0] || {}));
+            
+            const normalizeText = (text) => (text || '').toLowerCase().trim();
+            const codedItems = extractCodesFromText(itemlistString);
+            const itemNames = codedItems.length > 0
+              ? codedItems
+              : itemlistString.split(',').map(name => name.trim()).filter(name => name);
+            console.log('📝 Itens a buscar:', itemNames);
+            
+            if (itemNames.length === 0) {
+              console.warn('⚠️ Nenhum item após split');
+              return '';
+            }
+            
+            // Busca informações de cada item
+            const itemsData = await Promise.all(itemNames.map(async itemName => {
+              const normalizedSearch = itemName.toLowerCase().trim();
+              
+              console.log(`\n  🔎 Buscando: "${itemName}"`);
+              console.log(`     Normalizado: "${normalizedSearch}"`);
+              
+              // Busca exata
+              let item = window.DLItemDatabase.find(i => 
+                i.name && i.name.toLowerCase().trim() === normalizedSearch
+              );
+              
+              // Se não encontrou, tenta busca parcial
+              if (!item) {
+                console.log('     ⚠️ Busca exata falhou, tentando busca parcial...');
+                item = window.DLItemDatabase.find(i => 
+                  i.name && i.name.toLowerCase().includes(normalizedSearch)
+                );
                 
-                overlay.addEventListener('click', () => {
-                  modal.style.display = 'none';
-                  overlay.style.display = 'none';
+                if (item) {
+                  console.log(`     ✅ Encontrado com busca parcial: "${item.name}"`);
+                }
+              } else {
+                console.log(`     ✅ Encontrado (exato): "${item.name}"`);
+              }
+              
+              if (!item) {
+                console.error(`     ❌ NÃO ENCONTRADO: "${itemName}"`);
+                console.log('     📋 Sugestões (itens similares):');
+                window.DLItemDatabase
+                  .filter(i => i.name && i.name.toLowerCase().includes(normalizedSearch.substring(0, 3)))
+                  .slice(0, 5)
+                  .forEach(i => {
+                    console.log(`        - "${i.name}"`);
+                  });
+              }
+              
+              if (item && item.icon && item.icon.startsWith('https://prnt.sc/')) {
+                const realIcon = await window.DLExtractPrntscImage(item.icon);
+                return { name: itemName, data: { ...item, icon: realIcon } };
+              }
+              
+              return { name: itemName, data: item };
+            }));
+            
+            let html = `
+              <div class="item-detail-modal__drops-section">
+                <div class="item-detail-modal__drops-header">
+                  <span style="font-size: 1.2rem;">📦</span>
+                  <span style="font-weight: 700; color: #4CAF50;">Droop: ${itemNames.length} entre outros itens menos importantes.</span>
+                </div>
+                <div class="item-detail-modal__drops-grid">
+            `;
+            
+            itemsData.forEach(({ name, data }) => {
+              const relatedLines = Array.isArray(window.DLItemsList)
+                ? window.DLItemsList
+                    .filter(row => {
+                      const listValue = row.itemlist || '';
+                      return listValue
+                        .split(',')
+                        .map(n => n.trim())
+                        .some(n => normalizeText(n) === normalizeText(name));
+                    })
+                    .map(row => row.nome || row[Object.keys(row)[0]] || '')
+                    .filter(n => n && normalizeText(n) !== normalizeText(currentItemName))
+                : [];
+              const relatedNames = relatedLines.join(', ');
+              if (data) {
+                const iconUrl = data.icon || '';
+                const safeDescription = (data.description || '').replace(/"/g, '&quot;');
+                const safeRelated = relatedNames.replace(/"/g, '&quot;');
+                const safeImageInfo = ((data.imageinfo || data.icon) || '').replace(/"/g, '&quot;');
+                const safeName = (data.name || name || '').replace(/"/g, '&quot;');
+                html += `
+                  <div class="drop-item" data-description="${safeDescription}" data-related="${safeRelated}" data-imageinfo="${safeImageInfo}" data-name="${safeName}">
+                    ${iconUrl ? `<img src="${iconUrl}" alt="${data.name}" class="drop-item__icon" onerror="this.style.display='none'">` : '<div class="drop-item__icon-placeholder">?</div>'}
+                    <div class="drop-item__info">
+                      <div class="drop-item__name">${data.name}</div>
+                      ${data.type ? `<div class="drop-item__type">${data.type}</div>` : ''}
+                    </div>
+                  </div>
+                `;
+              } else {
+                html += `
+                  <div class="drop-item drop-item--notfound" data-description="" data-related="" data-imageinfo="" data-name="${(name || '').replace(/"/g, '&quot;')}">
+                    <div class="drop-item__icon-placeholder">❌</div>
+                    <div class="drop-item__info">
+                      <div class="drop-item__name">${name}</div>
+                      <div class="drop-item__type">(não encontrado)</div>
+                    </div>
+                  </div>
+                `;
+              }
+            });
+            
+            html += '</div></div>';
+            
+            console.log(`✅ Seção de drops renderizada com ${itemsData.length} itens`);
+            console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+            
+            return html;
+          }
+
+          // Hover no modal: descrição + itens relacionados do mesmo drop
+          let dropItemTooltip = null;
+          
+          function createDropItemTooltip() {
+            if (dropItemTooltip) return dropItemTooltip;
+            dropItemTooltip = document.createElement('div');
+            dropItemTooltip.className = 'drop-item-tooltip';
+            dropItemTooltip.style.display = 'none';
+            document.body.appendChild(dropItemTooltip);
+            return dropItemTooltip;
+          }
+          
+          function showDropItemTooltip(event) {
+            const tooltip = createDropItemTooltip();
+            const target = event.currentTarget;
+            const description = target.dataset.description || '';
+            const related = target.dataset.related || '';
+            const imageInfo = target.dataset.imageinfo || '';
+            const itemName = target.dataset.name || '';
+            
+            let html = '';
+            if (itemName) {
+              html += `<div class="drop-item-tooltip__title">${itemName}</div>`;
+            }
+            if (imageInfo) {
+              html += `<div class="drop-item-tooltip__image"><img src="${imageInfo}" alt="" onerror="this.style.display='none'"></div>`;
+            }
+            if (description) {
+              html += `<div class="drop-item-tooltip__desc">${description}</div>`;
+            } else {
+              html += `<div class="drop-item-tooltip__desc drop-item-tooltip__desc--empty">Sem descrição</div>`;
+            }
+            
+            if (related) {
+              html += `<div class="drop-item-tooltip__related"><strong>Outros mobs/pbs que também dropam este item:</strong> ${related}</div>`;
+            }
+            
+            tooltip.innerHTML = html;
+            tooltip.style.display = 'block';
+            moveDropItemTooltip(event);
+          }
+          
+          function hideDropItemTooltip() {
+            if (dropItemTooltip) {
+              dropItemTooltip.style.display = 'none';
+            }
+          }
+          
+          function moveDropItemTooltip(event) {
+            if (!dropItemTooltip || dropItemTooltip.style.display === 'none') return;
+            const x = event.clientX;
+            const y = event.clientY;
+            const offset = 15;
+            const rect = dropItemTooltip.getBoundingClientRect();
+            let left = x + offset;
+            let top = y + offset;
+            if (left + rect.width > window.innerWidth) {
+              left = x - rect.width - offset;
+            }
+            if (top + rect.height > window.innerHeight) {
+              top = y - rect.height - offset;
+            }
+            dropItemTooltip.style.left = left + 'px';
+            dropItemTooltip.style.top = top + 'px';
+          }
+          
+          function initDropItemHover(modalEl) {
+            const dropItems = modalEl.querySelectorAll('.drop-item');
+            dropItems.forEach(item => {
+              item.addEventListener('mouseenter', showDropItemTooltip);
+              item.addEventListener('mouseleave', hideDropItemTooltip);
+              item.addEventListener('mousemove', moveDropItemTooltip);
+            });
+          }
+          
+          // Tooltip para ícones de MobType
+          let mobTypeTooltip = null;
+          
+          function createMobTypeTooltip() {
+            if (mobTypeTooltip) return mobTypeTooltip;
+            mobTypeTooltip = document.createElement('div');
+            mobTypeTooltip.className = 'mobtype-tooltip';
+            mobTypeTooltip.style.display = 'none';
+            document.body.appendChild(mobTypeTooltip);
+            return mobTypeTooltip;
+          }
+          
+          function showMobTypeTooltip(event) {
+            const tooltip = createMobTypeTooltip();
+            const target = event.currentTarget;
+            const desc = target.dataset.desc || '';
+            const img = target.dataset.image || '';
+            const code = target.dataset.code || '';
+            
+            let html = '';
+            if (img) {
+              html += `<div class="mobtype-tooltip__image"><img src="${img}" alt="${code}" onerror="this.style.display='none'"></div>`;
+            }
+            html += `<div class="mobtype-tooltip__title">${code}</div>`;
+            html += `<div class="mobtype-tooltip__desc">${desc || 'Sem descrição'}</div>`;
+            
+            tooltip.innerHTML = html;
+            tooltip.style.display = 'block';
+            moveMobTypeTooltip(event);
+            
+            if (img.startsWith('https://prnt.sc/')) {
+              window.DLExtractPrntscImage(img).then(realUrl => {
+                const imageEl = tooltip.querySelector('img');
+                if (imageEl) imageEl.src = realUrl;
+              });
+            }
+          }
+          
+          function hideMobTypeTooltip() {
+            if (mobTypeTooltip) {
+              mobTypeTooltip.style.display = 'none';
+            }
+          }
+          
+          function moveMobTypeTooltip(event) {
+            if (!mobTypeTooltip || mobTypeTooltip.style.display === 'none') return;
+            const x = event.clientX;
+            const y = event.clientY;
+            const offset = 15;
+            const rect = mobTypeTooltip.getBoundingClientRect();
+            let left = x + offset;
+            let top = y + offset;
+            if (left + rect.width > window.innerWidth) {
+              left = x - rect.width - offset;
+            }
+            if (top + rect.height > window.innerHeight) {
+              top = y - rect.height - offset;
+            }
+            mobTypeTooltip.style.left = left + 'px';
+            mobTypeTooltip.style.top = top + 'px';
+          }
+          
+          function initMobTypeHover() {
+            const mobTypeIcons = document.querySelectorAll('.mobtype-icon');
+            mobTypeIcons.forEach(icon => {
+              icon.addEventListener('mouseenter', showMobTypeTooltip);
+              icon.addEventListener('mouseleave', hideMobTypeTooltip);
+              icon.addEventListener('mousemove', moveMobTypeTooltip);
+              
+              const img = icon.querySelector('img');
+              if (img && img.src && img.src.startsWith('https://prnt.sc/')) {
+                const prntUrl = img.src;
+                window.DLExtractPrntscImage(prntUrl).then(realUrl => {
+                  img.src = realUrl;
+                });
+              }
+            });
+          }
+
+          function refreshMobTypeIcons() {
+            if (!window.DLMobTypeMap) return;
+            const mobTypeIcons = document.querySelectorAll('.mobtype-icon');
+            mobTypeIcons.forEach(icon => {
+              const code = icon.dataset.code || '';
+              const info = window.DLMobTypeMap[normalizeCode(code)];
+              if (!info) return;
+              const safeDesc = (info.description || '').replace(/"/g, '&quot;');
+              const safeImg = (info.imageurl || '').replace(/"/g, '&quot;');
+              icon.dataset.desc = safeDesc;
+              icon.dataset.image = safeImg;
+              if (safeImg) {
+                icon.innerHTML = `<img src="${safeImg}" alt="${code}" onerror="this.style.display='none'">`;
+              } else {
+                icon.textContent = code;
+              }
+            });
+            initMobTypeHover();
+          }
+          
+          // Shadowbox de imagem extra ao hover no localFarm
+          let localFarmTooltip = null;
+          
+          function createLocalFarmTooltip() {
+            if (localFarmTooltip) return localFarmTooltip;
+            localFarmTooltip = document.createElement('div');
+            localFarmTooltip.className = 'localfarm-tooltip';
+            localFarmTooltip.style.display = 'none';
+            document.body.appendChild(localFarmTooltip);
+            return localFarmTooltip;
+          }
+          
+          function showLocalFarmTooltip(event) {
+            const tooltip = createLocalFarmTooltip();
+            const target = event.currentTarget;
+            const rawImageUrl = target.dataset.image || '';
+            const imageUrl = rawImageUrl.split(',').map(url => url.trim()).filter(url => url)[0] || '';
+            if (!imageUrl) return;
+            
+            tooltip.innerHTML = `<img src="${imageUrl}" alt="" onerror="this.style.display='none'">`;
+            tooltip.style.display = 'block';
+            moveLocalFarmTooltip(event);
+            
+            if (imageUrl.startsWith('https://prnt.sc/')) {
+              window.DLExtractPrntscImage(imageUrl).then(realUrl => {
+                const img = tooltip.querySelector('img');
+                if (img) img.src = realUrl;
+              });
+            }
+          }
+          
+          function hideLocalFarmTooltip() {
+            if (localFarmTooltip) {
+              localFarmTooltip.style.display = 'none';
+            }
+          }
+          
+          function moveLocalFarmTooltip(event) {
+            if (!localFarmTooltip || localFarmTooltip.style.display === 'none') return;
+            const x = event.clientX;
+            const y = event.clientY;
+            const offset = 15;
+            const rect = localFarmTooltip.getBoundingClientRect();
+            let left = x + offset;
+            let top = y + offset;
+            if (left + rect.width > window.innerWidth) {
+              left = x - rect.width - offset;
+            }
+            if (top + rect.height > window.innerHeight) {
+              top = y - rect.height - offset;
+            }
+            localFarmTooltip.style.left = left + 'px';
+            localFarmTooltip.style.top = top + 'px';
+          }
+          
+          function initLocalFarmHover() {
+            const localFarmEls = document.querySelectorAll('.localfarm-hover');
+            localFarmEls.forEach(el => {
+              el.addEventListener('mouseenter', showLocalFarmTooltip);
+              el.addEventListener('mouseleave', hideLocalFarmTooltip);
+              el.addEventListener('mousemove', moveLocalFarmTooltip);
+            });
+          }
+          
+          // Função para renderizar no formato de cards
+          function renderCardsDisplay(panel, data, config, listId) {
+            const ui = config.ui || {};
+            
+            // Cria estrutura HTML com classe única para evitar conflito com plugin CSV
+            panel.innerHTML = `
+              <div class="items-panel sheets-dynamic-list" data-source="sheets">
+                <div class="items-panel__header">
+                  <h3>${ui.title || 'Lista'}</h3>
+                  ${config.filters?.search?.enabled ? `
+                    <input 
+                      type="text" 
+                      id="search-${listId}" 
+                      placeholder="${config.filters.search.placeholder || 'Buscar...'}"
+                    />
+                  ` : ''}
+                </div>
+                ${config.filters?.type?.enabled ? `
+                  <div class="items-panel__filters">
+                    <span style="font-size: 0.85rem; color: #8fbce6; margin-right: 10px;">Filtrar por tipo:</span>
+                    ${config.filters.type.options.map(option => `
+                      <label style="margin-right: 12px; font-size: 0.85rem; cursor: pointer;">
+                        <input type="checkbox" id="filter-${listId}-${option.toLowerCase().replace(/\s+/g, '-')}" value="${option}">
+                        ${option}
+                      </label>
+                    `).join('')}
+                  </div>
+                ` : ''}
+                <div class="items-panel__list" id="list-${listId}">
+                  <div class="items-list-header">
+                    <span>Item</span>
+                    <span>Detalhes</span>
+                  </div>
+                </div>
+                <div class="items-panel__footer">
+                  <span>${ui.totalLabel || 'Total'}: <strong id="total-${listId}">${data.length}</strong></span>
+                  <span class="items-panel__footer-secondary">
+                    ${ui.visibleLabel || 'Mostrando'} <strong id="visible-${listId}">${data.length}</strong>
+                  </span>
+                </div>
+              </div>
+            `;
+            
+            const listEl = panel.querySelector(`#list-${listId}`);
+            const header = listEl.querySelector('.items-list-header');
+            
+            // Cria modal para detalhes
+            let modal = document.querySelector(`.item-detail-modal-${listId}`);
+            let overlay = document.querySelector(`.modal-overlay-${listId}`);
+            
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.className = `item-detail-modal item-detail-modal-${listId}`;
+              document.body.appendChild(modal);
+              
+              overlay = document.createElement('div');
+              overlay.className = `modal-overlay modal-overlay-${listId}`;
+              document.body.appendChild(overlay);
+              
+              overlay.addEventListener('click', () => {
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+              });
+            }
+            
+            // Função para mostrar detalhes
+            const showDetails = async (item) => {
+              const imagemMain = item.imagemPopup || item.imagem;
+              let imageUrls = imagemMain ? imagemMain.split(',').map(url => url.trim()).filter(url => url) : [];
+              
+              // Processa URLs do prnt.sc
+              if (imageUrls.length > 0) {
+                const processedUrls = await Promise.all(
+                  imageUrls.map(url => window.DLExtractPrntscImage(url))
+                );
+                imageUrls = processedUrls;
+              }
+              
+              const hasMultipleImages = imageUrls.length > 1;
+              
+              // Renderiza seção de drops se houver
+              console.log('🎯 Verificando itemlist no item:', item.itemlist);
+              const dropsSection = item.itemlist && item.itemlist.trim() 
+                ? await renderDropSection(item.itemlist) 
+                : '';
+              console.log('📦 Drops section HTML gerado:', dropsSection ? `${dropsSection.substring(0, 100)}...` : '(vazio)');
+              
+              const content = config.renderDetails 
+                ? config.renderDetails(item) 
+                : `<div class="item-detail-modal__header">${item.nome || item[Object.keys(config.columns)[0]]}</div>
+                   <div class="item-detail-modal__layout">
+                     ${imageUrls.length > 0 ? `
+                       <div class="item-detail-modal__image-section">
+                         <div class="item-detail-modal__image-container" data-current-image="0" data-image-group="main">
+                           ${hasMultipleImages ? `
+                             <button class="item-detail-modal__image-nav item-detail-modal__image-nav--prev" onclick="window.DLModalImageNav('prev', 'main')">‹</button>
+                             <button class="item-detail-modal__image-nav item-detail-modal__image-nav--next" onclick="window.DLModalImageNav('next', 'main')">›</button>
+                           ` : ''}
+                           <img src="${imageUrls[0]}" alt="${item.nome}" class="item-detail-modal__image" onerror="this.style.display='none'" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+                           ${hasMultipleImages ? `
+                             <div class="item-detail-modal__image-counter">
+                               <span class="current-image-index">1</span> / ${imageUrls.length}
+                             </div>
+                           ` : ''}
+                         </div>
+                         <div style="display: none;" class="image-urls-data" data-image-urls="main">${imageUrls.join('|||')}</div>
+                       </div>
+                     ` : ''}
+                     <div class="item-detail-modal__content-section">
+                       <div class="item-detail-modal__content">
+                         ${Object.entries(config.columns)
+                           .filter(([key]) => key !== 'imagem' && key !== 'imagemPopup' && key !== 'imagemExtra' && key !== 'itemlist' && key !== 'mobtype')
+                           .map(([key, col]) => 
+                           `<div class="item-detail-modal__row">
+                              <span class="item-detail-modal__label">${col.label}:</span>
+                              <span class="item-detail-modal__value">${item[key] || '-'}</span>
+                            </div>`
+                         ).join('')}
+                       </div>
+                       <button class="item-detail-modal__close">Fechar</button>
+                     </div>
+                   </div>`;
+              
+              const finalContent = config.renderDetails
+                ? content
+                : (dropsSection ? `${content}${dropsSection}` : content);
+              modal.innerHTML = finalContent;
+              
+              if (item.itemlist && item.itemlist.trim()) {
+                const dropsHtml = await renderDropSection(item.itemlist, item.nome || item[Object.keys(config.columns)[0]]);
+                const placeholder = modal.querySelector('[data-drops-placeholder]');
+                if (placeholder) {
+                  placeholder.innerHTML = dropsHtml;
+                }
+                initDropItemHover(modal);
+              }
+              initLocalFarmHover();
+              initMobTypeHover();
+              modal.style.display = 'block';
+              overlay.style.display = 'block';
+              
+              modal.querySelector('.item-detail-modal__close').addEventListener('click', () => {
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+              });
+            };
+            
+            // Função para renderizar itens
+            const renderItems = (items) => {
+              // Remove cards anteriores mas mantém o header
+              const cards = listEl.querySelectorAll('.item-card');
+              cards.forEach(card => card.remove());
+              
+              items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                
+                if (config.renderCard) {
+                  card.innerHTML = config.renderCard(item);
+                } else {
+                  // Renderização padrão
+                  const firstCol = Object.keys(config.columns)[0];
+                  card.innerHTML = `<div class="item-card__name">${item[firstCol]}</div>`;
+                }
+                
+                // Processa imagens do prnt.sc após renderizar
+                const cardImages = card.querySelectorAll('img[src^="https://prnt.sc/"]');
+                cardImages.forEach(img => {
+                  const prntscUrl = img.src;
+                  window.DLExtractPrntscImage(prntscUrl).then(realUrl => {
+                    img.src = realUrl;
+                  });
+                });
+                
+                card.addEventListener('click', () => showDetails(item));
+                listEl.appendChild(card);
+              });
+              
+              document.getElementById(`visible-${listId}`).textContent = items.length;
+            };
+            
+            // Função para aplicar filtros
+            const applyFilters = () => {
+              const searchInput = document.getElementById(`search-${listId}`);
+              const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+              
+              let filtered = data;
+              
+              // Aplica filtro de busca
+              if (config.filters?.search?.enabled && searchTerm) {
+                filtered = filtered.filter(item => {
+                  return config.filters.search.fields.some(field => 
+                    item[field] && item[field].toLowerCase().includes(searchTerm)
+                  );
                 });
               }
               
-              const showItemDetails = (item) => {
-                modal.innerHTML = `
-                  <div class="item-detail-modal__header">${item.nome}</div>
-                  ${item.imagem ? `
-                    <div class="item-detail-modal__image-container">
-                      <img src="${item.imagem}" alt="${item.nome}" class="item-detail-modal__image" onerror="this.style.display='none'">
-                    </div>
-                  ` : ''}
-                  <div class="item-detail-modal__content">
-                    <div class="item-detail-modal__row">
-                      <span class="item-detail-modal__label">Tipo:</span>
-                      <span class="item-detail-modal__value">${item.tipo}</span>
-                    </div>
-                    <div class="item-detail-modal__row">
-                      <span class="item-detail-modal__label">Level:</span>
-                      <span class="item-detail-modal__value">${item.level}</span>
-                    </div>
-                    <div class="item-detail-modal__row">
-                      <span class="item-detail-modal__label">Raridade:</span>
-                      <span class="item-detail-modal__value">${item.raridade}</span>
-                    </div>
-                    <div class="item-detail-modal__row">
-                      <span class="item-detail-modal__label">Descrição:</span>
-                      <span class="item-detail-modal__value">${item.descricao}</span>
-                    </div>
-                    ${item.localFarm ? `
-                      <div class="item-detail-modal__row">
-                        <span class="item-detail-modal__label">Local de Farm ou Droop:</span>
-                        <span class="item-detail-modal__value">${item.localFarm}</span>
-                      </div>
-                    ` : ''}
-                  </div>
-                  <button class="item-detail-modal__close">Fechar</button>
-                `;
+              // Aplica filtro de tipo
+              if (config.filters?.type?.enabled) {
+                const checkedTypes = config.filters.type.options
+                  .filter(option => {
+                    const checkbox = document.getElementById(`filter-${listId}-${option.toLowerCase().replace(/\s+/g, '-')}`);
+                    return checkbox && checkbox.checked;
+                  });
                 
-                modal.style.display = 'block';
-                overlay.style.display = 'block';
-                
-                modal.querySelector('.item-detail-modal__close').addEventListener('click', () => {
-                  modal.style.display = 'none';
-                  overlay.style.display = 'none';
-                });
-              };
+                if (checkedTypes.length > 0) {
+                  filtered = filtered.filter(item => 
+                    checkedTypes.includes(item[config.filters.type.field])
+                  );
+                }
+              }
               
-              const getRaridadeClass = (raridade) => {
-                const normalized = raridade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                return `item-card__rarity--${normalized}`;
-              };
-              
-              const renderItems = (itemsToRender) => {
-                // Remove todos os cards de itens, mantendo o cabeçalho
-                const cards = listEl.querySelectorAll('.item-card');
-                cards.forEach(card => card.remove());
-                
-                itemsToRender.forEach(item => {
-                  const card = document.createElement('div');
-                  card.className = 'item-card';
-                  card.innerHTML = `
-                    ${item.imagem ? `
-                      <div class="item-card__image">
-                        <img src="${item.imagem}" alt="${item.nome}" onerror="this.style.display='none'">
-                      </div>
-                    ` : '<div class="item-card__image item-card__image--placeholder"></div>'}
-                    <div class="item-card__name">${item.nome}</div>
-                    <div class="item-card__type">${item.tipo}</div>
-                    <div class="item-card__level">${item.level}</div>
-                    <div class="item-card__rarity ${getRaridadeClass(item.raridade)}">${item.raridade}</div>
-                  `;
-                  
-                  card.addEventListener('click', () => showItemDetails(item));
-                  listEl.appendChild(card);
-                });
-                
-                visibleEl.textContent = itemsToRender.length;
-              };
-              
-              // Filtros de tipo
-              const typeFilters = {
-                'Arma': panel.querySelector('#filterArma'),
-                'Armadura': panel.querySelector('#filterArmadura'),
-                'Item Especial': panel.querySelector('#filterItemEspecial'),
-                'Acessório': panel.querySelector('#filterAcessorio')
-              };
-              
-              const applyFilters = () => {
-                const searchTerm = searchInput.value.toLowerCase();
-                const activeTypes = Object.keys(typeFilters).filter(type => 
-                  typeFilters[type] && typeFilters[type].checked
-                );
-                
-                const filtered = items.filter(item => {
-                  const matchesSearch = !searchTerm || 
-                    item.nome.toLowerCase().includes(searchTerm) ||
-                    item.tipo.toLowerCase().includes(searchTerm) ||
-                    item.descricao.toLowerCase().includes(searchTerm);
-                  
-                  const matchesType = activeTypes.length === 0 || activeTypes.includes(item.tipo);
-                  
-                  return matchesSearch && matchesType;
-                });
-                
-                renderItems(filtered);
-              };
-              
-              // Event listeners
+              renderItems(filtered);
+            };
+            
+            // Event listeners para filtros
+            const searchInput = document.getElementById(`search-${listId}`);
+            if (searchInput) {
               searchInput.addEventListener('input', applyFilters);
-              Object.values(typeFilters).forEach(checkbox => {
+            }
+            
+            if (config.filters?.type?.enabled) {
+              config.filters.type.options.forEach(option => {
+                const checkbox = document.getElementById(`filter-${listId}-${option.toLowerCase().replace(/\s+/g, '-')}`);
                 if (checkbox) {
                   checkbox.addEventListener('change', applyFilters);
                 }
               });
-              
-              totalEl.textContent = items.length;
-              renderItems(items);
-              panel.dataset.itemsInit = 'true';
-              
-            } catch (error) {
-              console.error('Erro ao carregar catálogo de itens:', error);
             }
-          });
+            
+            // Renderização inicial
+            renderItems(data);
+            initLocalFarmHover();
+            initMobTypeHover();
+          }
+          
+          // Função para renderizar no formato de tabela
+          function renderTableDisplay(panel, data, config, listId) {
+            const ui = config.ui || {};
+            
+            // Cria modal para detalhes
+            let modal = document.querySelector(`.item-detail-modal-${listId}`);
+            let overlay = document.querySelector(`.modal-overlay-${listId}`);
+            
+            if (!modal) {
+              modal = document.createElement('div');
+              modal.className = `item-detail-modal item-detail-modal-${listId}`;
+              document.body.appendChild(modal);
+              
+              overlay = document.createElement('div');
+              overlay.className = `modal-overlay modal-overlay-${listId}`;
+              document.body.appendChild(overlay);
+              
+              overlay.addEventListener('click', () => {
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+              });
+            }
+            
+            // Função para mostrar detalhes
+            const showDetails = async (item) => {
+              const imagemMain = item.imagemPopup || item.imagem;
+              let imageUrls = imagemMain ? imagemMain.split(',').map(url => url.trim()).filter(url => url) : [];
+              
+              // Processa URLs do prnt.sc
+              if (imageUrls.length > 0) {
+                const processedUrls = await Promise.all(
+                  imageUrls.map(url => window.DLExtractPrntscImage(url))
+                );
+                imageUrls = processedUrls;
+              }
+              
+              const hasMultipleImages = imageUrls.length > 1;
+              
+              // Renderiza seção de drops se houver
+              console.log('🎯 Verificando itemlist no item:', item.itemlist);
+              const dropsSection = item.itemlist && item.itemlist.trim() 
+                ? await renderDropSection(item.itemlist) 
+                : '';
+              console.log('📦 Drops section HTML gerado:', dropsSection ? `${dropsSection.substring(0, 100)}...` : '(vazio)');
+              
+              const content = config.renderDetails 
+                ? config.renderDetails(item) 
+                : `<div class="item-detail-modal__header">${item.nome || item[Object.keys(config.columns)[0]]}</div>
+                   <div class="item-detail-modal__layout">
+                     ${imageUrls.length > 0 ? `
+                       <div class="item-detail-modal__image-section">
+                         <div class="item-detail-modal__image-container" data-current-image="0" data-image-group="main">
+                           ${hasMultipleImages ? `
+                             <button class="item-detail-modal__image-nav item-detail-modal__image-nav--prev" onclick="window.DLModalImageNav('prev', 'main')">‹</button>
+                             <button class="item-detail-modal__image-nav item-detail-modal__image-nav--next" onclick="window.DLModalImageNav('next', 'main')">›</button>
+                           ` : ''}
+                           <img src="${imageUrls[0]}" alt="${item.nome}" class="item-detail-modal__image" onerror="this.style.display='none'" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+                           ${hasMultipleImages ? `
+                             <div class="item-detail-modal__image-counter">
+                               <span class="current-image-index">1</span> / ${imageUrls.length}
+                             </div>
+                           ` : ''}
+                         </div>
+                         <div style="display: none;" class="image-urls-data" data-image-urls="main">${imageUrls.join('|||')}</div>
+                       </div>
+                     ` : ''}
+                     <div class="item-detail-modal__content-section">
+                       <div class="item-detail-modal__content">
+                         ${Object.entries(config.columns)
+                           .filter(([key]) => key !== 'imagem' && key !== 'imagemPopup' && key !== 'imagemExtra' && key !== 'itemlist' && key !== 'mobtype')
+                           .map(([key, col]) => 
+                           `<div class="item-detail-modal__row">
+                              <span class="item-detail-modal__label">${col.label}:</span>
+                              <span class="item-detail-modal__value">${item[key] || '-'}</span>
+                            </div>`
+                         ).join('')}
+                       </div>
+                       <button class="item-detail-modal__close">Fechar</button>
+                     </div>
+                   </div>`;
+              const finalContent = config.renderDetails
+                ? content
+                : (dropsSection ? `${content}${dropsSection}` : content);
+              modal.innerHTML = finalContent;
+              
+              if (item.itemlist && item.itemlist.trim()) {
+                const dropsHtml = await renderDropSection(item.itemlist, item.nome || item[Object.keys(config.columns)[0]]);
+                const placeholder = modal.querySelector('[data-drops-placeholder]');
+                if (placeholder) {
+                  placeholder.innerHTML = dropsHtml;
+                }
+                initDropItemHover(modal);
+              }
+              modal.style.display = 'block';
+              overlay.style.display = 'block';
+              
+              modal.querySelector('.item-detail-modal__close').addEventListener('click', () => {
+                modal.style.display = 'none';
+                overlay.style.display = 'none';
+              });
+            };
+            
+            // Filtra e reordena colunas (imagem primeiro, esconde imagemPopup)
+            const allColumns = Object.entries(config.columns).filter(([key]) => 
+              key !== 'imagemPopup' && key !== 'imagemExtra' && key !== 'mobtype'
+            );
+            
+            // Reordena: imagem primeiro, depois as outras
+            const visibleColumns = [
+              ...allColumns.filter(([key]) => key === 'imagem'),
+              ...allColumns.filter(([key]) => key !== 'imagem')
+            ];
+            
+            panel.innerHTML = `
+              <div class="table-panel">
+                <div class="table-panel__header">
+                  <h3>${ui.title || 'Lista'}</h3>
+                  ${config.filters?.search?.enabled ? `
+                    <input 
+                      type="text" 
+                      id="search-${listId}" 
+                      placeholder="${config.filters.search.placeholder || 'Buscar...'}"
+                    />
+                  ` : ''}
+                </div>
+                <div class="table-panel__controls">
+                  <label>
+                    <input type="checkbox" id="group-by-desc-${listId}">
+                    Agrupar por Descrição
+                  </label>
+                  <label>
+                    <input type="checkbox" id="sort-by-rarity-${listId}">
+                    Ordenar por Raridade
+                  </label>
+                </div>
+                <div class="table-panel__content">
+                  <table id="table-${listId}">
+                    <thead>
+                      <tr>
+                        ${visibleColumns.map(([key, col]) => 
+                          `<th data-sort="${key}">${col.label} <span class="sort-indicator"></span></th>`
+                        ).join('')}
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="table-panel__footer">
+                  <span>${ui.totalLabel || 'Total'}: <strong id="total-${listId}">${data.length}</strong></span>
+                  <span>${ui.visibleLabel || 'Mostrando'} <strong id="visible-${listId}">${data.length}</strong></span>
+                </div>
+              </div>
+            `;
+            
+            const tbody = panel.querySelector(`#table-${listId} tbody`);
+            const thead = panel.querySelector(`#table-${listId} thead`);
+            let currentSort = { key: null, order: 'asc' };
+            let currentData = [...data];
+            
+            // Função para ordenar por raridade
+            const rarityOrder = { 'Mítico': 5, 'Lendário': 4, 'Épico': 3, 'Raro': 2, 'Comum': 1 };
+            
+            const sortData = (items, key, order = 'asc') => {
+              return items.sort((a, b) => {
+                let aVal = a[key] || '';
+                let bVal = b[key] || '';
+                
+                // Ordenação especial para raridade
+                if (key === 'raridade') {
+                  aVal = rarityOrder[aVal] || 0;
+                  bVal = rarityOrder[bVal] || 0;
+                }
+                
+                if (aVal < bVal) return order === 'asc' ? -1 : 1;
+                if (aVal > bVal) return order === 'asc' ? 1 : -1;
+                return 0;
+              });
+            };
+            
+            const renderRows = (items, grouped = false) => {
+              tbody.innerHTML = '';
+              
+              if (grouped) {
+                // Agrupa por descrição
+                const groups = {};
+                items.forEach(item => {
+                  const desc = item.descricao || 'Sem descrição';
+                  if (!groups[desc]) groups[desc] = [];
+                  groups[desc].push(item);
+                });
+                
+                // Renderiza grupos
+                Object.entries(groups).forEach(([desc, groupItems]) => {
+                  // Linha de grupo (clicável para expandir/recolher)
+                  const groupRow = document.createElement('tr');
+                  groupRow.className = 'group-header';
+                  groupRow.innerHTML = `
+                    <td colspan="${visibleColumns.length}">
+                      <span class="group-toggle">▼</span>
+                      <strong>${desc}</strong> 
+                      <span class="group-count">(${groupItems.length} itens)</span>
+                    </td>
+                  `;
+                  tbody.appendChild(groupRow);
+                  
+                  // Linhas do grupo
+                  groupItems.forEach(item => {
+                    const row = createRow(item);
+                    row.classList.add('group-item');
+                    tbody.appendChild(row);
+                  });
+                  
+                  // Toggle ao clicar no grupo
+                  groupRow.addEventListener('click', () => {
+                    const isExpanded = groupRow.classList.toggle('collapsed');
+                    const toggle = groupRow.querySelector('.group-toggle');
+                    toggle.textContent = isExpanded ? '▶' : '▼';
+                    
+                    // Esconde/mostra itens do grupo
+                    let nextRow = groupRow.nextElementSibling;
+                    while (nextRow && nextRow.classList.contains('group-item')) {
+                      nextRow.style.display = isExpanded ? 'none' : '';
+                      nextRow = nextRow.nextElementSibling;
+                    }
+                  });
+                });
+              } else {
+                // Renderização normal
+                items.forEach(item => {
+                  tbody.appendChild(createRow(item));
+                });
+              }
+              
+              document.getElementById(`visible-${listId}`).textContent = items.length;
+              initLocalFarmHover();
+              initMobTypeHover();
+            };
+            
+            const createRow = (item) => {
+              const row = document.createElement('tr');
+              row.innerHTML = visibleColumns.map(([key, col]) => {
+                // Renderização especial para imagem
+                if (key === 'imagem') {
+                  const imgUrl = item[key];
+                  if (imgUrl && imgUrl.trim()) {
+                    // Verifica se é prnt.sc
+                    if (imgUrl.trim().startsWith('https://prnt.sc/')) {
+                      // Placeholder temporário enquanto carrega
+                      return `<td class="img-cell"><img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Crect fill='%23333' width='48' height='48'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%23999' font-size='10'%3E...%3C/text%3E%3C/svg%3E" alt="${item.nome}" class="table-thumb" data-prntsc="${imgUrl}"></td>`;
+                    }
+                    return `<td class="img-cell"><img src="${imgUrl}" alt="${item.nome}" class="table-thumb" onerror="this.style.display='none'"></td>`;
+                  }
+                  return '<td class="img-cell">-</td>';
+                }
+                // Renderização especial para nome com ícones de MobType
+                else if (key === 'nome') {
+                  const nameValue = item[key] || '-';
+                  const mobTypeRaw = item.mobtype || '';
+                  const mobTypeCodes = (() => {
+                    const extracted = extractCodesFromText(mobTypeRaw);
+                    if (extracted.length > 0) return extracted;
+                    const fallback = mobTypeRaw.split(',').map(v => v.trim()).filter(Boolean);
+                    return fallback;
+                  })();
+                  const iconsHtml = mobTypeCodes.length > 0
+                    ? mobTypeCodes.map(code => {
+                        const info = window.DLMobTypeMap ? window.DLMobTypeMap[normalizeCode(code)] : null;
+                        const safeDesc = (info?.description || '').replace(/"/g, '&quot;');
+                        const safeImg = (info?.imageurl || '').replace(/"/g, '&quot;');
+                        return `<span class="mobtype-icon" data-desc="${safeDesc}" data-image="${safeImg}" data-code="${code}">
+                          ${safeImg ? `<img src="${safeImg}" alt="${code}" onerror="this.style.display='none'">` : code}
+                        </span>`;
+                      }).join('')
+                    : '';
+                  return `<td><div class="mobtype-name-cell"><span class="mobtype-name">${nameValue}</span><div class="mobtype-icons">${iconsHtml}</div></div></td>`;
+                }
+                // Renderização especial para localFarm (coluna E) com shadowbox de imagem extra
+                else if (key === 'localFarm') {
+                  const value = item[key] || '-';
+                  const extraImage = item.imagemExtra || '';
+                  if (extraImage && extraImage.trim()) {
+                    return `<td><span class="localfarm-hover" data-image="${extraImage}">${value} <span class="localfarm-icon">🖼️</span></span></td>`;
+                  }
+                  return `<td>${value}</td>`;
+                }
+                // Renderização especial para itemlist (coluna de drops)
+                else if (key === 'itemlist') {
+                  const itemListValue = item[key];
+                  if (itemListValue && itemListValue.trim()) {
+                    const codedItems = extractCodesFromText(itemListValue);
+                    const itemNames = codedItems.length > 0
+                      ? codedItems
+                      : itemListValue.split(',').map(name => name.trim()).filter(name => name);
+                    if (itemNames.length > 0) {
+                      return `<td class="drop-cell"><span class="drop-badge" data-items="${itemListValue}">Drop (${itemNames.length})</span></td>`;
+                    }
+                  }
+                  return '<td class="drop-cell">-</td>';
+                }
+                return `<td>${item[key] || '-'}</td>`;
+              }).join('');
+              
+              // Processa imagens do prnt.sc após renderizar
+              const prntscImg = row.querySelector('img[data-prntsc]');
+              if (prntscImg) {
+                const prntscUrl = prntscImg.dataset.prntsc;
+                window.DLExtractPrntscImage(prntscUrl).then(realUrl => {
+                  prntscImg.src = realUrl;
+                  prntscImg.removeAttribute('data-prntsc');
+                });
+              }
+              
+              // Badge de drop apenas visual, não tem interação especial
+              
+              // Clique na linha abre modal
+              row.style.cursor = 'pointer';
+              row.addEventListener('click', () => showDetails(item));
+              
+              return row;
+            };
+            
+            // Event listeners para ordenação nos cabeçalhos
+            thead.querySelectorAll('th[data-sort]').forEach(th => {
+              th.style.cursor = 'pointer';
+              th.addEventListener('click', () => {
+                const sortKey = th.dataset.sort;
+                if (currentSort.key === sortKey) {
+                  currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+                } else {
+                  currentSort.key = sortKey;
+                  currentSort.order = 'asc';
+                }
+                
+                // Atualiza indicadores visuais
+                thead.querySelectorAll('.sort-indicator').forEach(ind => ind.textContent = '');
+                th.querySelector('.sort-indicator').textContent = currentSort.order === 'asc' ? ' ▲' : ' ▼';
+                
+                // Ordena e re-renderiza
+                currentData = sortData([...currentData], sortKey, currentSort.order);
+                const grouped = document.getElementById(`group-by-desc-${listId}`).checked;
+                renderRows(currentData, grouped);
+                initLocalFarmHover();
+                initMobTypeHover();
+              });
+            });
+            
+            // Filtro de busca
+            const searchInput = document.getElementById(`search-${listId}`);
+            if (searchInput && config.filters?.search?.enabled) {
+              searchInput.addEventListener('input', () => {
+                const term = searchInput.value.toLowerCase();
+                currentData = data.filter(item => 
+                  config.filters.search.fields.some(field => 
+                    item[field] && item[field].toLowerCase().includes(term)
+                  )
+                );
+                const grouped = document.getElementById(`group-by-desc-${listId}`).checked;
+                renderRows(currentData, grouped);
+                initLocalFarmHover();
+                initMobTypeHover();
+              });
+            }
+            
+            // Checkbox para agrupar por descrição
+            document.getElementById(`group-by-desc-${listId}`).addEventListener('change', (e) => {
+              renderRows(currentData, e.target.checked);
+            });
+            
+            // Checkbox para ordenar por raridade
+            document.getElementById(`sort-by-rarity-${listId}`).addEventListener('change', (e) => {
+              if (e.target.checked) {
+                currentData = sortData([...currentData], 'raridade', 'desc');
+              } else {
+                currentData = [...data];
+              }
+              const grouped = document.getElementById(`group-by-desc-${listId}`).checked;
+                renderRows(currentData, grouped);
+                initLocalFarmHover();
+                initMobTypeHover();
+            });
+            
+            renderRows(currentData);
+          }
+          
+          // Função para renderizar no formato de lista
+          function renderListDisplay(panel, data, config, listId) {
+            const ui = config.ui || {};
+            
+            panel.innerHTML = `
+              <div class="list-panel">
+                <div class="list-panel__header">
+                  <h3>${ui.title || 'Lista'}</h3>
+                </div>
+                <ul id="list-${listId}">
+                  ${data.map(item => {
+                    const firstCol = Object.keys(config.columns)[0];
+                    return `<li>${item[firstCol]}</li>`;
+                  }).join('')}
+                </ul>
+                <div class="list-panel__footer">
+                  <span>${ui.totalLabel || 'Total'}: <strong>${data.length}</strong></span>
+                </div>
+              </div>
+            `;
+          }
         },
         
         // Plugin ShadowBox

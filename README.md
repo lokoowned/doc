@@ -16,16 +16,15 @@
 
 :link: **Todos os links da nossa organização:** [linktr.ee/dlguild](https://linktr.ee/dlguild)
 
-<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">🎮 Jogando Atualmente: RF OldTimes - Raça Bellato</button>
+<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">🎮 Jogando Atualmente: RF Default - Raça Cora</button>
 
 <div id="shadowbox-servidor-atual" style="display:none;" class="shadowbox-hidden-content">
 
-### 🎮 Servidor Atual: RF OldTimes
+### 🎮 Servidor Atual: RF Default
 
-  - 🌐 **Servidor ativo:** [RF OldTimes](https://linktr.ee/oldtimes)
-  - 👥 **Players Ativos:** 250+
-  - 👥 **Informações do servidor, todas no gitbook do mesmo:** [GitBook OldTimes](https://rf-old-times.gitbook.io/rfoldtimes/)
-  - ⚔️ **Raça da Guilda:** Bellato
+  - 🌐 **Servidor ativo:** [RF Default](https://forum.rf-default.com/)
+  - 👥 **Players Ativos:** 3000+
+  - ⚔️ **Raça da Guilda:** Cora
   - 🏆 **Eventos Ativos:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajudamos novos jogadores a upar e se equipar, raid's, eventos semanais, etc.
   - 💬 **Comunicação:** Disponibilidade de Discord/WhatsApp para interação dos membros.
   - 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
@@ -141,7 +140,7 @@ Agora você está pronto(a) para se juntar à nossa guilda.
         Nosso líder de 2011 até 2023 focou exclusivamente na guilda, entretanto ele agora tem uma vida um pouco mais corrida, com algumas demandas o que faz necessário que a guilda e o mesmo tenham um calendário de atividade para que tudo funcione perfeitamente.
       </b>
     </li>
-    <li><b>Dezembro 2025 até Junho de 2026</b> a guilda estará em atividade, temos como meta jogar o OldTimes em dezembro e ficar nele até o final, em Fevereiro de 26, temos sério interesse em jogar um dos melhores e maiores servidores russos internacionais do mundo RF Default.</li>
+    <li><b>Dezembro 2025 até Fev de 2026</b> a guilda estará em atividade, temos como meta jogar o OldTimes em dezembro e ficar nele até o final, em Fevereiro temos sério interesse em jogar um dos melhores e maiores servidores russos internacionais do mundo RF Default.</li>
     <li><b>Julho 2026:</b> Esta é a data prevista para o lançamento do servidor do líder (neste momento ele não lidera, e sim administra o próprio servidor chamado <a href="https://www.rfreward.com" target="_blank">RF Reward</a>).</li>
     <li><b>Julho 2026:</b> mesmo o líder dando a call para a galera jogar onde quiser no seu servidor pois não existe ajuda ou favoritismo, muitos membros ainda se unem para jogar juntos visando que eles tem um laço muito forte entre si, perto da data alguém decide e puxa a liderança de uma bandeira alternativa composta por em sua maioria membros da DarkLegion.</li>
     <li><b>Outubro 2026:</b> a guilda volta a atividade sob a líderança de Loko.</li>

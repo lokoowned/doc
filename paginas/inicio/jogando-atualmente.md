@@ -1,17 +1,14 @@
 ![Banner da Guilda](../../imagens/jogando-atualmente.webp)
 
-# 🎮 Jogando RF OldTimes
+# 🎮 Jogando RF Default
 
-Nossa guilda atua em diversos servidores do jogo RF OldTimes, desde o Brasil até o Mundo, atualmente estamos no OldTimes, raça Bellato.
+Nossa guilda atua em diversos servidores do jogo RF Online, desde o Brasil até o Mundo, atualmente estamos no Default, raça Cora.
 
 <h2>Links do servidor:</h2>
-● <a href="https://linktr.ee/oldtimes" target="_blank" rel="noopener noreferrer">Agrupador de link's</a><br>
-● <a href="https://rfoldtimes.rfocp.net/" target="_blank" rel="noopener noreferrer">GameCP</a><br>
-● <a href="https://rfoldtimes.com.br/" target="_blank" rel="noopener noreferrer">Website</a><br>
-● <a href="https://rf-old-times.gitbook.io/rfoldtimes/" target="_blank" rel="noopener noreferrer">GitBook</a><br>
+● <a href="https://forum.rf-default.com/" target="_blank" rel="noopener noreferrer">Forum</a><br>
 
-Todas as informações sobre o servidor estão disponíveis no site e no gitbook do servidor, basta clicar no link acima.<br>
-Quaisquer dúvidas, entre em contato conosco no discord, estamos sempre disponíveis para ajudar.
+Todas as informações sobre o servidor estão disponíveis neste mesmo website, basta verificar as informações gerais sobre o servidor.<br>
+Quaisquer dúvidas, entre em contato conosco no discord por meio dos tickets, estamos sempre disponíveis para ajudar.
 
 <br>
 <h2>Datas importantes:</h2>

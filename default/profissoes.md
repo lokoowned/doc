@@ -21,7 +21,7 @@ As profissões introduzem métodos de farm que complementam a matança convencio
 
 ---
 
-## 🛡️ Bônus Passivos (Update)
+### 🛡️ Bônus Passivos (Update)
 
 Cada profissão concede atributos passivos exclusivos para fortalecer o personagem:
 
@@ -33,7 +33,7 @@ Cada profissão concede atributos passivos exclusivos para fortalecer o personag
 
 ---
 
-## 🛠️ Sistema de Craft & Runas
+### 🛠️ Sistema de Craft & Runas
 
 ### Livro de Craft
 
@@ -54,7 +54,7 @@ As armas de profissão podem ser aprimoradas com runas específicas:
 
 ---
 
-## ⚔️ Durabilidade e Manutenção
+### ⚔️ Durabilidade e Manutenção
 
 As armas de profissão possuem um sistema de desgaste mecânico:
 

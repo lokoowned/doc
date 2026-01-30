@@ -24,7 +24,7 @@ window.DLConfig = {
   // - Bellato = sounds/bcc.wav + efeitos_vfx/bell_transition.webm
   // - Cora = sounds/ccc.wav + efeitos_vfx/ccc_transition.webm
   // - Accretia = sounds/acc.wav + efeitos_vfx/acc_transition.webm
-  server_guild_race: 'Ainda vai ser definido',
+  server_guild_race: 'Bellato',
   
   // Texto exibido abaixo do nome do servidor (ex: "Provável 3k+ Online")
   server_online_summary: 'Provável 3k+ Offline',
@@ -99,16 +99,16 @@ window.DLConfig = {
   timer_objective: true,
   
   // Data do objetivo (formato: ano/mês/dia) - Ex: '2025/12/25' para 25 de dezembro de 2025
-  date_objective: '2026/01/16',
+  date_objective: '2026/01/30',
   
   // Horário do objetivo (formato: HH:MM, horário de Brasília)
-  time_objective: '22:36',
+  time_objective: '19:00',
   
   // Texto descritivo do objetivo
-  text_objective: 'Call entendimento Default',
+  text_objective: 'Call alinhamento Beta Default',
   
   // Texto personalizado exibido no widget de contagem regressiva (aparece abaixo do horário)
-  countdown_custom_text: 'Reuniremos todos os jogadores que já jogaram o Default no ano passado, para que a Staff possa entender melhor como funcionará o servidor. Também é livre a entrada de todos os membros para ouvirem e participarem da call.'
+  countdown_custom_text: 'Reunião de alinhamento antes da versão Beta do servidor RF Default.'
 };
 
 // script pwa > site em app

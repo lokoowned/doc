@@ -1,108 +1,110 @@
-# ⚔️ Triad of War – New Season Launch
-# 📅 Data de Abertura Beta: 1 de Fevereiro
-# 📅 Data de Abertura Oficial: 14 de Fevereiro
+<details>
+<summary><b>Regras e informações da guilda no servidor RF Default.</b></summary>
+
+* **Raça:** Bellato.
+* **Comunicação:** TeamSpeak (id: dlguild), discord como secundário (https://discord.gg/8xf4z9aEy3).
+* **Regras:** Já fazem {yearsPassed} anos que nossa organização é sólida e bem estabelecida, base disso é que seguimos as mesmas simples regras durante todo o tempo.
+* **Distribuição de items:** Tudo de valor que a guilda obter será distribuido entre os membros de forma justa, para isso contamos com o sistema de pontos. Para mais informações clique [aqui](/sobredl/eventos/leilao.md).
+</details>
+
+<details>
+<summary><b>Informações básicas do servidor RF Default.</b></summary>
+
+### ⚔️ Informações Essenciais (Rates & Level)
+
+* **Abertura:** 16 de Agosto.
+* **Level Cap:** 50 (com **barreira no lv45** que exige quest para avançar).
+* **Rates:** x2 (EXP, Animus, PT e Skill) | Drops x1.
+* **Janelas:** 1 sem premium / 2 com premium.
+* **PvP Limit:** 10.000 + 1.000 por level.
 
 ---
 
-## 🔥 Informações Básicas (Server Basics)
-* 🧬 Nível Máximo: 50
-* ⚔️ Taxa de EXP: x2 (dinâmica)
-* 🛡️ Taxa de Animus: x2
-* 🔮 Taxa de Skill / PT / Magic: x2
-* 🖥️ Janelas (Windows): 1 sem premium (com premium +1, máximo 2)
-* 🩸 Limite de Pontos PvP: 10.000 (+1.000 por nível)
-* 🐲 Taxa de Drop (Monstros): x1
+### 💎 Vantagens Premium & Sistema VIP
+
+* **Autoloot:** Exclusivo para usuários Premium (desativado para torres abaixo do nível 45).
+* **Diferencial:** Espada de uma mão usável enquanto corre.
+* **Quests:** Acesso a missões exclusivas e Battle Pass.
+* **Preço:** 7 reais 7 dias, 30 reais 30 dias, 60 reais 90 dias (mais recomendado).
 
 ---
 
-## 💎 Serviço Premium
-* 🎟️ Permite rodar até 2 janelas do jogo.
-* 📜 Acesso a missões exclusivas premium.
-* 🗡️ Espada de uma mão utilizável enquanto corre.
-* ⚙️ Autoloot: Coleta automática de itens.
+### 🛠️ Sistemas de Craft e Economia
+
+* **Profissões:** Mineração, Herborista ou Lenhador (escolha 1 no lv30).
+* **Recursos:** Uso de ferramentas (Machado, Picareta, Foice, Arpão) para coleta.
+* **Craft:** Armaduras INT 45-50 podem resultar em itens **P.A.L.M.A.S**.
+* **Leilão Inter-racial:** Disponível para itens de raça e Cash Shop.
+* **Cash Shop in-game:** Vendedores vendem cápsulas de Cash por moeda do jogo.
 
 ---
 
-## 🌟 Principais Funcionalidades
-* Bônus Horário: +20% EXP e mamont-points (moeda para vendedor especial).
-* Mercador Misterioso: Visitas aleatórias com itens exclusivos e limitados.
-* Progressão: Recompensas aprimoradas na linha de missões principais.
-* Battle Pass: Sistema de Passe de Batalha integrado ao jogo.
-* Barreira de Nível 45: Requer a conclusão de uma quest para continuar upando.
+### 🗺️ Mapas e Progressão
+
+* **Sette Desert:** Porto de pesca e loot estático (lugar novo)(não reduz por level).
+* **Elan:** Mapa interconectado, cheio de novas passagens.
+* **Dungeons:** Até level 50, incluindo a nova "Brotherhood World".
+* **Bônus Online:** 1 hora logado = Bolo de EXP + 7 Mamont-points (gastos em NPC especial).
 
 ---
 
-## 🧟 Novo Conteúdo
-* 🐲 Introdução de Monstro Lendário.
-* 📈 Buff Diário de EXP: +50% por 40 minutos ao atingir metas diárias (nível 30+).
-* ✅ Objetivos Diários a partir do nível 30.
-* 👑 Novos Chefes de Servidor.
-* 🏅 Missão desafiadora: "Enter the Order of Honor" com recompensas valiosas.
-* 👫 Diversas tarefas sociais integradas.
+### ⚖️ Equilíbrio de Raças e PvP
 
----
+* **Bônus de Classe:** Guerreiros ganham +50% EXP; Classes de Ataque +35% EXP.
+* **Cora:** Bug de magia corrigido (igual para ambos os gêneros).
+* **Bellato:** MAU não recebe experiência.
+* **Accretia:** Lançadores lv45 ganham "Precipitation" (permite 2 skills) em Elan.
+* **Regras de Voto:** Lv45 + 30k Status + 1000 min online + Cédula de Voto (3.8M).
+* **Anti-Cheat:** Proibido farmar PvP em "twinks" (personagens secundários) sob pena de banimento.
+</details>
 
-## 🗺️ Novos Locais
-* 🏞️ Elan: Adicionados caminhos de atalho.
-* 🏜️ Deserto de Sette: Inclui agora um porto de pesca.
+<details>
+<summary><b>Runes Gems e Stones</b></summary>
 
----
+- Runas e Gemas
+- Existem 3 tipos de Stones.
+- Colored – Tem 1 a 3 propriedades e 4 grades.  (Adiciona ao Set). Consegue Craftando.
+- Gem – Tem 2 propriedades e 5 grades. (Adiciona a Elem e JetPack). Consegue nos Mobs Ether e DQs.
+- Runestone – Tem 1 propriedade e 1 grade.  (Adiciona a Arma e Shield). Consegue nos Mobs Lendários e DQs.
 
-## 🛠️ Upgrades e Melhorias do Servidor
-* 💰 Vendedor de cápsulas de Cash Shop por moeda in-game.
-* 🔄 Leilão Inter-raças para itens raciais e de cash.
-* 🔐 Sistema de Passphrase para maior segurança da conta.
-* 🛒 Loja PvP atualizada.
-* 🥚 Easter Egg escondido no mundo.
-* ⚒️ Adicionado módulo de reparo de itens.
-* 💍 Conjunto de joias exclusivo do servidor.
-* 💎 Sistema de Sockets atualizado.
-* ✨ Correção Cora: Bug de magia corrigido (igual para ambos os gêneros).
-* 👹 Monstros não quebram ao usar Paimon/Sealed-Paimon.
-* 💥 Sistema de debuff funcional.
-* 🏰 Dungeons liberadas até o nível 50.
-* 🛡️ Proteção de Favor Talic funcionando.
-* 🔄 Cross-class disponível.
-* ⚡ Buff do Chip-bearer aplica-se aos membros da guilda.
-* 💰 Drops de dinheiro real (Real money) das Calianas.
-* 🍗 Loot dos bosses de Elan (até irmãos DDD e Fat Chicken) disponível para todas as raças.
-* 🧪 Craft de armadura INT 45-50 pode resultar em equipamentos P.A.L.M.A.S.
+Este conteudo sera é algo que cada um vai ter que dedicar um tempo a mais para entender e aprender, é algo simples mas demanda atenção.
 
----
+Clique aqui e veja o conteudo completo: [Runes Gems e Stones](https://forum.rf-default.com/index.php?/topic/8896-runes-gems-and-stones/)
+</details>
 
-## 🏰 Nova Dungeon – “Brotherhood World”
-> Derrote os Três Irmãos e conquiste as maiores honrarias... Mas cuidado: o poder deles está além da imaginação. Um erro e você estará fora para sempre.
+<details>
+<summary><b>📦 Agrupamento de Items.</b></summary>
 
----
+### 📦 Guia Rápido: Caixas de Recursos
 
-## 🔧 Sistema Único de Crafting
-Colete recursos naturais usando ferramentas especializadas que podem ser aprimoradas:
-* 🪓 Machado: Para cortar árvores.
-* ⛏️ Picareta: Para minerar minérios.
-* 🌾 Foice: Para colher plantas.
-* 🐟 Arpão: Para pescar.
+**Custo:** Cada pack de caixa vazia custa 100k disena.
+**O que é isso:** Você pode empacotar os itens que são agrupaveis em 1 único slot. Exemplo, eu tenho 3 packs de minérios. Segura ctrl e mantem, clica na box e clica no item que você quer.
+Ou seja, 99 box vazias, você consegue agrupar até 99 packs de Gli ou outros items. Assim estocando.
 
----
+**Comandos:**
 
-## 🏮 Elan Shop Banners
-Agora você pode colocar seu próprio banner para vender itens em Elan, aumentando sua visibilidade e atraindo mais compradores.
+* **Empacotar:** Selecione a Caixa (Botão Esquerdo) ➔ **ALT + Botão Direito** no item.
+* **Desempacotar:** **Botão Direito** na Caixa.
+* **Combinação Rápida (Pular NPC Hero):** **CTRL + ALT + Botão Direito** no item (o custo da combinação ainda se aplica).
 
----
+**Itens Compatíveis:**
 
-## 📝 Mudanças Adicionais
-* ⚒️ Profissões: Mineração, Herbalista e Lenhador disponíveis no nível 30 (escolha 1 no Mestre de Produção).
-* 🤖 MAU: Não ganha experiência.
-* 🗳️ Sistema de Votação:
-    * Requer Cédula de Votação (~3.800.000 moeda racial).
-    * Requisitos: Nível 45, 30.000 pontos de contribuição e 1000 minutos online.
-* 🎁 Caixas de Joias Aleatórias (Cash Shop):
-    * Bônus possíveis: 5% dmg / 8% HP; 7% dmg / 8% HP; 10% dmg / 10% HP.
-    * ⚠️ Joias de 40% de dano não serão facilmente acessíveis.
-* ⚔️ Boosts de PvP (EXP):
-    * Guerreiros de Profissão: +50%
-    * Guerreiros de Classe de Ataque: +35%
-* 🔍 Sistema de upgrade agora mostra a chance de sucesso.
-* 🚫 Regra Anti-Farm: É proibido ganhar pontos de PvP ou status com twinks (contas secundárias). Matar twinks para farmar = BAN.
-* 🌀 Adicionada a Aura of Madness.
-* 🎂 Receba 7 mamont-points e um bolo de EXP para cada hora online.
+* Minérios (+1 a +3), Talics, Pedras (T1-T4, Red/Blue), Fragmentos de Excelsior e Cubos.
+
+</details>
+
+<details>
+<summary><b>Informações sobre o Battle Pass do servidor RF Default.</b></summary>
+
+### **O Essencial do Battle Pass**
+
+* **O que é:** É um conteúdo adicional - Um sistema baseado em níveis que recompensa o jogador com itens do jogo for completar quest's.
+* **Como progredir:** Você sobe de nível usando **capsulas BP**. Elas são obtidas em: **Story Quests**, **Tarefas repetitivas** e **comprando diretamente**.
+
+Pode ser acessado pelo icone do mamute no topo esquerdo da tela.
+
+* **BP Free vs Pago**: Você pode de maneira gratuita receber as recompensas, entretanto caso você opte por comprar o BP Pago, ele tem um linha de baixo com itens exclusivos atém de que ele dá um bonus de +20% de experiência em todas as capsulas BP, fazendo você completar o passe muito mais rápido.
+
+![BP](bp.png "BP")
+</details>
 

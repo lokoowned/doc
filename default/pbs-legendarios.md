@@ -1,0 +1,1 @@
+As informaçÕes sobre os pb's legendários ainda vão ser atualizadas.

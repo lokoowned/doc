@@ -1,9 +1,9 @@
 - [🏠Início](/)
-- [📝Organização pré abertura do servidor RF Default!](/reunioes/default-organiza.md.md "Veja os tópicos que serão discutidos na reunião marcada para 05/12 às 19h.")
 
 - <img src="imagens/icones/emblema.png" width="18" style="vertical-align: middle; margin-right: 6px;"> Sobre a nossa Organização
   - [🛡️ História da guilda](/sobredl/historia.md "Entenda tudo sobre a guilda, sua história completa que inicia lá em 2006.")
   - [🔰 Lista de Membros](/sobredl/membros.md "Veja a lista de membros da guilda, com informações sobre cada um deles.")
+  - [🚫 Banidos da Guilda](/sobredl/banidos.md "Veja a lista de banidos da guilda, com informações sobre cada um deles.")
   - [🗺️ Cenários jogados](/sobredl/cenarios.md "Veja os cenários em que a guilda atua, desde o Brasil até o Mundo.")
   - [⚜️ Hierarquia](/sobredl/hierarquia.md "Veja a hierarquia e o comando da guilda, com informações sobre cada um deles.")
   - [📜 Regras & Conduta](/sobredl/regras.md "Veja as regras e conduta da guilda, com informações sobre cada um deles.")
@@ -12,17 +12,16 @@
     - [Leilão de Itens](/sobredl/eventos/leilao.md "Veja o leilão de itens da guilda, com informações sobre cada um deles.")
 
 - <img src="imagens/icones/default.png" width="18" style="vertical-align: middle; margin-right: 6px;">RF Default - Conhecimentos
-  - [Informações Gerais Guilda e Servidor](/default/infos.md "Informações gerais sobre o servidor RF Default.")
-  - [Combinações do Servidor](/default/combinacoes-servidor.md "Combinações do Servidor RF Default.")
-  - [Lojas de items do servidor](/default/lojas-items-servidor.md "Lojas de items do servidor RF Default.")
-  - [Quests e Portais](/default/dq-portais.md "Daily Quests e Portais do servidor RF Default.")
-  - [Informações sobre Itens](/default/itens.md "Informações sobre itens do servidor RF Default.")
+  - [🏠 Informações Gerais Guilda e Servidor](/default/infos.md "Informações gerais sobre o servidor RF Default.")
+  - [🗡️ Itens & Monstros](/paginas/inicio/mobs-items.md "Explore todos os itens do servidor e também os pb's e mob's")
+  - [✨ Lojas de items do servidor](/default/lojas-items-servidor.md "Lojas de items do servidor RF Default.")
+  - [🎯 Quests e Portais](/default/dq-portais.md "Daily Quests e Portais do servidor RF Default.")
+  - [👷 *NOVIDADE* - Profissões](/default/profissoes.md "Profissões do servidor RF Default.")
+  - [💣 Items rebaixados 42 > 35](/default/items-rebaixados-42-35.md "Items rebaixados 42 > 35 do servidor RF Default.")
+  - [💣 Guia básico de equipamentos](/default/guia-basico-equipamentos.md "Guia básico de equipamentos")
+  - [🎓 Guia de classes](/default/guia-basico-classes.md "Guia básico de classes do servidor RF Default.")
+  - [💡 Combinações do Servidor](https://forum.rf-default.com/index.php?/topic/10574-server-combinations/ "Combinações do Servidor RF Default.")
   - [Doações & Negociações](/default/doacoes.md "Doações do servidor RF Default.")
-  - [*NOVIDADE* - Profissões](/default/profissoes.md "Profissões do servidor RF Default.")
-  - [*NOVIDADE* - Runas & Gemas](/default/runas-gemas.md "Runas & Gemas do servidor RF Default.")
-  - [Guia básico de equipamentos](/default/guia-basico-equipamentos.md "Guia básico de equipamentos")
-  - [Entendido Guia de classes](/default/guia-basico-classes.md "Guia básico de classes do servidor RF Default.")
-  - [!Items rebaixados 42 > 35](/default/items-rebaixados-42-35.md "Items rebaixados 42 > 35 do servidor RF Default.")
   - [Pbs Legendários](/default/pbs-legendarios.md "Pbs Legendários do servidor RF Default.")
 
 <!---
