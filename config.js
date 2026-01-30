@@ -24,7 +24,7 @@ window.DLConfig = {
   // - Bellato = sounds/bcc.wav + efeitos_vfx/bell_transition.webm
   // - Cora = sounds/ccc.wav + efeitos_vfx/ccc_transition.webm
   // - Accretia = sounds/acc.wav + efeitos_vfx/acc_transition.webm
-  server_guild_race: 'Bellato',
+  server_guild_race: 'Cora',
   
   // Texto exibido abaixo do nome do servidor (ex: "Provável 3k+ Online")
   server_online_summary: 'Provável 3k+ Offline',
