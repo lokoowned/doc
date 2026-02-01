@@ -147,6 +147,125 @@ window.DLLists = {
     }
   },
   
+  // ==================== COMBINAÇÕES DO SERVIDOR ====================
+  combines: {
+    spreadsheetId: '1KBeQwNcjc7SrbeF_Rw6g59tdrOMiPC4uOtdd1GUo2AM',
+    sheetName: 'Combines',
+    panelSelector: '.combines-panel-sheets',
+    columns: {
+      imagem: { index: 0, label: 'Ícone' },
+      nome: { index: 1, label: 'Nome' },
+      tipoItem: { index: 2, label: 'Tipo de Item' },
+      descricaoItem: { index: 3, label: 'Descrição do Item' },
+      descricaoPopup: { index: 4, label: 'Descrição PopUp' },
+      porcentagens: { index: 5, label: 'Porcentagens' },
+      imagemPopup: { index: 6, label: 'PopUpImg' },
+      itensAdicionados: { index: 7, label: 'Itens Adicionados' }
+    },
+    displayType: 'table',
+    filters: {
+      search: { 
+        enabled: true, 
+        fields: ['nome', 'tipoItem', 'descricaoItem', 'descricaoPopup'],
+        placeholder: 'Buscar combinação por nome, tipo ou descrição...'
+      }
+    },
+    cache: {
+      enabled: false,
+      duration: 300000
+    },
+    ui: {
+      title: 'Combinações do Servidor',
+      description: 'Tabela de combinações e porcentagens do servidor',
+      totalLabel: 'Total de combinações',
+      visibleLabel: 'Mostrando',
+      loadingText: 'Carregando combinações...',
+      errorText: 'Erro ao carregar combinações.',
+      emptyText: 'Nenhuma combinação encontrada.'
+    },
+    transform: function(item) {
+      if (item.porcentagens) {
+        item.porcentagens = item.porcentagens
+          .split(',')
+          .map(p => p.trim())
+          .filter(Boolean)
+          .join('<br>');
+      }
+      if (item.descricaoPopup) {
+        item.descricaoPopup = item.descricaoPopup
+          .split(',')
+          .map(p => p.trim())
+          .filter(Boolean)
+          .join('<br>');
+      }
+      return item;
+    },
+    renderDetails: function(item) {
+      const imagemMain = item.imagemPopup;
+      const imageUrls = imagemMain ? imagemMain.split(',').map(url => url.trim()).filter(url => url) : [];
+      const hasMultipleImages = imageUrls.length > 1;
+      
+      return `
+        <div class="item-detail-modal__header">
+          ${item.nome}
+          ${item.descricaoItem ? `
+            <div class="item-detail-modal__subtitle">
+              ${item.descricaoItem}
+              <span class="combine-desc-info" data-desc="${item.descricaoItem.replace(/"/g, '&quot;')}">ℹ️</span>
+            </div>
+          ` : ''}
+        </div>
+        <div class="item-detail-modal__layout">
+          ${imageUrls.length > 0 ? `
+            <div class="item-detail-modal__image-section">
+              <div class="item-detail-modal__image-container" data-current-image="0" data-image-group="main">
+                ${hasMultipleImages ? `
+                  <button class="item-detail-modal__image-nav item-detail-modal__image-nav--prev" onclick="window.DLModalImageNav('prev', 'main')">‹</button>
+                  <button class="item-detail-modal__image-nav item-detail-modal__image-nav--next" onclick="window.DLModalImageNav('next', 'main')">›</button>
+                ` : ''}
+                <img src="${imageUrls[0]}" alt="${item.nome}" class="item-detail-modal__image" onerror="this.style.display='none'" style="max-width: 100%; max-height: 400px; object-fit: contain;">
+                ${hasMultipleImages ? `
+                  <div class="item-detail-modal__image-counter">
+                    <span class="current-image-index">1</span> / ${imageUrls.length}
+                  </div>
+                ` : ''}
+              </div>
+              <div style="display: none;" class="image-urls-data" data-image-urls="main">${imageUrls.join('|||')}</div>
+            </div>
+          ` : ''}
+          <div class="item-detail-modal__content-section">
+            <div class="item-detail-modal__content">
+              <div class="item-detail-modal__row">
+                <span class="item-detail-modal__label">Tipo:</span>
+                <span class="item-detail-modal__value">${item.tipoItem || '-'}</span>
+              </div>
+              ${item.descricaoItem ? `
+                <div class="item-detail-modal__row">
+                  <span class="item-detail-modal__label">Descrição do Item:</span>
+                  <span class="item-detail-modal__value">${item.descricaoItem}</span>
+                </div>
+              ` : ''}
+              ${item.descricaoPopup ? `
+                <div class="item-detail-modal__row">
+                  <span class="item-detail-modal__label">Descrição PopUp:</span>
+                  <span class="item-detail-modal__value">${item.descricaoPopup}</span>
+                </div>
+              ` : ''}
+              ${item.porcentagens ? `
+                <div class="item-detail-modal__row">
+                  <span class="item-detail-modal__label">Porcentagens:</span>
+                  <span class="item-detail-modal__value">${item.porcentagens}</span>
+                </div>
+              ` : ''}
+            </div>
+            <button class="item-detail-modal__close">Fechar</button>
+          </div>
+        </div>
+        <div class="item-detail-modal__drops-placeholder" data-drops-placeholder="true"></div>
+      `;
+    }
+  },
+  
   // ==================== LISTA DE ITENS (REFERÊNCIA PARA SHADOWBOX) ====================
   itemlist: {
     spreadsheetId: '1KBeQwNcjc7SrbeF_Rw6g59tdrOMiPC4uOtdd1GUo2AM',

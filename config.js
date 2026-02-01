@@ -19,11 +19,6 @@ window.DLConfig = {
   // Nome do servidor
   server_name: 'Default @ Fev 14/02/26',
   
-  // Raça da guild (Bellato, Cora ou Accretia)
-  // Sons e vídeos reproduzidos ao abrir shadowbox do servidor:
-  // - Bellato = sounds/bcc.wav + efeitos_vfx/bell_transition.webm
-  // - Cora = sounds/ccc.wav + efeitos_vfx/ccc_transition.webm
-  // - Accretia = sounds/acc.wav + efeitos_vfx/acc_transition.webm
   server_guild_race: 'Cora',
   
   // Texto exibido abaixo do nome do servidor (ex: "Provável 3k+ Online")
@@ -99,16 +94,16 @@ window.DLConfig = {
   timer_objective: true,
   
   // Data do objetivo (formato: ano/mês/dia) - Ex: '2025/12/25' para 25 de dezembro de 2025
-  date_objective: '2026/01/30',
+  date_objective: '2026/01/31',
   
   // Horário do objetivo (formato: HH:MM, horário de Brasília)
-  time_objective: '19:00',
+  time_objective: '21:00',
   
   // Texto descritivo do objetivo
-  text_objective: 'Call alinhamento Beta Default',
+  text_objective: 'Abertura do beta RF Default',
   
   // Texto personalizado exibido no widget de contagem regressiva (aparece abaixo do horário)
-  countdown_custom_text: 'Reunião de alinhamento antes da versão Beta do servidor RF Default.'
+  countdown_custom_text: 'Abertura do beta RF Default'
 };
 
 // script pwa > site em app

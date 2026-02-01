@@ -15,6 +15,18 @@
 
 </details>
 
+<details>
+<summary><b>Combinações do Servidor</b></summary>
+<div class="combines-panel-sheets" data-list-id="combines">
+  <!-- O conteúdo será carregado automaticamente do Google Sheets -->
+  <div style="text-align: center; padding: 40px; color: #999;">
+    <div style="margin-bottom: 12px; font-size: 24px;">⏳</div>
+    <div>Carregando combinações do servidor...</div>
+  </div>
+</div>
+
+</details>
+
 <style>
 /* ==================== ESTILOS DO PAINEL DE ITENS ==================== */
 
@@ -908,6 +920,38 @@
   padding-bottom: 16px;
   background: linear-gradient(90deg, rgba(102, 126, 234, 0.12), rgba(118, 75, 162, 0.08));
   text-shadow: 0 2px 8px rgba(102, 126, 234, 0.35);
+}
+
+.item-detail-modal__subtitle {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #b8c6ff;
+  margin-top: 6px;
+}
+
+.combine-desc-info {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  color: #8fa2ff;
+  cursor: help;
+}
+
+.combine-desc-tooltip {
+  position: fixed;
+  background: rgba(18, 18, 22, 0.95);
+  border: 1px solid rgba(102, 126, 234, 0.6);
+  border-radius: 8px;
+  padding: 10px 12px;
+  max-width: 320px;
+  z-index: 10002;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+  color: #e0e0ff;
+  font-size: 0.85rem;
+}
+
+.combine-desc-tooltip__text {
+  line-height: 1.35;
 }
 
 .item-detail-modal__image-section {

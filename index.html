@@ -2372,6 +2372,16 @@ window.yearsPassed = yearsPassed;
               .map(m => m.replace(/[{}]/g, '').trim())
               .filter(Boolean);
           }
+
+          function findItemByCodeOrName(code) {
+            if (!window.DLItemDatabase) return null;
+            const normalized = normalizeCode(code);
+            return window.DLItemDatabase.find(item => {
+              const byCode = normalizeCode(item.code || '') === normalized;
+              const byName = normalizeCode(item.name || '') === normalized;
+              return byCode || byName;
+            }) || null;
+          }
           
           // Função para renderizar seção de drops no modal
           async function renderDropSection(itemlistString, currentItemName) {
@@ -2507,6 +2517,61 @@ window.yearsPassed = yearsPassed;
             console.log(`✅ Seção de drops renderizada com ${itemsData.length} itens`);
             console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
             
+            return html;
+          }
+
+          async function renderItemListSection(itemlistString, titleText) {
+            if (!itemlistString) return '';
+            const codedItems = extractCodesFromText(itemlistString);
+            const itemCodes = codedItems.length > 0
+              ? codedItems
+              : itemlistString.split(',').map(name => name.trim()).filter(name => name);
+            if (itemCodes.length === 0) return '';
+            
+            const itemsData = await Promise.all(itemCodes.map(async code => {
+              const item = findItemByCodeOrName(code);
+              if (item && item.icon && item.icon.startsWith('https://prnt.sc/')) {
+                const realIcon = await window.DLExtractPrntscImage(item.icon);
+                return { code, data: { ...item, icon: realIcon } };
+              }
+              return { code, data: item };
+            }));
+            
+            let html = `
+              <div class="item-detail-modal__drops-section">
+                <div class="item-detail-modal__drops-header">
+                  <span style="font-size: 1.2rem;">📦</span>
+                  <span style="font-weight: 700; color: #4CAF50;">${titleText}: ${itemCodes.length} entre outros itens</span>
+                </div>
+                <div class="item-detail-modal__drops-grid">
+            `;
+            
+            itemsData.forEach(({ code, data }) => {
+              if (data) {
+                const iconUrl = data.icon || '';
+                html += `
+                  <div class="drop-item">
+                    ${iconUrl ? `<img src="${iconUrl}" alt="${data.name || code}" class="drop-item__icon" onerror="this.style.display='none'">` : '<div class="drop-item__icon-placeholder">?</div>'}
+                    <div class="drop-item__info">
+                      <div class="drop-item__name">${data.name || code}</div>
+                      ${data.type ? `<div class="drop-item__type">${data.type}</div>` : ''}
+                    </div>
+                  </div>
+                `;
+              } else {
+                html += `
+                  <div class="drop-item drop-item--notfound">
+                    <div class="drop-item__icon-placeholder">❌</div>
+                    <div class="drop-item__info">
+                      <div class="drop-item__name">${code}</div>
+                      <div class="drop-item__type">(não encontrado)</div>
+                    </div>
+                  </div>
+                `;
+              }
+            });
+            
+            html += '</div></div>';
             return html;
           }
 
@@ -2747,6 +2812,61 @@ window.yearsPassed = yearsPassed;
               el.addEventListener('mousemove', moveLocalFarmTooltip);
             });
           }
+
+          // Shadowbox para descrição breve em Combines
+          let combineDescTooltip = null;
+          
+          function createCombineDescTooltip() {
+            if (combineDescTooltip) return combineDescTooltip;
+            combineDescTooltip = document.createElement('div');
+            combineDescTooltip.className = 'combine-desc-tooltip';
+            combineDescTooltip.style.display = 'none';
+            document.body.appendChild(combineDescTooltip);
+            return combineDescTooltip;
+          }
+          
+          function showCombineDescTooltip(event) {
+            const tooltip = createCombineDescTooltip();
+            const target = event.currentTarget;
+            const desc = target.dataset.desc || '';
+            if (!desc) return;
+            tooltip.innerHTML = `<div class="combine-desc-tooltip__text">${desc}</div>`;
+            tooltip.style.display = 'block';
+            moveCombineDescTooltip(event);
+          }
+          
+          function hideCombineDescTooltip() {
+            if (combineDescTooltip) {
+              combineDescTooltip.style.display = 'none';
+            }
+          }
+          
+          function moveCombineDescTooltip(event) {
+            if (!combineDescTooltip || combineDescTooltip.style.display === 'none') return;
+            const x = event.clientX;
+            const y = event.clientY;
+            const offset = 12;
+            const rect = combineDescTooltip.getBoundingClientRect();
+            let left = x + offset;
+            let top = y + offset;
+            if (left + rect.width > window.innerWidth) {
+              left = x - rect.width - offset;
+            }
+            if (top + rect.height > window.innerHeight) {
+              top = y - rect.height - offset;
+            }
+            combineDescTooltip.style.left = left + 'px';
+            combineDescTooltip.style.top = top + 'px';
+          }
+          
+          function initCombineDescHover() {
+            const infoEls = document.querySelectorAll('.combine-desc-info');
+            infoEls.forEach(el => {
+              el.addEventListener('mouseenter', showCombineDescTooltip);
+              el.addEventListener('mouseleave', hideCombineDescTooltip);
+              el.addEventListener('mousemove', moveCombineDescTooltip);
+            });
+          }
           
           // Função para renderizar no formato de cards
           function renderCardsDisplay(panel, data, config, listId) {
@@ -2884,6 +3004,14 @@ window.yearsPassed = yearsPassed;
                 }
                 initDropItemHover(modal);
               }
+              if (listId === 'combines' && item.itensAdicionados && item.itensAdicionados.trim()) {
+                const itemsHtml = await renderItemListSection(item.itensAdicionados, 'Itens Adicionados');
+                const placeholder = modal.querySelector('[data-drops-placeholder]');
+                if (placeholder) {
+                  placeholder.innerHTML = itemsHtml;
+                }
+              }
+              initCombineDescHover();
               initLocalFarmHover();
               initMobTypeHover();
               modal.style.display = 'block';

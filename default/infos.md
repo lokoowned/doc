@@ -1,7 +1,7 @@
 <details>
 <summary><b>Regras e informações da guilda no servidor RF Default.</b></summary>
 
-* **Raça:** Bellato.
+* **Raça:** Cora.
 * **Comunicação:** TeamSpeak (id: dlguild), discord como secundário (https://discord.gg/8xf4z9aEy3).
 * **Regras:** Já fazem {yearsPassed} anos que nossa organização é sólida e bem estabelecida, base disso é que seguimos as mesmas simples regras durante todo o tempo.
 * **Distribuição de items:** Tudo de valor que a guilda obter será distribuido entre os membros de forma justa, para isso contamos com o sistema de pontos. Para mais informações clique [aqui](/sobredl/eventos/leilao.md).
@@ -12,7 +12,7 @@
 
 ### ⚔️ Informações Essenciais (Rates & Level)
 
-* **Abertura:** 16 de Agosto.
+* **Abertura:** 14 de Fevereiro.
 * **Level Cap:** 50 (com **barreira no lv45** que exige quest para avançar).
 * **Rates:** x2 (EXP, Animus, PT e Skill) | Drops x1.
 * **Janelas:** 1 sem premium / 2 com premium.
