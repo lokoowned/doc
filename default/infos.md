@@ -1,5 +1,5 @@
 <details>
-<summary><b>Regras e informações da guilda no servidor RF Default</b></summary>
+<summary><b>Regras e informações da guilda no servidor RF Default RPG</b></summary>
 
 * **Raça:** Cora.
 * **Comunicação:** TeamSpeak (id: dlguild), discord como secundário (https://discord.gg/8xf4z9aEy3).
