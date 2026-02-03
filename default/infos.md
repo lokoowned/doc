@@ -1,9 +1,15 @@
+## Informações Gerais RF Online Default
+
+> ** Registro de contas: https://cp.rf-default.ru/ (Email precisa ser gmail, verifique a caixa de spamm)**
+> ** Download do client: https://drive.google.com/uc?id=1_Q2vmKq6wEOnqYhFCUiRWq4pr47y5BvE&export=download**
+> ** Beta aberto atualmente, vai até dia 8 e o oficial abre dia 14/02 - Raça CORA.
+
 <details>
 <summary><b>Regras e informações da guilda no servidor RF Default RPG</b></summary>
 
 * **Raça:** Cora.
 * **Comunicação:** TeamSpeak (id: dlguild), discord como secundário (https://discord.gg/8xf4z9aEy3).
-* **Regras:** Já fazem {yearsPassed} anos que nossa organização é sólida e bem estabelecida, base disso é que seguimos as mesmas simples regras durante todo o tempo.
+* **Regras:** Já fazem {{yearsPassed}} anos que nossa organização é sólida e bem estabelecida, base disso é que seguimos as mesmas simples regras durante todo o tempo.
 * **Distribuição de items:** Tudo de valor que a guilda obter será distribuido entre os membros de forma justa, para isso contamos com o sistema de pontos. Para mais informações clique [aqui](/sobredl/eventos/leilao.md).
 </details>
 
