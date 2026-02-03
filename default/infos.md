@@ -1,7 +1,9 @@
 ## Informações Gerais RF Online Default
 
 > ** Registro de contas: https://cp.rf-default.ru/ (Email precisa ser gmail, verifique a caixa de spamm)**
+
 > ** Download do client: https://drive.google.com/uc?id=1_Q2vmKq6wEOnqYhFCUiRWq4pr47y5BvE&export=download**
+
 > ** Beta aberto atualmente, vai até dia 8 e o oficial abre dia 14/02 - Raça CORA.
 
 <details>
