@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>🔍 Diagnóstico - Quest List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #1a1a2e;
+      color: white;
+    }
+    h1 { color: #00cfff; text-align: center; }
+    .log {
+      background: #0d0d1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 3px solid #00cfff;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+    .success { border-left-color: #00ff00; color: #88ff88; }
+    .error { border-left-color: #ff0000; color: #ff8888; }
+    .warning { border-left-color: #ffff00; color: #ffff88; }
+    button {
+      background: #00cfff;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+      font-weight: bold;
+    }
+    button:hover { background: #00fff9; }
+  </style>
+</head>
+<body>
+  
+  <h1>🔍 Diagnóstico - Quest List</h1>
+  
+  <button onclick="runDiagnostic()">🧪 Executar Diagnóstico Completo</button>
+  <button onclick="clearLogs()">🧹 Limpar</button>
+  
+  <div id="logs"></div>
+  
+  <script>
+    const SPREADSHEET_ID = '1KBeQwNcjc7SrbeF_Rw6g59tdrOMiPC4uOtdd1GUo2AM';
+    const TAB_NAME = 'QuestList';
+    
+    function log(msg, type = 'info') {
+      const logsDiv = document.getElementById('logs');
+      const logEntry = document.createElement('div');
+      logEntry.className = 'log ' + type;
+      logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logsDiv.appendChild(logEntry);
+      logsDiv.scrollTop = logsDiv.scrollHeight;
+      console.log(msg);
+    }
+    
+    function clearLogs() {
+      document.getElementById('logs').innerHTML = '';
+    }
+    
+    async function runDiagnostic() {
+      clearLogs();
+      log('🚀 Iniciando diagnóstico completo...', 'info');
+      log('', 'info');
+      
+      // Teste 1: URL da planilha
+      log('📋 Teste 1: Verificando URL da planilha', 'info');
+      const baseUrl = 'https://docs.google.com/spreadsheets/d';
+      const url = `${baseUrl}/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB_NAME)}`;
+      log(`URL: ${url}`, 'info');
+      log('', 'info');
+      
+      // Teste 2: Conexão com planilha
+      log('📡 Teste 2: Testando conexão com Google Sheets...', 'info');
+      try {
+        const response = await fetch(url);
+        log(`Status: ${response.status} ${response.statusText}`, response.ok ? 'success' : 'error');
+        
+        if (!response.ok) {
+          log('❌ FALHA: Não foi possível conectar à planilha', 'error');
+          log('Possíveis causas:', 'warning');
+          log('  1. Planilha não está pública', 'warning');
+          log('  2. ID da planilha está errado', 'warning');
+          log('  3. Aba "QuestList" não existe', 'warning');
+          return;
+        }
+        
+        log('✅ Conexão OK!', 'success');
+        log('', 'info');
+        
+        // Teste 3: Lendo dados
+        log('📊 Teste 3: Lendo dados da planilha...', 'info');
+        const csvText = await response.text();
+        log(`Tamanho dos dados: ${csvText.length} caracteres`, 'info');
+        log('', 'info');
+        
+        // Teste 4: Parsing
+        log('🔍 Teste 4: Analisando dados...', 'info');
+        const lines = csvText.split('\n').filter(l => l.trim());
+        log(`Total de linhas: ${lines.length}`, 'info');
+        
+        if (lines.length === 0) {
+          log('❌ PLANILHA VAZIA!', 'error');
+          log('Adicione dados na planilha:', 'warning');
+          log('  Coluna A: Número da quest', 'warning');
+          log('  Coluna B: Nome da quest', 'warning');
+          log('  Coluna C: Nome do mapa', 'warning');
+          log('  Coluna D: Coordenadas (x,y)', 'warning');
+          return;
+        }
+        
+        log('✅ Planilha contém dados!', 'success');
+        log('', 'info');
+        
+        // Teste 5: Mostrar primeiras linhas
+        log('📄 Teste 5: Primeiras linhas da planilha:', 'info');
+        lines.slice(0, 5).forEach((line, i) => {
+          log(`  Linha ${i + 1}: ${line.substring(0, 100)}${line.length > 100 ? '...' : ''}`, 'info');
+        });
+        log('', 'info');
+        
+        // Teste 6: Verificar scripts carregados
+        log('🔧 Teste 6: Verificando scripts carregados...', 'info');
+        
+        if (typeof window.QUEST_LIST_CONFIG !== 'undefined') {
+          log('✅ config-quest-list.js carregado', 'success');
+        } else {
+          log('❌ config-quest-list.js NÃO carregado', 'error');
+        }
+        
+        if (typeof window.QuestListLoader !== 'undefined') {
+          log('✅ quest-list-loader.js carregado', 'success');
+        } else {
+          log('❌ quest-list-loader.js NÃO carregado', 'error');
+        }
+        
+        log('', 'info');
+        
+        // Teste 7: Tentar carregar quests
+        if (typeof window.QuestListLoader !== 'undefined') {
+          log('🎯 Teste 7: Tentando carregar quests com o loader...', 'info');
+          try {
+            const quests = await window.QuestListLoader.loadQuests();
+            log(`✅ ${quests.length} quest(s) carregada(s) com sucesso!`, 'success');
+            log('', 'info');
+            
+            // Mostra resumo das quests
+            log('📋 Resumo das quests:', 'info');
+            quests.forEach((q, i) => {
+              log(`  ${i + 1}. ${q.nome} - ${q.mapas.length} mapa(s)`, 'info');
+            });
+          } catch (error) {
+            log(`❌ ERRO ao carregar quests: ${error.message}`, 'error');
+            log(`Stack: ${error.stack}`, 'error');
+          }
+        } else {
+          log('⚠️ Não foi possível testar o loader (script não carregado)', 'warning');
+        }
+        
+        log('', 'info');
+        log('🎉 DIAGNÓSTICO CONCLUÍDO!', 'success');
+        
+      } catch (error) {
+        log(`❌ ERRO FATAL: ${error.message}`, 'error');
+        log(`Stack: ${error.stack}`, 'error');
+        log('', 'info');
+        log('Possíveis soluções:', 'warning');
+        log('  1. Verifique conexão com internet', 'warning');
+        log('  2. Teste acessar a planilha direto no navegador', 'warning');
+        log('  3. Verifique console (F12) para erros adicionais', 'warning');
+      }
+    }
+    
+    // Auto-executar ao carregar
+    window.onload = () => {
+      log('🚀 Página carregada. Clique no botão para diagnóstico.', 'info');
+    };
+  </script>
+  
+  <!-- Carrega os scripts para testar -->
+  <script src="scripts/config-quest-list.js"></script>
+  <script src="scripts/quest-list-loader.js"></script>
+  
+</body>
+</html>

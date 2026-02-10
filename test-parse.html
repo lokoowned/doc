@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste de Parse CSV</title>
+  <style>
+    body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #e0e0e0; }
+    pre { background: #2a2a2a; padding: 10px; border-radius: 5px; overflow-x: auto; }
+    .success { color: #22c55e; }
+    .error { color: #ef4444; }
+    .info { color: #3b82f6; }
+  </style>
+</head>
+<body>
+  <h1>Teste de Parse CSV</h1>
+  
+  <h2>Casos de Teste:</h2>
+  <pre id="output"></pre>
+  
+  <script>
+    const output = document.getElementById('output');
+    
+    function log(msg, type = 'info') {
+      const span = document.createElement('span');
+      span.className = type;
+      span.textContent = msg + '\n';
+      output.appendChild(span);
+    }
+    
+    // Simula o parse de uma linha CSV
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          result.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      
+      result.push(current);
+      return result;
+    }
+    
+    // Testa parsing
+    const testCases = [
+      'xLokoOwneD,01/01/2011,Fundador,Biohazard (Internacional),staff;retorno2025,FALSE',
+      'Maguinho - Compound,01/01/2011,Member,Desconhecido - Muito tempo atrás,,FALSE',
+      'ToN,01/01/2012,Member,Desconhecido - Muito tempo atrás,retorno2025,FALSE',
+      'Hiroshima,01/01/2012,Member,Desconhecido - Muito tempo atrás,,FALSE'
+    ];
+    
+    testCases.forEach((testCase, i) => {
+      log(`\n--- Caso ${i + 1} ---`, 'info');
+      log(`Input: ${testCase}`, 'info');
+      
+      const values = parseCSVLine(testCase);
+      log(`Valores parseados: ${JSON.stringify(values)}`, 'info');
+      
+      const nickname = values[0] ? values[0].trim() : '';
+      const entrada = values[1] ? values[1].trim() : '';
+      const status = values[2] ? values[2].trim() : 'Member';
+      const servidor = values[3] ? values[3].trim() : '';
+      
+      let medalsRaw = '';
+      let activeState = 'TRUE';
+      
+      const col4Value = values[4] ? values[4].trim().toUpperCase() : '';
+      
+      if (col4Value === 'TRUE' || col4Value === 'FALSE') {
+        medalsRaw = '';
+        activeState = col4Value;
+      } else {
+        medalsRaw = col4Value;
+        activeState = values[5] ? values[5].trim().toUpperCase() : 'TRUE';
+      }
+      
+      const medals = medalsRaw.split(',').map(m => m.trim()).filter(Boolean);
+      const inativo = activeState === 'FALSE';
+      
+      const result = {
+        nickname,
+        entrada,
+        status,
+        servidor,
+        medals,
+        inativo
+      };
+      
+      log(`Resultado: ${JSON.stringify(result, null, 2)}`, 'success');
+    });
+  </script>
+</body>
+</html>

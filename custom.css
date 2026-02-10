@@ -70,4 +70,398 @@
     0 0 50px 15px #00ffe740;
 }
 
+/* ============================================
+   QUEST LIST - LISTA DE QUESTS INTEGRADA
+   ============================================ */
+
+.quest-filter-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0 15px 0;
+  padding: 12px;
+  background: rgba(0, 207, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 207, 255, 0.2);
+}
+
+.quest-filter-input {
+  flex: 1;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(0, 207, 255, 0.3);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 1em;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.quest-filter-input:focus {
+  border-color: #00cfff;
+  background: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 10px rgba(0, 207, 255, 0.3);
+}
+
+.quest-filter-input::placeholder {
+  color: #888;
+}
+
+.quest-count {
+  font-size: 0.9em;
+  color: #00cfff;
+  font-weight: bold;
+  white-space: nowrap;
+  padding: 6px 12px;
+  background: rgba(0, 207, 255, 0.1);
+  border-radius: 20px;
+}
+
+.quest-list-container {
+  margin: 10px 0;
+  padding: 0;
+}
+
+.quest-list-scrollable {
+  max-height: 320px; /* ~4 items de 70px cada */
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+
+.quest-list-scrollable::-webkit-scrollbar {
+  width: 8px;
+}
+
+.quest-list-scrollable::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.quest-list-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(0, 207, 255, 0.3);
+  border-radius: 4px;
+}
+
+.quest-list-scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 207, 255, 0.5);
+}
+
+.quest-list-hint {
+  text-align: center;
+  color: #888;
+  font-size: 0.9em;
+  margin: 10px 0;
+  padding: 8px;
+  background: rgba(0, 207, 255, 0.05);
+  border-radius: 6px;
+}
+
+.quest-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #00cfff;
+  transition: all 0.3s ease;
+}
+
+.quest-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-left-color: #00fff9;
+  transform: translateX(5px);
+}
+
+.quest-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.quest-name {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #ffffff;
+}
+
+.quest-map {
+  font-size: 0.9em;
+  color: #aaaaaa;
+}
+
+.quest-multi-badge {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 8px;
+  background: rgba(255, 165, 0, 0.2);
+  border: 1px solid rgba(255, 165, 0, 0.5);
+  border-radius: 10px;
+  font-size: 0.75em;
+  color: #ffaa00;
+  font-weight: bold;
+}
+
+.quest-lupa {
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  background: rgba(0, 207, 255, 0.1);
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.quest-lupa:hover {
+  background: rgba(0, 207, 255, 0.3);
+  transform: scale(1.2);
+}
+
+/* ============================================
+   MODAL DE QUEST - DETALHES E MAPAS
+   ============================================ */
+
+.quest-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.quest-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.quest-modal-content {
+  position: relative;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #00cfff;
+  border-radius: 16px;
+  max-width: 90%;
+  max-height: 90%;
+  width: 800px;
+  box-shadow: 
+    0 0 40px rgba(0, 207, 255, 0.6),
+    0 10px 50px rgba(0, 0, 0, 0.9);
+  animation: modalContentSlideUp 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes modalContentSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.quest-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 2px solid rgba(0, 207, 255, 0.3);
+  background: rgba(0, 207, 255, 0.05);
+}
+
+.quest-modal-title {
+  margin: 0;
+  font-size: 1.5em;
+  color: #00fff9;
+  text-shadow: 0 0 10px rgba(0, 207, 255, 0.5);
+}
+
+.quest-modal-close {
+  background: rgba(255, 0, 0, 0.2);
+  border: 2px solid rgba(255, 0, 0, 0.5);
+  color: #ff6b6b;
+  font-size: 1.5em;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.quest-modal-close:hover {
+  background: rgba(255, 0, 0, 0.4);
+  border-color: #ff0000;
+  transform: rotate(90deg);
+}
+
+.quest-modal-body {
+  padding: 25px;
+  overflow-y: auto;
+  max-height: calc(90vh - 100px);
+}
+
+.quest-modal-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.quest-modal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+.quest-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 207, 255, 0.4);
+  border-radius: 5px;
+}
+
+.quest-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 207, 255, 0.6);
+}
+
+.quest-modal-map-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+  border: 1px solid rgba(0, 207, 255, 0.2);
+}
+
+.quest-modal-map-section:last-child {
+  margin-bottom: 0;
+}
+
+.quest-modal-map-title {
+  margin: 0 0 15px 0;
+  color: #00cfff;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.quest-modal-coords-count {
+  font-size: 0.8em;
+  padding: 4px 10px;
+  background: rgba(0, 207, 255, 0.2);
+  border-radius: 12px;
+  color: #00fff9;
+}
+
+.quest-modal-map-container {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.quest-modal-map-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 8px;
+}
+
+.quest-modal-map-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.quest-modal-markers {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Container sem imagem (remove overlay) */
+.quest-modal-map-container.no-image::before {
+  display: none;
+}
+
+/* Placeholder quando imagem não existe */
+.quest-modal-map-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 50, 100, 0.2) 100%);
+  border: 2px dashed rgba(0, 207, 255, 0.3);
+  border-radius: 8px;
+  padding: 40px;
+}
+
+.map-placeholder-content {
+  text-align: center;
+}
+
+.map-placeholder-icon {
+  font-size: 4em;
+  display: block;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.map-placeholder-title {
+  margin: 0 0 10px 0;
+  font-size: 1.3em;
+  font-weight: bold;
+  color: #00cfff;
+}
+
+.map-placeholder-subtitle {
+  margin: 0;
+  font-size: 0.9em;
+  color: #888;
+  font-style: italic;
+}
+
+.quest-mob-marker {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  /* Sem efeitos: apenas a imagem PNG pura */
+}
+
 

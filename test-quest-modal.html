@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>🧪 Teste Modal - Quest List</title>
+  <link rel="stylesheet" href="custom.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #1a1a2e;
+      color: white;
+      min-height: 100vh;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #00cfff;
+    }
+    
+    .test-info {
+      background: rgba(0, 207, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #00cfff;
+    }
+    
+    .test-buttons {
+      display: flex;
+      gap: 10px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      background: #00cfff;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+    
+    button:hover {
+      background: #00fff9;
+      transform: translateY(-2px);
+    }
+    
+    .demo-container {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border: 2px solid #00cfff;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>🧪 Teste da Nova Modal de Quests</h1>
+  
+  <div class="test-info">
+    <h3>📋 Melhorias Implementadas:</h3>
+    <ul>
+      <li>✅ <strong>Múltiplos Mapas:</strong> Quests com mesmo número na coluna A mostram todos os mapas</li>
+      <li>✅ <strong>Click na Lupa:</strong> Não é mais hover, agora abre modal ao clicar</li>
+      <li>✅ <strong>Scroll na Lista:</strong> Mostra 4 quests por vez + scroll</li>
+      <li>✅ <strong>Filtro:</strong> Continua funcionando normalmente</li>
+    </ul>
+  </div>
+  
+  <div class="demo-container">
+    <h2>🎮 Testes Simulados</h2>
+    
+    <div class="test-buttons">
+      <button onclick="testSingleMap()">🗺️ Quest com 1 Mapa</button>
+      <button onclick="testMultipleMaps()">🗺️🗺️ Quest com 2 Mapas</button>
+      <button onclick="testMultipleLocations()">📍 Quest com Múltiplos Locais</button>
+    </div>
+    
+    <div id="result"></div>
+  </div>
+  
+  <script src="scripts/config-quest-list.js"></script>
+  <script src="scripts/quest-list-loader.js"></script>
+  
+  <script>
+    function testSingleMap() {
+      const questData = {
+        numero: "1",
+        nome: "Matar Goblins",
+        mapas: [{
+          nome: "sette",
+          coordenadas: ["100,100", "200,150", "300,200"]
+        }]
+      };
+      
+      simulateModal(questData);
+    }
+    
+    function testMultipleMaps() {
+      const questData = {
+        numero: "2",
+        nome: "Travel Bag (Multi-Mapa)",
+        mapas: [
+          {
+            nome: "cora_hq",
+            coordenadas: ["69,145", "120,200"]
+          },
+          {
+            nome: "sette",
+            coordenadas: ["150,180", "250,220"]
+          }
+        ]
+      };
+      
+      simulateModal(questData);
+    }
+    
+    function testMultipleLocations() {
+      const questData = {
+        numero: "3",
+        nome: "Boss Raid (5 Locais)",
+        mapas: [{
+          nome: "chaos",
+          coordenadas: ["100,100;150,120;200,140;250,160;300,180"]
+        }]
+      };
+      
+      simulateModal(questData);
+    }
+    
+    function simulateModal(questData) {
+      // Cria elemento temporário para simular click
+      const tempElement = document.createElement('div');
+      tempElement.setAttribute('data-quest', JSON.stringify(questData));
+      
+      // Abre modal
+      window.QuestListLoader.openQuestModal(tempElement);
+      
+      // Mostra info no resultado
+      document.getElementById('result').innerHTML = `
+        <div style="background: rgba(0,255,0,0.1); padding: 15px; border-radius: 8px; margin-top: 20px; border-left: 4px solid #00ff00;">
+          <h3>✅ Modal Aberta!</h3>
+          <p><strong>Quest:</strong> ${questData.nome}</p>
+          <p><strong>Número de Mapas:</strong> ${questData.mapas.length}</p>
+          <p><strong>Total de Marcadores:</strong> ${questData.mapas.reduce((sum, m) => {
+            return sum + m.coordenadas.reduce((s, c) => s + c.split(';').length, 0);
+          }, 0)}</p>
+        </div>
+      `;
+    }
+    
+    // Log inicial
+    console.log('🚀 Teste de Modal carregado');
+    console.log('💡 Clique nos botões para testar diferentes cenários');
+  </script>
+  
+</body>
+</html>

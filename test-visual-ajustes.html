@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>🎨 Ajustes Visuais - Marcadores</title>
+  <link rel="stylesheet" href="custom.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #1a1a2e;
+      color: white;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #00cfff;
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #888;
+      margin-bottom: 30px;
+    }
+    
+    .controls {
+      background: rgba(0, 207, 255, 0.1);
+      padding: 25px;
+      border-radius: 12px;
+      margin: 20px 0;
+      border: 2px solid #00cfff;
+    }
+    
+    .control-group {
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 8px;
+    }
+    
+    .control-group h3 {
+      margin: 0 0 15px 0;
+      color: #00fff9;
+    }
+    
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 10px 0;
+    }
+    
+    .control-row label {
+      flex: 1;
+      font-weight: bold;
+    }
+    
+    .control-row input[type="range"] {
+      flex: 2;
+      height: 8px;
+      background: rgba(0, 207, 255, 0.2);
+      border-radius: 4px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    
+    .control-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #00cfff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    
+    .control-row .value-display {
+      min-width: 60px;
+      text-align: right;
+      color: #00fff9;
+      font-family: monospace;
+    }
+    
+    .preview {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      border-radius: 12px;
+      margin: 20px 0;
+      text-align: center;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .preview h2 {
+      color: #00cfff;
+      margin-bottom: 20px;
+    }
+    
+    .map-preview-container {
+      position: relative;
+      display: inline-block;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    }
+    
+    .map-preview-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      pointer-events: none;
+      transition: background 0.3s ease;
+    }
+    
+    .map-preview-img {
+      display: block;
+      width: 400px;
+      height: 400px;
+      object-fit: cover;
+    }
+    
+    .marker-preview {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 0 10px rgba(255, 50, 50, 1)) 
+              drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
+      z-index: 10;
+      animation: markerPulseCustom 2.5s infinite ease-in-out;
+    }
+    
+    .presets {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+    
+    .preset-btn {
+      background: rgba(0, 207, 255, 0.2);
+      border: 2px solid #00cfff;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+    
+    .preset-btn:hover {
+      background: rgba(0, 207, 255, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .info-box {
+      background: rgba(255, 165, 0, 0.1);
+      border: 2px solid rgba(255, 165, 0, 0.5);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+    
+    .code-output {
+      background: #0d0d1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+      color: #0f0;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>🎨 Ajuste Visual dos Marcadores</h1>
+  <p class="subtitle">Configure o pulse e overlay em tempo real</p>
+  
+  <div class="info-box">
+    <strong>💡 Instruções:</strong>
+    Use os controles abaixo para ajustar os valores e veja o resultado instantaneamente.
+    Quando encontrar a configuração ideal, copie o código CSS gerado.
+  </div>
+  
+  <div class="controls">
+    <h2 style="color: #00cfff; margin-top: 0;">⚙️ Controles</h2>
+    
+    <div class="control-group">
+      <h3>🔄 Efeito Pulse</h3>
+      
+      <div class="control-row">
+        <label>Escala do Pulse:</label>
+        <input type="range" id="pulse-scale" min="1.00" max="1.30" step="0.01" value="1.08">
+        <span class="value-display" id="pulse-scale-value">1.08x</span>
+      </div>
+      
+      <div class="control-row">
+        <label>Velocidade (segundos):</label>
+        <input type="range" id="pulse-speed" min="1.0" max="5.0" step="0.1" value="2.5">
+        <span class="value-display" id="pulse-speed-value">2.5s</span>
+      </div>
+      
+      <div class="control-row">
+        <label>Opacidade Mínima:</label>
+        <input type="range" id="pulse-opacity" min="0.7" max="1.0" step="0.01" value="0.95">
+        <span class="value-display" id="pulse-opacity-value">0.95</span>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <h3>🌑 Overlay do Mapa</h3>
+      
+      <div class="control-row">
+        <label>Escuridão:</label>
+        <input type="range" id="overlay-darkness" min="0.0" max="0.8" step="0.05" value="0.4">
+        <span class="value-display" id="overlay-darkness-value">0.40</span>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <h3>✨ Brilho (Drop Shadow)</h3>
+      
+      <div class="control-row">
+        <label>Intensidade:</label>
+        <input type="range" id="shadow-intensity" min="5" max="20" step="1" value="10">
+        <span class="value-display" id="shadow-intensity-value">10px</span>
+      </div>
+    </div>
+    
+    <h3 style="margin-top: 30px;">📦 Presets Rápidos:</h3>
+    <div class="presets">
+      <button class="preset-btn" onclick="applyPreset('subtle')">Sutil</button>
+      <button class="preset-btn" onclick="applyPreset('normal')">Normal (Atual)</button>
+      <button class="preset-btn" onclick="applyPreset('intense')">Intenso</button>
+      <button class="preset-btn" onclick="applyPreset('none')">Sem Pulse</button>
+    </div>
+  </div>
+  
+  <div class="preview">
+    <h2>👁️ Preview</h2>
+    <div class="map-preview-container" id="map-container">
+      <img src="https://www.darklegionrf.com/docimages/maps/cora_hq.png" 
+           class="map-preview-img" 
+           alt="Mapa Preview"
+           onerror="this.src='data:image/svg+xml,%3Csvg width=\'400\' height=\'400\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Crect width=\'400\' height=\'400\' fill=\'%23333\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' fill=\'white\' font-size=\'20\'%3EMapa de Exemplo%3C/text%3E%3C/svg%3E'">
+      <img src="https://www.darklegionrf.com/docimages/maps/mob.png" 
+           class="marker-preview" 
+           style="left: 100px; top: 100px;"
+           alt="Mob 1">
+      <img src="https://www.darklegionrf.com/docimages/maps/mob.png" 
+           class="marker-preview" 
+           style="left: 250px; top: 150px;"
+           alt="Mob 2">
+      <img src="https://www.darklegionrf.com/docimages/maps/mob.png" 
+           class="marker-preview" 
+           style="left: 180px; top: 280px;"
+           alt="Mob 3">
+    </div>
+  </div>
+  
+  <div class="controls">
+    <h2 style="color: #00cfff; margin-top: 0;">📋 Código CSS Gerado</h2>
+    <p style="color: #888;">Copie este código para <code>custom.css</code></p>
+    <div class="code-output" id="css-output"></div>
+  </div>
+  
+  <script>
+    // Elementos
+    const pulseScale = document.getElementById('pulse-scale');
+    const pulseSpeed = document.getElementById('pulse-speed');
+    const pulseOpacity = document.getElementById('pulse-opacity');
+    const overlayDarkness = document.getElementById('overlay-darkness');
+    const shadowIntensity = document.getElementById('shadow-intensity');
+    
+    const pulseScaleValue = document.getElementById('pulse-scale-value');
+    const pulseSpeedValue = document.getElementById('pulse-speed-value');
+    const pulseOpacityValue = document.getElementById('pulse-opacity-value');
+    const overlayDarknessValue = document.getElementById('overlay-darkness-value');
+    const shadowIntensityValue = document.getElementById('shadow-intensity-value');
+    
+    const mapContainer = document.getElementById('map-container');
+    const cssOutput = document.getElementById('css-output');
+    
+    // Presets
+    const presets = {
+      subtle: {
+        scale: 1.03,
+        speed: 3.0,
+        opacity: 0.98,
+        overlay: 0.2,
+        shadow: 8
+      },
+      normal: {
+        scale: 1.08,
+        speed: 2.5,
+        opacity: 0.95,
+        overlay: 0.4,
+        shadow: 10
+      },
+      intense: {
+        scale: 1.15,
+        speed: 1.5,
+        opacity: 0.9,
+        overlay: 0.6,
+        shadow: 15
+      },
+      none: {
+        scale: 1.0,
+        speed: 2.5,
+        opacity: 1.0,
+        overlay: 0.4,
+        shadow: 10
+      }
+    };
+    
+    // Aplicar preset
+    function applyPreset(name) {
+      const preset = presets[name];
+      pulseScale.value = preset.scale;
+      pulseSpeed.value = preset.speed;
+      pulseOpacity.value = preset.opacity;
+      overlayDarkness.value = preset.overlay;
+      shadowIntensity.value = preset.shadow;
+      updatePreview();
+    }
+    
+    // Atualizar preview
+    function updatePreview() {
+      const scale = parseFloat(pulseScale.value);
+      const speed = parseFloat(pulseSpeed.value);
+      const opacity = parseFloat(pulseOpacity.value);
+      const overlay = parseFloat(overlayDarkness.value);
+      const shadow = parseInt(shadowIntensity.value);
+      
+      // Atualiza displays
+      pulseScaleValue.textContent = scale.toFixed(2) + 'x';
+      pulseSpeedValue.textContent = speed.toFixed(1) + 's';
+      pulseOpacityValue.textContent = opacity.toFixed(2);
+      overlayDarknessValue.textContent = overlay.toFixed(2);
+      shadowIntensityValue.textContent = shadow + 'px';
+      
+      // Atualiza overlay
+      mapContainer.style.setProperty('--overlay-darkness', overlay);
+      const overlayElement = mapContainer.querySelector('::before');
+      mapContainer.style.background = `linear-gradient(rgba(0,0,0,${overlay}), rgba(0,0,0,${overlay}))`;
+      document.querySelector('.map-preview-container::before').style = `background: rgba(0, 0, 0, ${overlay})`;
+      
+      // Atualiza animação CSS dinamicamente
+      const styleId = 'dynamic-marker-style';
+      let styleEl = document.getElementById(styleId);
+      if (!styleEl) {
+        styleEl = document.createElement('style');
+        styleEl.id = styleId;
+        document.head.appendChild(styleEl);
+      }
+      
+      const animationName = scale === 1.0 ? 'none' : `markerPulseCustom ${speed}s infinite ease-in-out`;
+      
+      styleEl.textContent = `
+        .marker-preview {
+          animation: ${animationName} !important;
+          filter: drop-shadow(0 0 ${shadow}px rgba(255, 50, 50, 1)) 
+                  drop-shadow(0 0 ${shadow * 2}px rgba(255, 0, 0, 0.6)) !important;
+        }
+        
+        @keyframes markerPulseCustom {
+          0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(${scale});
+            opacity: ${opacity};
+          }
+        }
+        
+        .map-preview-container::before {
+          background: rgba(0, 0, 0, ${overlay}) !important;
+        }
+      `;
+      
+      // Gera código CSS
+      generateCSS(scale, speed, opacity, overlay, shadow);
+    }
+    
+    // Gerar código CSS
+    function generateCSS(scale, speed, opacity, overlay, shadow) {
+      const animationCode = scale === 1.0 ? 'animation: none;' : `animation: markerPulseSubtle ${speed}s infinite ease-in-out;`;
+      
+      const css = `/* Marcador */
+.quest-mob-marker {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 ${shadow}px rgba(255, 50, 50, 1)) 
+          drop-shadow(0 0 ${shadow * 2}px rgba(255, 0, 0, 0.6));
+  ${animationCode}
+  z-index: 10;
+}
+
+${scale !== 1.0 ? `/* Animação Pulse */
+@keyframes markerPulseSubtle {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(${scale});
+    opacity: ${opacity};
+  }
+}
+
+` : ''}/* Overlay do Mapa */
+.quest-modal-map-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, ${overlay});
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 8px;
+}`;
+      
+      cssOutput.textContent = css;
+    }
+    
+    // Event listeners
+    pulseScale.addEventListener('input', updatePreview);
+    pulseSpeed.addEventListener('input', updatePreview);
+    pulseOpacity.addEventListener('input', updatePreview);
+    overlayDarkness.addEventListener('input', updatePreview);
+    shadowIntensity.addEventListener('input', updatePreview);
+    
+    // Inicializa
+    updatePreview();
+    console.log('🎨 Ajustes visuais carregados!');
+  </script>
+  
+</body>
+</html>

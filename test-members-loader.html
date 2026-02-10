@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste - Members Loader</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #ffd700;
+      border-bottom: 2px solid #ffd700;
+      padding-bottom: 10px;
+    }
+    .status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+    .status.info { background: #1e3a5f; border-left: 4px solid #3b82f6; }
+    .status.success { background: #1e4620; border-left: 4px solid #22c55e; }
+    .status.error { background: #4a1e1e; border-left: 4px solid #ef4444; }
+    .status.warning { background: #4a3d1e; border-left: 4px solid #f59e0b; }
+    
+    button {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2563eb;
+    }
+    button:disabled {
+      background: #666;
+      cursor: not-allowed;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #2a2a2a;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #444;
+    }
+    th {
+      background: #333;
+      color: #ffd700;
+      font-weight: bold;
+    }
+    tr:hover {
+      background: #353535;
+    }
+    .medal-badge {
+      display: inline-block;
+      background: #4a4a4a;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin: 2px;
+      font-size: 11px;
+      color: #ffd700;
+    }
+    .status-badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+    .status-fundador { background: #ff8c00; color: #000; }
+    .status-officer { background: #ffd700; color: #000; }
+    .status-member { background: #666; color: #fff; }
+    .inactive { opacity: 0.5; text-decoration: line-through; }
+    
+    #stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin: 20px 0;
+    }
+    .stat-card {
+      background: #2a2a2a;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #3b82f6;
+    }
+    .stat-card h3 {
+      margin: 0 0 10px 0;
+      font-size: 14px;
+      color: #999;
+    }
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #ffd700;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧪 Teste - Members Loader (Google Sheets)</h1>
+  
+  <div>
+    <button onclick="testLoad()">🔄 Carregar Membros</button>
+    <button onclick="clearCache()">🗑️ Limpar Cache</button>
+    <button onclick="showRawData()">📋 Ver Dados Brutos (JSON)</button>
+  </div>
+  
+  <div id="logs"></div>
+  
+  <div id="stats"></div>
+  
+  <div id="results"></div>
+  
+  <script src="members-loader.js"></script>
+  
+  <script>
+    let currentData = null;
+    
+    function log(message, type = 'info') {
+      const logs = document.getElementById('logs');
+      const div = document.createElement('div');
+      div.className = `status ${type}`;
+      div.textContent = message;
+      logs.appendChild(div);
+      console.log(message);
+    }
+    
+    function clearLogs() {
+      document.getElementById('logs').innerHTML = '';
+    }
+    
+    async function testLoad() {
+      clearLogs();
+      log('🚀 Iniciando teste de carregamento...', 'info');
+      
+      try {
+        if (!window.MembersLoader) {
+          log('❌ MembersLoader não encontrado!', 'error');
+          return;
+        }
+        
+        log('📊 Buscando dados do Google Sheets...', 'info');
+        const startTime = performance.now();
+        
+        const members = await window.MembersLoader.loadMembers();
+        
+        const endTime = performance.now();
+        const duration = (endTime - startTime).toFixed(2);
+        
+        log(`✅ Dados carregados com sucesso! (${duration}ms)`, 'success');
+        log(`📦 Total de membros encontrados: ${members.length}`, 'success');
+        
+        currentData = members;
+        
+        // Estatísticas
+        displayStats(members);
+        
+        // Tabela
+        displayTable(members);
+        
+      } catch (error) {
+        log(`❌ Erro ao carregar: ${error.message}`, 'error');
+        console.error(error);
+      }
+    }
+    
+    function displayStats(members) {
+      const activeMembers = members.filter(m => !m.inativo);
+      const inactiveMembers = members.filter(m => m.inativo);
+      const officers = members.filter(m => m.status === 'Officer');
+      const fundadores = members.filter(m => m.status === 'Fundador');
+      
+      const statsHtml = `
+        <div class="stat-card">
+          <h3>Total de Membros</h3>
+          <div class="value">${members.length}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Membros Ativos</h3>
+          <div class="value">${activeMembers.length}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Membros Inativos</h3>
+          <div class="value">${inactiveMembers.length}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Officers</h3>
+          <div class="value">${officers.length}</div>
+        </div>
+        <div class="stat-card">
+          <h3>Fundadores</h3>
+          <div class="value">${fundadores.length}</div>
+        </div>
+      `;
+      
+      document.getElementById('stats').innerHTML = statsHtml;
+    }
+    
+    function displayTable(members) {
+      if (!members || members.length === 0) {
+        document.getElementById('results').innerHTML = '<p>Nenhum membro encontrado.</p>';
+        return;
+      }
+      
+      const rows = members.map(m => {
+        const statusClass = m.status.toLowerCase();
+        const medals = m.medals.map(code => 
+          `<span class="medal-badge">${code}</span>`
+        ).join('');
+        
+        const rowClass = m.inativo ? 'inactive' : '';
+        
+        return `
+          <tr class="${rowClass}">
+            <td>${m.nickname}</td>
+            <td>${m.entrada}</td>
+            <td><span class="status-badge status-${statusClass}">${m.status}</span></td>
+            <td>${m.servidor || '-'}</td>
+            <td>${medals || '-'}</td>
+            <td>${m.inativo ? '❌ Inativo' : '✅ Ativo'}</td>
+          </tr>
+        `;
+      }).join('');
+      
+      const tableHtml = `
+        <table>
+          <thead>
+            <tr>
+              <th>Nickname</th>
+              <th>Data Entrada</th>
+              <th>Status</th>
+              <th>Servidor</th>
+              <th>Medalhas</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      `;
+      
+      document.getElementById('results').innerHTML = tableHtml;
+    }
+    
+    function clearCache() {
+      if (window.MembersLoader) {
+        window.MembersLoader.clearCache();
+        log('🗑️ Cache limpo com sucesso!', 'success');
+      } else {
+        log('❌ MembersLoader não encontrado!', 'error');
+      }
+    }
+    
+    function showRawData() {
+      if (!currentData) {
+        log('⚠️ Nenhum dado carregado ainda. Clique em "Carregar Membros" primeiro.', 'warning');
+        return;
+      }
+      
+      const jsonStr = JSON.stringify(currentData, null, 2);
+      const blob = new Blob([jsonStr], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'members-data.json';
+      a.click();
+      
+      URL.revokeObjectURL(url);
+      log('📥 Dados brutos exportados para members-data.json', 'success');
+    }
+    
+    // Auto-load ao abrir a página
+    window.addEventListener('load', () => {
+      log('🌐 Página carregada. Pronto para testar!', 'info');
+      log(`📍 Spreadsheet ID: 16ZmFjvIJ5ta54ZkWupPhMsg8-rmZ_OhrCRkJjiAKqos`, 'info');
+      log(`📍 Tab: ListaMembros`, 'info');
+    });
+  </script>
+</body>
+</html>

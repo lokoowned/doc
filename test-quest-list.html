@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧪 Teste - Quest List Loader</title>
+  
+  <!-- Estilos customizados -->
+  <link rel="stylesheet" href="custom.css">
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #1a1a2e;
+      color: #ffffff;
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #00cfff;
+      text-shadow: 0 0 20px rgba(0, 207, 255, 0.5);
+    }
+    
+    .test-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      margin: 30px 0;
+      border: 2px solid #00cfff;
+    }
+    
+    .test-header {
+      font-size: 1.3em;
+      margin-bottom: 20px;
+      color: #00fff9;
+    }
+    
+    .test-info {
+      background: rgba(0, 207, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #00cfff;
+    }
+    
+    .test-info h3 {
+      margin-top: 0;
+      color: #00fff9;
+    }
+    
+    .test-info ul {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    
+    .test-info li {
+      margin: 5px 0;
+    }
+    
+    .btn-test {
+      background: linear-gradient(135deg, #00cfff, #0099cc);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      margin: 5px;
+    }
+    
+    .btn-test:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(0, 207, 255, 0.5);
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #ff4757, #cc0033);
+    }
+    
+    .log-container {
+      background: #0d0d1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+    
+    .log-entry {
+      margin: 5px 0;
+      padding: 5px;
+      border-left: 3px solid #00cfff;
+      padding-left: 10px;
+    }
+    
+    .log-success {
+      border-left-color: #00ff00;
+      color: #88ff88;
+    }
+    
+    .log-error {
+      border-left-color: #ff0000;
+      color: #ff8888;
+    }
+    
+    .log-info {
+      border-left-color: #ffff00;
+      color: #ffff88;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>🧪 Teste - Quest List Loader</h1>
+  
+  <div class="test-info">
+    <h3>📋 Informações de Teste</h3>
+    <ul>
+      <li><strong>Planilha ID:</strong> 1KBeQwNcjc7SrbeF_Rw6g59tdrOMiPC4uOtdd1GUo2AM</li>
+      <li><strong>Tab:</strong> QuestList</li>
+      <li><strong>Cache:</strong> 5 minutos</li>
+      <li><strong>Status:</strong> <span id="connection-status">🔄 Verificando...</span></li>
+    </ul>
+  </div>
+  
+  <div class="test-section">
+    <div class="test-header">🎮 Controles de Teste</div>
+    
+    <button class="btn-test" onclick="forceReload()">🔄 Forçar Reload</button>
+    <button class="btn-test btn-danger" onclick="clearCache()">🗑️ Limpar Cache</button>
+    <button class="btn-test" onclick="testConnection()">📡 Testar Conexão</button>
+    <button class="btn-test" onclick="clearLogs()">🧹 Limpar Logs</button>
+    
+    <div id="log-output" class="log-container"></div>
+  </div>
+  
+  <div class="test-section">
+    <div class="test-header">📜 Lista de Quests</div>
+    
+    <!-- Container onde as quests serão renderizadas -->
+    <div id="quest-list-container"></div>
+  </div>
+  
+  <!-- Scripts necessários -->
+  <script src="scripts/config-quest-list.js"></script>
+  <script src="scripts/quest-list-loader.js"></script>
+  
+  <script>
+    // Sistema de logs
+    function addLog(message, type = 'info') {
+      const logContainer = document.getElementById('log-output');
+      const logEntry = document.createElement('div');
+      logEntry.className = `log-entry log-${type}`;
+      logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+      logContainer.appendChild(logEntry);
+      logContainer.scrollTop = logContainer.scrollHeight;
+    }
+    
+    // Sobrescreve console.log para capturar logs
+    const originalLog = console.log;
+    const originalError = console.error;
+    const originalWarn = console.warn;
+    
+    console.log = function(...args) {
+      originalLog.apply(console, args);
+      addLog(args.join(' '), 'success');
+    };
+    
+    console.error = function(...args) {
+      originalError.apply(console, args);
+      addLog(args.join(' '), 'error');
+    };
+    
+    console.warn = function(...args) {
+      originalWarn.apply(console, args);
+      addLog(args.join(' '), 'info');
+    };
+    
+    // Funções de teste
+    function forceReload() {
+      addLog('🔄 Recarregando lista de quests...', 'info');
+      window.QuestListLoader.clearCache();
+      window.QuestListLoader.renderQuestList('quest-list-container');
+    }
+    
+    function clearCache() {
+      addLog('🗑️ Cache limpo!', 'success');
+      window.QuestListLoader.clearCache();
+    }
+    
+    async function testConnection() {
+      addLog('📡 Testando conexão com Google Sheets...', 'info');
+      try {
+        const url = window.QuestListLoader.getSheetUrl();
+        const response = await fetch(url);
+        
+        if (response.ok) {
+          addLog('✅ Conexão OK! Status: ' + response.status, 'success');
+          document.getElementById('connection-status').textContent = '✅ Online';
+          document.getElementById('connection-status').style.color = '#00ff00';
+        } else {
+          addLog('❌ Erro na conexão. Status: ' + response.status, 'error');
+          document.getElementById('connection-status').textContent = '❌ Erro';
+          document.getElementById('connection-status').style.color = '#ff0000';
+        }
+      } catch (error) {
+        addLog('❌ Erro: ' + error.message, 'error');
+        document.getElementById('connection-status').textContent = '❌ Offline';
+        document.getElementById('connection-status').style.color = '#ff0000';
+      }
+    }
+    
+    function clearLogs() {
+      document.getElementById('log-output').innerHTML = '';
+      addLog('🧹 Logs limpos', 'info');
+    }
+    
+    // Inicialização automática
+    document.addEventListener('DOMContentLoaded', function() {
+      addLog('🚀 Página carregada. Iniciando testes...', 'success');
+      
+      // Testa conexão automaticamente
+      testConnection();
+      
+      // Carrega a lista de quests
+      addLog('📊 Carregando lista de quests...', 'info');
+      window.QuestListLoader.renderQuestList('quest-list-container');
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>🧪 Teste Posicionamento - Quest Markers</title>
+  <link rel="stylesheet" href="custom.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #1a1a2e;
+      color: white;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #00cfff;
+    }
+    
+    .test-section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 12px;
+      margin: 30px 0;
+      border: 2px solid #00cfff;
+    }
+    
+    .test-map-container {
+      position: relative;
+      display: inline-block;
+      margin: 20px;
+      border: 2px solid #ffff00;
+      border-radius: 8px;
+    }
+    
+    .test-map-container img {
+      display: block;
+      max-width: 500px;
+      border-radius: 8px;
+    }
+    
+    .test-markers {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      /* background: rgba(255, 0, 0, 0.1); */
+    }
+    
+    .test-marker {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.8));
+      animation: markerPulse 1.5s infinite ease-in-out;
+    }
+    
+    .coord-input {
+      background: rgba(0, 0, 0, 0.5);
+      border: 2px solid #00cfff;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 5px;
+      width: 150px;
+    }
+    
+    button {
+      background: #00cfff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+      font-weight: bold;
+    }
+    
+    button:hover {
+      background: #00fff9;
+    }
+    
+    .info-box {
+      background: rgba(0, 207, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      border-left: 4px solid #00cfff;
+    }
+    
+    .log {
+      background: #0d0d1a;
+      padding: 10px;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>🧪 Teste de Posicionamento de Marcadores</h1>
+  
+  <div class="info-box">
+    <h3>📝 Como Testar:</h3>
+    <ol>
+      <li>Coloque a URL de um mapa abaixo</li>
+      <li>Digite coordenadas no formato: <code>x,y</code> ou <code>x1,y1;x2,y2</code></li>
+      <li>Clique em "Plotar Marcadores"</li>
+      <li>Verifique se os marcadores aparecem nas posições corretas</li>
+    </ol>
+  </div>
+  
+  <div class="test-section">
+    <h2>🗺️ Configuração do Teste</h2>
+    
+    <label>URL do Mapa:</label><br>
+    <input type="text" id="map-url" class="coord-input" 
+           style="width: 80%;" 
+           placeholder="https://exemplo.com/mapa.png"
+           value="https://www.darklegionrf.com/docimages/maps/sette.png"><br><br>
+    
+    <label>Coordenadas (formato: x,y ou x1,y1;x2,y2;x3,y3):</label><br>
+    <input type="text" id="coordinates" class="coord-input" 
+           style="width: 80%;" 
+           placeholder="150,200;300,400"
+           value="100,100;200,150;300,200"><br><br>
+    
+    <button onclick="plotMarkers()">📍 Plotar Marcadores</button>
+    <button onclick="clearMarkers()">🧹 Limpar</button>
+    
+    <div id="log-output" class="log"></div>
+  </div>
+  
+  <div class="test-section">
+    <h2>🎯 Resultado do Teste</h2>
+    
+    <div id="test-result">
+      <p style="color: #888;">Preencha os campos acima e clique em "Plotar Marcadores"</p>
+    </div>
+  </div>
+  
+  <script>
+    const MOB_ICON_URL = 'https://www.darklegionrf.com/docimages/maps/mob.png';
+    
+    function log(msg, color = '#00cfff') {
+      const logDiv = document.getElementById('log-output');
+      const timestamp = new Date().toLocaleTimeString();
+      logDiv.innerHTML += `<div style="color: ${color};">[${timestamp}] ${msg}</div>`;
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+    
+    function clearMarkers() {
+      document.getElementById('test-result').innerHTML = '<p style="color: #888;">Marcadores limpos. Configure e plote novamente.</p>';
+      document.getElementById('log-output').innerHTML = '';
+      log('🧹 Marcadores limpos', '#ffff00');
+    }
+    
+    function plotMarkers() {
+      const mapUrl = document.getElementById('map-url').value.trim();
+      const coordsStr = document.getElementById('coordinates').value.trim();
+      
+      if (!mapUrl) {
+        log('❌ URL do mapa não informada', '#ff0000');
+        return;
+      }
+      
+      if (!coordsStr) {
+        log('❌ Coordenadas não informadas', '#ff0000');
+        return;
+      }
+      
+      log('🚀 Iniciando plotagem...', '#00ff00');
+      log(`📷 Mapa: ${mapUrl}`, '#ffffff');
+      log(`📍 Coordenadas: ${coordsStr}`, '#ffffff');
+      
+      // Cria container
+      const resultDiv = document.getElementById('test-result');
+      resultDiv.innerHTML = '<p style="color: #888;">⏳ Carregando mapa...</p>';
+      
+      // Cria estrutura
+      const mapContainer = document.createElement('div');
+      mapContainer.className = 'test-map-container';
+      
+      const mapImg = document.createElement('img');
+      mapImg.src = mapUrl;
+      
+      const markersContainer = document.createElement('div');
+      markersContainer.className = 'test-markers';
+      
+      mapImg.onerror = () => {
+        log('❌ Erro ao carregar imagem do mapa', '#ff0000');
+        resultDiv.innerHTML = '<p style="color: red;">❌ Erro ao carregar mapa. Verifique a URL.</p>';
+      };
+      
+      mapImg.onload = () => {
+        log(`✅ Mapa carregado! Dimensões: ${mapImg.offsetWidth}x${mapImg.offsetHeight}px`, '#00ff00');
+        
+        // Ajusta container de marcadores
+        markersContainer.style.width = `${mapImg.offsetWidth}px`;
+        markersContainer.style.height = `${mapImg.offsetHeight}px`;
+        
+        log(`📐 Container de marcadores: ${markersContainer.style.width} x ${markersContainer.style.height}`, '#00cfff');
+        
+        // Parse coordenadas
+        const coordsList = coordsStr.split(';');
+        log(`📍 Plotando ${coordsList.length} marcador(es)...`, '#00cfff');
+        
+        coordsList.forEach((coords, index) => {
+          const parts = coords.split(',').map(c => c.trim());
+          const x = parseFloat(parts[0]);
+          const y = parseFloat(parts[1]);
+          
+          if (!isNaN(x) && !isNaN(y)) {
+            const marker = document.createElement('img');
+            marker.src = MOB_ICON_URL;
+            marker.className = 'test-marker';
+            marker.style.left = `${x}px`;
+            marker.style.top = `${y}px`;
+            marker.title = `Marcador ${index + 1}: (${x}, ${y})`;
+            markersContainer.appendChild(marker);
+            
+            log(`  ✅ Marcador ${index + 1}: x=${x}px, y=${y}px`, '#00ff00');
+          } else {
+            log(`  ⚠️ Coordenadas inválidas: "${coords}"`, '#ffff00');
+          }
+        });
+        
+        log('🎉 Plotagem concluída!', '#00ff00');
+      };
+      
+      mapContainer.appendChild(mapImg);
+      mapContainer.appendChild(markersContainer);
+      
+      resultDiv.innerHTML = '';
+      resultDiv.appendChild(mapContainer);
+    }
+    
+    // Log inicial
+    log('🚀 Teste de posicionamento carregado', '#00ff00');
+    log('💡 Dica: Use coordenadas pequenas primeiro (ex: 50,50)', '#ffff00');
+  </script>
+  
+</body>
+</html>

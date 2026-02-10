@@ -27,6 +27,7 @@ Um guia completo sobre as missões disponíveis, desde o nivelamento inicial at�
 
 ---
 
+
 <details>
 <summary><b>Informações sobre Quest's</b></summary>
 <details>
@@ -234,6 +235,17 @@ Loot: **Capsulas de 500 pvp points**.
 | **Legend** | Solo | Conversar com o NPC Race Manager | HQ |
 | **Final** | Grupo | Coletar Blood, Destruction e Soul do Cubo Precioso | Dentro de Calderon |
 </details>
+
+</details>
+
+---
+
+<details>
+<summary><b>Lista de Quests por Monstros</b></summary>
+
+> Passe o mouse sobre a lupa 🔍 para visualizar o mapa com as localizações dos monstros.
+
+<div id="quest-list-container"></div>
 
 </details>
 

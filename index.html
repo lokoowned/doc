@@ -13,6 +13,10 @@
   <!-- Arquivo de Configuração de Listas Google Sheets -->
   <script src="configlists.js"></script>
   
+  <!-- Quest List Module -->
+  <script src="scripts/config-quest-list.js"></script>
+  <script src="scripts/quest-list-loader.js"></script>
+  
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsify-themeable@0/dist/css/theme-simple-dark.css">
   <link rel="stylesheet" href="custom.css">
   <style>
@@ -4124,6 +4128,27 @@ ${boxContent.trim()}
               
             } catch (error) {
               console.error('❌ Erro no Countdown Widget:', error);
+            }
+          });
+        },
+        
+        // Plugin: Quest List Loader
+        function questListPlugin(hook, vm) {
+          hook.doneEach(function() {
+            try {
+              // Busca container da Quest List
+              const questContainer = document.getElementById('quest-list-container');
+              
+              if (questContainer && window.QuestListLoader) {
+                // Verifica se já foi renderizado
+                if (!questContainer.hasAttribute('data-quest-loaded')) {
+                  console.log('📊 Renderizando Quest List...');
+                  questContainer.setAttribute('data-quest-loaded', 'true');
+                  window.QuestListLoader.renderQuestList('quest-list-container');
+                }
+              }
+            } catch (error) {
+              console.error('❌ Erro no Quest List Plugin:', error);
             }
           });
         }

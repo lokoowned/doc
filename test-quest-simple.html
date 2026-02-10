@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Teste Simples - Quest List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background: #1a1a2e;
+      color: white;
+    }
+    .log {
+      background: #0d0d1a;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 10px 0;
+      border-left: 3px solid #00cfff;
+    }
+    button {
+      background: #00cfff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #00fff9;
+    }
+  </style>
+</head>
+<body>
+  
+  <h1>🧪 Teste Simples - Quest List</h1>
+  
+  <button onclick="testConnection()">📡 Testar Conexão Planilha</button>
+  <button onclick="testFetch()">📊 Buscar Dados</button>
+  <button onclick="clearLogs()">🧹 Limpar</button>
+  
+  <div id="logs"></div>
+  
+  <hr>
+  
+  <h2>Resultado:</h2>
+  <div id="result" style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px;"></div>
+  
+  <script>
+    const SPREADSHEET_ID = '1KBeQwNcjc7SrbeF_Rw6g59tdrOMiPC4uOtdd1GUo2AM';
+    const TAB_NAME = 'QuestList';
+    
+    function log(msg, color = '#00cfff') {
+      const logsDiv = document.getElementById('logs');
+      const logEntry = document.createElement('div');
+      logEntry.className = 'log';
+      logEntry.style.borderLeftColor = color;
+      logEntry.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logsDiv.appendChild(logEntry);
+      logsDiv.scrollTop = logsDiv.scrollHeight;
+    }
+    
+    function clearLogs() {
+      document.getElementById('logs').innerHTML = '';
+      document.getElementById('result').innerHTML = '';
+    }
+    
+    function getSheetUrl() {
+      const baseUrl = 'https://docs.google.com/spreadsheets/d';
+      return `${baseUrl}/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(TAB_NAME)}`;
+    }
+    
+    async function testConnection() {
+      const url = getSheetUrl();
+      log(`🔗 URL: ${url}`, '#ffff00');
+      
+      try {
+        log('📡 Testando conexão...', '#00cfff');
+        const response = await fetch(url);
+        
+        log(`Status: ${response.status} ${response.statusText}`, 
+            response.ok ? '#00ff00' : '#ff0000');
+        
+        if (response.ok) {
+          log('✅ Conexão OK!', '#00ff00');
+          return true;
+        } else {
+          log('❌ Erro na conexão', '#ff0000');
+          return false;
+        }
+      } catch (error) {
+        log(`❌ Erro: ${error.message}`, '#ff0000');
+        return false;
+      }
+    }
+    
+    async function testFetch() {
+      document.getElementById('result').innerHTML = '<p>⏳ Buscando dados...</p>';
+      
+      const url = getSheetUrl();
+      
+      try {
+        log('📊 Buscando dados da planilha...', '#00cfff');
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const csvText = await response.text();
+        log(`✅ Dados recebidos! Tamanho: ${csvText.length} caracteres`, '#00ff00');
+        
+        // Mostra primeiras linhas
+        const lines = csvText.split('\n').filter(l => l.trim());
+        log(`📄 Total de linhas: ${lines.length}`, '#00ff00');
+        
+        // Parse básico
+        let resultHTML = '<h3>Dados da Planilha:</h3>';
+        resultHTML += '<table style="width:100%; border-collapse: collapse;">';
+        resultHTML += '<tr style="background: rgba(0,207,255,0.2);"><th>A (Num)</th><th>B (Nome)</th><th>C (Mapa)</th><th>D (Coords)</th></tr>';
+        
+        lines.slice(0, 10).forEach((line, index) => {
+          const values = parseCSVLine(line);
+          resultHTML += '<tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">';
+          resultHTML += `<td style="padding: 8px;">${values[0] || '-'}</td>`;
+          resultHTML += `<td style="padding: 8px;">${values[1] || '-'}</td>`;
+          resultHTML += `<td style="padding: 8px;">${values[2] || '-'}</td>`;
+          resultHTML += `<td style="padding: 8px;">${values[3] || '-'}</td>`;
+          resultHTML += '</tr>';
+        });
+        
+        resultHTML += '</table>';
+        
+        if (lines.length > 10) {
+          resultHTML += `<p style="color: #ffff00;">... e mais ${lines.length - 10} linhas</p>`;
+        }
+        
+        document.getElementById('result').innerHTML = resultHTML;
+        log('✅ Dados exibidos com sucesso!', '#00ff00');
+        
+      } catch (error) {
+        log(`❌ Erro: ${error.message}`, '#ff0000');
+        document.getElementById('result').innerHTML = `<p style="color: red;">❌ Erro: ${error.message}</p>`;
+      }
+    }
+    
+    function parseCSVLine(line) {
+      const result = [];
+      let current = '';
+      let inQuotes = false;
+      
+      for (let i = 0; i < line.length; i++) {
+        const char = line[i];
+        const nextChar = line[i + 1];
+        
+        if (char === '"') {
+          if (inQuotes && nextChar === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (char === ',' && !inQuotes) {
+          result.push(current);
+          current = '';
+        } else {
+          current += char;
+        }
+      }
+      
+      result.push(current);
+      return result;
+    }
+    
+    // Teste automático ao carregar
+    window.onload = function() {
+      log('🚀 Página carregada', '#00ff00');
+      log('Clique nos botões acima para testar', '#ffff00');
+    };
+  </script>
+  
+</body>
+</html>
