@@ -94,16 +94,16 @@ window.DLConfig = {
   timer_objective: true,
   
   // Data do objetivo (formato: ano/mês/dia) - Ex: '2025/12/25' para 25 de dezembro de 2025
-  date_objective: '2026/01/31',
+  date_objective: '2026/02/12',
   
   // Horário do objetivo (formato: HH:MM, horário de Brasília)
-  time_objective: '21:00',
+  time_objective: '19:00',
   
   // Texto descritivo do objetivo
-  text_objective: 'Abertura do beta RF Default',
+  text_objective: 'Reunião Alinhamento Final',
   
   // Texto personalizado exibido no widget de contagem regressiva (aparece abaixo do horário)
-  countdown_custom_text: 'Abertura do beta RF Default'
+  countdown_custom_text: 'Reunião para alinhamento final RF Default, falaremos sobre muitas coisas mas uma grande enfase em como a guilda vai funcionar e também o que vai ser feito para que desempenhemos bem.'
 };
 
 // script pwa > site em app
