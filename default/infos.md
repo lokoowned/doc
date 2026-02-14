@@ -2,7 +2,7 @@
 
 > **📝 Registro de contas: [Clique aqui](https://cp.rf-default.ru/) (Email precisa ser gmail, verifique a caixa de spamm)**
 
-> **📁 Download do client: [Clique aqui](https://drive.google.com/uc?id=1_Q2vmKq6wEOnqYhFCUiRWq4pr47y5BvE&export=download)**
+> **📁 Download do client: [Clique aqui](https://drive.google.com/uc?id=1Db0JK1IjyMdoCqSrqQKPwEoFLeM2nINp&export=download)**
 
 > **🎮 Beta aberto atualmente, vai até dia 8 e o oficial abre dia 14/02 - Raça CORA.
 
