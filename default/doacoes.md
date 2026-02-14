@@ -2,28 +2,56 @@
 
 Este espaço é destinado às informações sobre o suporte financeiro ao servidor e as diretrizes sobre negociações externas.
 
-> [!ATTENTION] 
-> **Página em Construção:** Como ainda estamos em fase de preparação para a versão oficial, os detalhes abaixo podem sofrer alterações. No entanto, as diretrizes gerais já estão definidas para o planejamento de todos.
-
 ---
 
-> **Para doações será necessário que você tenha uma conta na BINANCE, um tutorial de como doar será disponibilizado antes da abertura oficial, entretanto já recomendamos que você crie sua conta na BINANCE afim de evitar problemas futuros.
+## 💎 Doações (Cash Coins)
 
-### 💎 Doações (Cash Coins)
+Para aqueles que desejam apoiar o servidor e obter vantagens na Loja de Cash, o sistema de doações é prático e acessível.
 
-Para aqueles que desejam apoiar o servidor e obter vantagens na Loja de Cash, o sistema de doações será prático e acessível.
+### 📊 Planilha de Informações e Valores
 
-### Métodos de Pagamento
-Atualmente, o servidor está integrado com as principais formas de pagamento:
-* **Pix:** Aprovação instantânea.
-* **Cartão de Crédito:** Parcelamento disponível conforme as regras da operadora.
+Consulte a planilha completa com valores, bônus e informações detalhadas sobre doações:
 
-### Tabela de Valores Prevista
-A cotação base planejada para o lançamento é:
+🔗 **[Planilha de Doações - DarkLegion](https://docs.google.com/spreadsheets/d/1-LZzjZ9fIyFlTAWfwGCijI_MKkaT5qrB7LvN0xdkUl8/edit?gid=0#gid=0)**
+
+### 💳 Métodos de Pagamento
+
+O servidor aceita as seguintes formas de pagamento:
+
+* **USDT (Crypto)** - Criptomoeda
+* **LTC (Crypto)** - Litecoin
+* **Google Pay** - Cartão de crédito (aceita se seu banco permitir)
+* **Apple Pay** - Cartão de crédito (aceita se seu banco permitir)
+* **Samsung Pay** - Cartão de crédito (aceita se seu banco permitir)
+* **Pix** - Aprovação instantânea (depende se seu banco aceita)
+
+### 🎬 Tutorial: Como Doar com Cartão
+
+Assista ao tutorial completo de como doar usando **Google Pay, Apple Pay ou Samsung Pay**:
+
+[![Tutorial de Doação](https://img.youtube.com/vi/xlPsW03bifQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=xlPsW03bifQ)
+
+🔗 **[Clique aqui para assistir ao tutorial](https://www.youtube.com/watch?v=xlPsW03bifQ)**
+
+### 🎁 Sistema de Bônus
+
+* **3.000 - 4.000 CC:** 0% de bônus
+* **7.500 CC:** 10% de bônus (+ 750 CC)
+* **35.000 - 173.000 CC:** 15% de bônus
+* **175.000 CC ou mais:** 20% de bônus
+
+### 🔗 Links Úteis
+
+* **[FunPay do Servidor](#)** - Plataforma de pagamento
+* **[GameCP - Painel do Doador](#)** - Gerencie suas doações
+* **[Tutorial Crypto](https://www.youtube.com/watch?v=xlPsW03bifQ)** - Como doar com criptomoedas
+
+### 📌 Cotação Base
+
 * **R$ 10,00** = **1.000 Cash Coins (1k)**
 
 > [!TIP]
-> **Beta Test:** Os preços dos itens no *Cash Shop* serão revelados e testados durante a versão Beta. Fiquem atentos para avaliar o custo-benefício dos consumíveis e utilitários.
+> **Importante:** Os preços dos itens no *Cash Shop* podem variar. Consulte sempre a planilha atualizada antes de doar.
 
 ---
 
@@ -43,4 +71,4 @@ Entendemos que a economia de um MMORPG como o RF Online é vibrante. Nossa posi�
 * [ ] FAQ sobre entrega de prêmios e bônus de doação.
 
 ---
-*Última atualização: 30 de Janeiro de 2026*
+*Última atualização: 13 de Fevereiro de 2026*

@@ -1,28 +1,39 @@
 
-
 # Evento de Leilão: Informações
 
 > [!TIP]
 > **Status do Sistema:** Em fase final de desenvolvimento e testes.
 
-### 🚀 O Novo Sistema de Leilão
+### 🚀 Sistema de Leilão
 
-Desde **2025**, a administração da **DarkLegion** vem investindo no desenvolvimento de um sistema de leilão totalmente personalizado e exclusivo para a nossa organização.
-
-Diferente de métodos genéricos, este software foi projetado sob medida para atender às necessidades específicas da nossa gameplay e garantir a distribuição mais justa de recursos do cenário global de RF Online.
+A **DarkLegion** desenvolveu um sistema de leilão personalizado para distribuição justa de recursos no cenário global de RF Online. O sistema utiliza pontos acumulados pelos membros para realizar lances em itens do jogo.
 
 ---
 
-### 📺 O que vem por aí?
+### 📺 Tutorial em Vídeo
 
-Estamos preparando um material completo para que não restem dúvidas sobre o funcionamento da ferramenta:
-
-* **Vídeo Tutorial:** Um guia passo a passo mostrando a interface e como realizar seus lances.
-* **Documentação Técnica:** Regras de pontuação, logs de transações e integração com o banco de dados da guilda.
-* **FAQ:** Respostas para as perguntas mais frequentes sobre o acúmulo e uso de pontos.
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ---
 
-### ⏳ Conteúdo em breve
+### ⚠️ Regras Importantes
 
-O conteúdo desta página será atualizado assim que o sistema for oficialmente homologado para o cenário Russo em 2026. Fique atento aos anúncios oficiais no nosso Discord.
+> [!WARNING]
+> **Regra 1:** Marque apenas os objetivos que você completou. Fraudes serão punidas.
+
+> [!DANGER]
+> **Regra 2:** É proibido dois jogadores pontuarem em contas diferentes para equipar o mesmo personagem. Infrações podem ser denunciadas.
+
+---
+
+### 📋 Recursos Disponíveis
+
+* **Vídeo Tutorial:** Guia completo sobre interface e lances
+* **Documentação Técnica:** Regras de pontuação e logs de transações
+* **FAQ:** Dúvidas frequentes sobre acúmulo e uso de pontos
+
+---
+
+### 📢 Avisos
+
+O sistema será oficialmente homologado para o cenário Russo em 2026. Acompanhe os anúncios no Discord.
