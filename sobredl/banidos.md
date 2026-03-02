@@ -15,7 +15,6 @@
  | Stringari | Permanente | Desconhecido | Ladrão de joguinho online
  | KM | Permanente | Desconhecido | Calote em varios membros
  | XxCPxX | Permanente | Desconhecido | Fala muita bosta
- | DracOn | Permanente | Desconhecido | Usou DB de um servidor para invadir contas no outro
  | NunA | Permanente | Desconhecido | Retardado
  | Babilonia | Permanente | Desconhecido | Cheater
  | Ordinaria | Permanente | Desconhecido | Motivo do ban esquecido (deve ter feito bosta em)
