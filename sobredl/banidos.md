@@ -47,6 +47,7 @@
  | ShadowAizen | Permanente | Desconhecido | Caloteiro de 50 conto.
  | VictorNeto | Permanente | Desconhecido | Chorão, só reclama lalala
  | GSN (Dagan) | Permanente | Desconhecido | Não sabe respeitar call, briga por tudo igual uma criança mimada, fala pelas costas de todo mundo independente de quem seja.
+ | Beboy | Permanente | Default | Desrespeito direto a um membro da Staff | Desconhecido.
 
 ---
 
