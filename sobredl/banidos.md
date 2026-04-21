@@ -45,6 +45,7 @@
  | KICKI | Permanente | Default | RMT que não se equipa, apenas pensa em sí próprio.
  | CAMN | Permanente | Default | Posturas e atitudes que não compactuam com o que a organização espera.
  | Tenkai | Permanente | Default | Abuso de up afk, não sabe ouvir críticas e sempre precisa rebater para ter razão.
+ | Fatality [19] | Permanente | Default | RMT que não se equipa, apenas pensa em sí próprio.
  
 ---
 
