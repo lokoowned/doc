@@ -47,6 +47,7 @@
  | Tenkai | Permanente | Default | Abuso de up afk, não sabe ouvir críticas e sempre precisa rebater para ter razão.
  | Fatality [19] | Permanente | Default | RMT que não se equipa, apenas pensa em sí próprio.
  | Serumaninho | Permanente | Default | Não entra discord nunca, mal se viu no game e mesmo assim tentando avacalhar com o leilão.
+ | MissanDei | Permanente | Default | Random vendido, saiu da guilda pra ir para a guilda gringa porque ia receber 1k de default a mais.
  
 ---
 
