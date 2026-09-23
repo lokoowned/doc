@@ -16,14 +16,14 @@
 
 :link: **Todos os links da nossa organização:** [linktr.ee/dlguild](https://linktr.ee/dlguild)
 
-<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">⏸️ Status Atual: Guilda em pausa - retorno previsto para Janeiro</button>
+<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">⏸️ Status Atual: Guilda em pausa - retorno previsto para Fevereiro</button>
 
 <div id="shadowbox-servidor-atual" style="display:none;" class="shadowbox-hidden-content">
 
 ### ⏸️ Status Atual: Guilda momentaneamente parada
 
   - 🛠️ **Por que estamos parados?** Nosso líder está no estágio de **administrador**, cuidando do seu próprio servidor privado, o **RF Reward** ([links.rfreward.com](https://links.rfreward.com)). Neste período ele não lidera a guilda em nenhum servidor.
-  - 📅 **Retorno:** No mês de **janeiro** o líder tem a intenção de voltar a jogar algum projeto com a guilda. O servidor escolhido será anunciado com antecedência.
+  - 📅 **Retorno:** No mês de **fevereiro** o líder tem a intenção de voltar a jogar algum projeto com a guilda. O servidor escolhido será anunciado com antecedência.
   - 🏆 **O que esperar na volta:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajuda para novos jogadores upar e se equipar, raid's, eventos semanais, etc.
   - 💬 **Comunicação:** Discord/WhatsApp seguem ativos para interação dos membros, e é por lá que o retorno será anunciado.
   - 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
@@ -138,8 +138,8 @@ Agora você está pronto(a) para se juntar à nossa guilda.
       </b>
     </li>
     <li><b>Dezembro 2025 até Fev de 2026</b> a guilda estará em atividade, temos como meta jogar o OldTimes em dezembro e ficar nele até o final, em Fevereiro temos sério interesse em jogar um dos melhores e maiores servidores russos internacionais do mundo RF Default.</li>
-    <li><b>Setembro 2026 até Dezembro 2026:</b> a guilda está momentaneamente parada. O líder está no estágio de administrador, tomando conta do seu servidor privado <a href="https://links.rfreward.com" target="_blank">RF Reward</a> (neste momento ele não lidera, e sim administra o próprio servidor).</li>
-    <li><b>Janeiro 2027:</b> o líder tem a intenção de voltar a jogar algum projeto com a guilda. O servidor será anunciado no Discord com antecedência.</li>
+    <li><b>Setembro 2026 até Janeiro 2027:</b> a guilda está momentaneamente parada. O líder está no estágio de administrador, tomando conta do seu servidor privado <a href="https://links.rfreward.com" target="_blank">RF Reward</a> (neste momento ele não lidera, e sim administra o próprio servidor).</li>
+    <li><b>Fevereiro 2027:</b> o líder tem a intenção de voltar a jogar algum projeto com a guilda. O servidor será anunciado no Discord com antecedência.</li>
   </ul>
   <div style="margin-top:16px;">
     <b>✔️ Esta calendário será atualizado conforme forem surgindo novidades e acontecimentos importantes.</b>

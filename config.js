@@ -22,7 +22,7 @@ window.DLConfig = {
   server_guild_race: 'A definir',
   
   // Texto exibido abaixo do nome do servidor (ex: "Provável 3k+ Online")
-  server_online_summary: 'Retorno previsto: Janeiro',
+  server_online_summary: 'Retorno previsto: Fevereiro',
 
   // Configuração de expiração para páginas do sidebar (formato: YYYY-MM-DD)
   // Exemplo: { path: '/reunioes/default-organiza.md', expires_at: '2025-12-05', note: 'Resumo da organização pré-abertura' }
