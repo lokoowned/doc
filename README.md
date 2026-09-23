@@ -16,22 +16,19 @@
 
 :link: **Todos os links da nossa organização:** [linktr.ee/dlguild](https://linktr.ee/dlguild)
 
-<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">🎮 Jogando Atualmente: RF Default - Raça Cora</button>
+<button class="shadowbox-trigger" onclick="ShadowBox.openFromElement('shadowbox-servidor-atual')">⏸️ Status Atual: Guilda em pausa - retorno previsto para Janeiro</button>
 
 <div id="shadowbox-servidor-atual" style="display:none;" class="shadowbox-hidden-content">
 
-### 🎮 Servidor Atual: RF Default
+### ⏸️ Status Atual: Guilda momentaneamente parada
 
-  - 🌐 **Servidor ativo:** [RF Default](https://forum.rf-default.com/)
-  - 👥 **Players Ativos:** 3000+
-  - ⚔️ **Raça da Guilda:** Cora
-  - 🏆 **Eventos Ativos:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajudamos novos jogadores a upar e se equipar, raid's, eventos semanais, etc.
-  - 💬 **Comunicação:** Disponibilidade de Discord/WhatsApp para interação dos membros.
+  - 🛠️ **Por que estamos parados?** Nosso líder está no estágio de **administrador**, cuidando do seu próprio servidor privado, o **RF Reward** ([links.rfreward.com](https://links.rfreward.com)). Neste período ele não lidera a guilda em nenhum servidor.
+  - 📅 **Retorno:** No mês de **janeiro** o líder tem a intenção de voltar a jogar algum projeto com a guilda. O servidor escolhido será anunciado com antecedência.
+  - 🏆 **O que esperar na volta:** Leilão de itens, sorteio semanal, divisão de moeda do jogo, ajuda para novos jogadores upar e se equipar, raid's, eventos semanais, etc.
+  - 💬 **Comunicação:** Discord/WhatsApp seguem ativos para interação dos membros, e é por lá que o retorno será anunciado.
   - 📜 **Requisitos de entrada:** Respeito, jogo limpo e companheirismo foram sempre nosso diferencial.<br>
-    Recrutamos novos membros regularmente, basta falar com um dos oficiais da guilda.
+    Quer estar com a gente na volta? Entre no Discord e fale com um dos oficiais da guilda.
   - 🇧🇷 **Atuação:** Majoritariamente Brasil, mas também temos membros internacionais (Filipinas, Indonésia).
-  - 🕒 **Horários de atividade:** Temos jogadores jogando em todos os horários do dia, a maior atividade da guilda é no horário noturno onde se concentram os maiores objetivos.<br>
-    Eventos especiais são anunciados antecipadamente nas redes sociais da guilda.
 
 </div>
 
@@ -141,9 +138,8 @@ Agora você está pronto(a) para se juntar à nossa guilda.
       </b>
     </li>
     <li><b>Dezembro 2025 até Fev de 2026</b> a guilda estará em atividade, temos como meta jogar o OldTimes em dezembro e ficar nele até o final, em Fevereiro temos sério interesse em jogar um dos melhores e maiores servidores russos internacionais do mundo RF Default.</li>
-    <li><b>Julho 2026:</b> Esta é a data prevista para o lançamento do servidor do líder (neste momento ele não lidera, e sim administra o próprio servidor chamado <a href="https://www.rfreward.com" target="_blank">RF Reward</a>).</li>
-    <li><b>Julho 2026:</b> mesmo o líder dando a call para a galera jogar onde quiser no seu servidor pois não existe ajuda ou favoritismo, muitos membros ainda se unem para jogar juntos visando que eles tem um laço muito forte entre si, perto da data alguém decide e puxa a liderança de uma bandeira alternativa composta por em sua maioria membros da DarkLegion.</li>
-    <li><b>Outubro 2026:</b> a guilda volta a atividade sob a líderança de Loko.</li>
+    <li><b>Setembro 2026 até Dezembro 2026:</b> a guilda está momentaneamente parada. O líder está no estágio de administrador, tomando conta do seu servidor privado <a href="https://links.rfreward.com" target="_blank">RF Reward</a> (neste momento ele não lidera, e sim administra o próprio servidor).</li>
+    <li><b>Janeiro 2027:</b> o líder tem a intenção de voltar a jogar algum projeto com a guilda. O servidor será anunciado no Discord com antecedência.</li>
   </ul>
   <div style="margin-top:16px;">
     <b>✔️ Esta calendário será atualizado conforme forem surgindo novidades e acontecimentos importantes.</b>

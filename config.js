@@ -17,12 +17,12 @@ window.DLConfig = {
   server_widget_enabled: true,
   
   // Nome do servidor
-  server_name: 'Default @ Fev 14/02/26',
+  server_name: 'Guilda em pausa',
   
-  server_guild_race: 'Cora',
+  server_guild_race: 'A definir',
   
   // Texto exibido abaixo do nome do servidor (ex: "Provável 3k+ Online")
-  server_online_summary: 'Provável 3k+ Offline',
+  server_online_summary: 'Retorno previsto: Janeiro',
 
   // Configuração de expiração para páginas do sidebar (formato: YYYY-MM-DD)
   // Exemplo: { path: '/reunioes/default-organiza.md', expires_at: '2025-12-05', note: 'Resumo da organização pré-abertura' }
@@ -91,7 +91,7 @@ window.DLConfig = {
 
   // ==================== CONTAGEM REGRESSIVA ====================
   // Ativa/desativa o widget de contagem regressiva (true = mostrar, false = ocultar)
-  timer_objective: true,
+  timer_objective: false,
   
   // Data do objetivo (formato: ano/mês/dia) - Ex: '2025/12/25' para 25 de dezembro de 2025
   date_objective: '2026/02/12',
